@@ -19,7 +19,7 @@ import {
   nextVerse,
   prevVerse,
   randomVerse,
-} from './gitaCore.js';
+} from './gitacore.js';
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -237,10 +237,10 @@ async function handleFormSubmit(e) {
 
 async function handleRandom() {
   clearError();
-  const { chapter, verse } = randomVerse();
-  dom.chapterInput.value   = chapter;
-  dom.verseInput.value     = verse;
-  await displayVerse(chapter, verse);
+  const { chapter, ref } = randomVerse();
+  dom.chapterInput.value  = chapter;
+  dom.verseInput.value    = ref;
+  await displayVerse(chapter, ref);
 }
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
