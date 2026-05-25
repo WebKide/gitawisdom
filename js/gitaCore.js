@@ -1,5 +1,5 @@
 /**
- * gitacore.js
+ * gitaCore.js
  * Complete JavaScript port of asitiscore.py by WebKide
  * All logic for validating, finding, and formatting Bhagavad Gītā verse data.
  */
