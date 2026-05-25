@@ -4,19 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1e1f22" />
-  <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday parenting challenges." />
-  <title>GitaWisdom</title>
-  <meta name="author" content="WebKide">
+  <meta name="description" content="Bhagavad Gītā As It Is — original 1972 edition. Read any verse with Sanskrit, synonyms, translation, and Prabhupāda's purport." />
+  <title>GitaWisdom · Bhagavad Gītā As It Is</title>
+  <meta name="author" content="WebKide" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="css/styles.css" />
-  <script src="gitacore.js"></script>
-  <script src="app.js"></script>
+  <!-- ONE entry-point, type="module" — gitacore.js is imported inside app.js -->
+  <script type="module" src="js/app.js"></script>
 </head>
 
 <body>
 
-<!-- ═══════════════════════════════ MAIN PAGE ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ LANDING PAGE ════════════════════════════ -->
 <main class="page-wrap">
 
   <!-- Banner -->
@@ -31,47 +31,60 @@
   <!-- Intro / instructions -->
   <section class="intro fade-in" aria-label="How to use">
     <p>
-      <strong>oṁ namo bhagavate vāsudevāya.</strong>
-      Enter any verse reference below and the śloka will appear with its
-      Sanskrit text, word-for-word synonyms, and Śrīla Prabhupāda's translation.
-      Click <strong>Purport</strong> inside the viewer to read the commentary.
+      <strong>oṁ namo bhagavate vāsudevāya.</strong><br />
+      Enter a chapter number and verse below — the śloka appears with its Sanskrit text, word-for-word synonyms, and Śrīla Prabhupāda's translation.<br />
+      Click <strong>Purport</strong> inside the viewer for the full commentary.
     </p>
     <ul>
-      <li>Single verse — <code>16.4</code> or <code>2.47</code></li>
-      <li>Grouped text — <code>16.1-3</code> &nbsp;(the system auto-resolves single verses that belong to a group)</li>
-      <li>Press <strong>Gītā-Vāṇī</strong> for a random verse from any chapter</li>
-      <li>Navigate with <strong>← →</strong> arrow keys, swipe, or the buttons inside the viewer</li>
-      <li>Press <strong>Esc</strong> or click outside to close and reset</li>
+      <li>Single verse — chapter <code>16</code> &nbsp;verse <code>4</code></li>
+      <li>Grouped text — chapter <code>16</code> &nbsp;verse <code>1-3</code>
+          &nbsp;<em>(auto-resolved if you enter any verse in the group)</em></li>
+      <li>Press <strong>Gītā-Vāṇī</strong> for a random verse from any of the 18 chapters</li>
+      <li>Navigate with <strong>← →</strong> arrow keys, swipe left/right, or the buttons inside the viewer</li>
+      <li>Press <strong>Esc</strong> or click outside the card to close and reset</li>
     </ul>
   </section>
 
   <div class="divider fade-in"></div>
 
-  <!-- Search panel -->
+  <!-- ── Search form ── -->
+  <!--
+    IDs must match exactly what app.js queries:
+      verse-form, chapter-input, verse-input, random-btn, error-box
+  -->
   <section class="search-panel fade-in" aria-label="Verse lookup">
 
-    <div class="search-row">
+    <form id="verse-form" class="search-row" autocomplete="off" novalidate>
+      <input
+        id="chapter-input"
+        class="verse-input chapter-field"
+        type="number"
+        inputmode="numeric"
+        min="1" max="18"
+        placeholder="Ch."
+        aria-label="Chapter number (1–18)"
+      />
       <input
         id="verse-input"
         class="verse-input"
         type="text"
-        placeholder="e.g. 16.4 or 2.47 or 6.20-23"
-        autocomplete="off"
+        inputmode="text"
+        placeholder="Verse — e.g. 4 or 1-3"
         autocorrect="off"
         autocapitalize="none"
         spellcheck="false"
-        aria-label="Verse reference"
+        aria-label="Verse number or range"
       />
-      <button id="search-btn" class="btn btn-primary" aria-label="Look up verse">
+      <button type="submit" class="btn btn-primary" aria-label="Look up verse">
         Look up
       </button>
-    </div>
+    </form>
 
-    <button id="oracle-btn" class="btn btn-oracle" aria-label="Random verse — Gītā-Vāṇī">
+    <button id="random-btn" class="btn btn-oracle" aria-label="Random verse — Gītā-Vāṇī">
       ✦ &nbsp;Gītā-Vāṇī &nbsp;✦
     </button>
 
-    <p id="error-msg" class="error-msg" role="alert" aria-live="polite"></p>
+    <p id="error-box" class="error-msg" role="alert" aria-live="polite"></p>
 
   </section>
 
@@ -79,44 +92,45 @@
   <footer class="page-footer fade-in">
     <p>
       Based on the teachings of A.C. Bhaktivedānta Swami Prabhupāda.<br />
-      Original 1972 Macmillan edition &mdash; Bhagavad Gītā As It Is (unEdited).
+      Original 1972 Macmillan edition &mdash; Bhagavad Gītā As It Is.
     </p>
   </footer>
 
-</main><!-- /.page-wrap -->
+</main>
 
 
-<!-- ═══════════════════════════ LIGHTBOX OVERLAY ════════════════════════════ -->
+<!-- ════════════════════════════ LIGHTBOX OVERLAY ═══════════════════════════ -->
 <!--
-  Custom Lightbox3-style overlay.
-  Touch swipe: left = next, right = prev.
-  Keyboard: ← → = navigate, Esc = close, P = toggle purport.
-  Click backdrop = close.
+  IDs app.js needs:
+    lightbox, lb-overlay, lb-card, lb-close,
+    lb-prev, lb-next, lb-purport-btn,
+    lb-dedicatory, lb-chapter-line, lb-text-num,
+    lb-sanskrit, lb-synonyms, lb-translation,
+    lb-purport, lb-footer, lb-chapter-end
 -->
-<div id="lightbox-overlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Verse viewer">
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Verse viewer">
+
+  <!-- Backdrop — click to close -->
+  <div id="lb-overlay" class="lb-overlay"></div>
 
   <article id="lb-card" class="lb-card">
-
-    <!-- Spinner (shown while fetching) -->
-    <div id="lb-spinner" class="lb-spinner" aria-hidden="true">
-      <div class="spinner-ring"></div>
-    </div>
 
     <!-- ── Header ── -->
     <header class="lb-header">
       <div class="lb-author">
         <img
           src="https://i.imgur.com/iZ6CHAz.png"
-          alt="Bhagavad Gītā"
+          alt="Bhagavad Gītā icon"
           class="lb-author-icon"
           width="28" height="28"
+          loading="lazy"
         />
         <span class="lb-author-name">Bhagavad Gītā &mdash; As It Is</span>
       </div>
 
       <div class="lb-header-actions">
-        <button id="lb-purport-btn" class="lb-icon-btn" title="Read Prabhupāda's purport" aria-label="Toggle purport">
-          🖊️ Purport
+        <button id="lb-purport-btn" class="lb-icon-btn" title="Read Prabhupāda's purport (P)" aria-label="Toggle purport">
+          🖊 Purport
         </button>
         <button id="lb-close" class="lb-close-btn" title="Close (Esc)" aria-label="Close viewer">
           &times;
@@ -127,55 +141,52 @@
     <!-- ── Body ── -->
     <div class="lb-body">
 
-      <p id="lb-dedicatory" class="lb-dedicatory"></p>
-      <p id="lb-chapter-title" class="lb-chapter-title"></p>
+      <p id="lb-dedicatory"   class="lb-dedicatory"></p>
+      <p id="lb-chapter-line" class="lb-chapter-line"></p>
 
-      <!-- Sanskrit verse block -->
+      <!-- TEXT label + Sanskrit verse -->
       <p class="section-label">TEXT</p>
-      <p id="lb-text-num" class="lb-text-num"></p>
-      <div id="lb-verse-text" class="lb-verse-text" lang="sa"></div>
+      <p id="lb-text-num"  class="lb-text-num"></p>
+      <pre id="lb-sanskrit" class="lb-sanskrit" lang="sa"></pre>
 
       <!-- Synonyms -->
       <p class="section-label">📖 SYNONYMS</p>
-      <div id="lb-synonyms-wrap" class="lb-synonyms-wrap">
+      <div class="lb-synonyms-wrap">
         <span id="lb-synonyms"></span>
       </div>
 
       <!-- Translation -->
-      <div class="lb-translation-wrap">
-        <p class="section-label">🗒️ TRANSLATION</p>
-        <blockquote id="lb-translation" class="lb-translation"></blockquote>
-      </div>
+      <p class="section-label">🗒️ TRANSLATION</p>
+      <blockquote id="lb-translation" class="lb-translation"></blockquote>
 
       <!-- Purport (hidden until toggled) -->
-      <div id="lb-purport-wrap" class="lb-purport-wrap">
-        <p class="section-label">🖊️ PURPORT</p>
-        <div id="lb-purport" class="lb-purport"></div>
-      </div>
+      <div id="lb-purport" class="lb-purport"></div>
 
-      <!-- Colophon (last verse of chapter) -->
-      <p id="lb-colophon" class="lb-colophon" style="display:none"></p>
+      <!-- Chapter-end colophon -->
+      <p id="lb-chapter-end" class="lb-chapter-end"></p>
 
-      <!-- Signature image -->
-      <img id="lb-signature" class="lb-signature" src="" alt="Śrīla Prabhupāda's signature" />
+      <!-- Prabhupāda's signature -->
+      <img
+        src="https://i.imgur.com/BGsgSOi.png"
+        alt="Śrīla Prabhupāda's signature"
+        class="lb-signature"
+        loading="lazy"
+      />
 
     </div><!-- /.lb-body -->
 
-    <!-- ── Footer bar ── -->
+    <!-- ── Footer / nav bar ── -->
     <footer class="lb-footer-bar">
       <span id="lb-footer" class="lb-footer-text"></span>
       <nav class="lb-nav-row" aria-label="Verse navigation">
-        <button id="lb-prev" class="lb-nav-btn" title="Previous verse (← arrow or swipe right)" aria-label="Previous verse">&#8592;</button>
-        <span id="lb-nav-info" class="lb-nav-info"></span>
-        <button id="lb-next" class="lb-nav-btn" title="Next verse (→ arrow or swipe left)" aria-label="Next verse">&#8594;</button>
+        <button id="lb-prev" class="lb-nav-btn" title="Previous verse (← or swipe right)" aria-label="Previous verse">&#8592;</button>
+        <button id="lb-next" class="lb-nav-btn" title="Next verse  (→ or swipe left)"  aria-label="Next verse">&#8594;</button>
       </nav>
     </footer>
 
   </article><!-- /#lb-card -->
 
-</div><!-- /#lightbox-overlay -->
+</div><!-- /#lightbox -->
 
-
-<script type="module" src="js/app.js"></script>
 </body>
 </html>
