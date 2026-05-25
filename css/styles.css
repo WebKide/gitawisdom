@@ -702,3 +702,131 @@ body {
 
 /* Selection highlight */
 ::selection { background: var(--accent-glow); color: var(--text-heading); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Patch block — IDs / classes introduced by the corrected index.html
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Chapter input (narrow number field) ─────────────────────────────────── */
+.chapter-field {
+  width:     72px;
+  flex:      none;
+  text-align: center;
+}
+
+/* ── Lightbox root (was .lightbox-overlay, now split into .lightbox + .lb-overlay) ── */
+.lightbox {
+  display:    none;            /* hidden by default         */
+  position:   fixed;
+  inset:      0;
+  z-index:    1000;
+  align-items: flex-start;
+  justify-content: center;
+  padding:    24px 16px 40px;
+  overflow-y: auto;
+}
+
+.lightbox.open {
+  display:   flex;
+  animation: overlay-in 0.22s ease;
+}
+
+/* Backdrop — sits behind the card, click fires closeLightbox() */
+.lb-overlay {
+  position: fixed;
+  inset:    0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: -1;          /* behind .lb-card inside the same stacking context */
+}
+
+/* body scroll lock */
+body.lb-active { overflow: hidden; }
+
+/* ── Chapter line (subtitle inside card) ─────────────────────────────────── */
+.lb-chapter-line {
+  font-family:   var(--font-display);
+  font-size:     0.76rem;
+  color:         var(--text-secondary);
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+  line-height:   1.4;
+}
+
+/* ── Sanskrit verse — pre preserves the half-śloka line breaks ───────────── */
+.lb-sanskrit {
+  font-family:    var(--font-body);
+  font-size:      1.06rem;
+  font-style:     italic;
+  color:          var(--text-primary);
+  line-height:    1.8;
+  white-space:    pre-wrap;      /* honour \n, wrap at container edge */
+  word-break:     break-word;
+  margin-bottom:  18px;
+  padding-left:   12px;
+  border-left:    2px solid var(--accent);
+  background:     transparent;
+  border-radius:  0;
+}
+
+/* ── Chapter-end colophon ────────────────────────────────────────────────── */
+.lb-chapter-end {
+  display:       none;           /* shown via .visible class  */
+  margin-top:    16px;
+  padding:       10px 14px;
+  background:    rgba(245,166,35,0.06);
+  border:        1px solid var(--border-accent);
+  border-radius: var(--radius);
+  font-size:     0.83rem;
+  font-style:    italic;
+  color:         var(--text-secondary);
+  text-align:    center;
+}
+
+.lb-chapter-end.visible { display: block; animation: purport-in 0.3s ease; }
+
+/* ── Purport div — hidden until .visible added by JS ────────────────────── */
+.lb-purport {
+  display:   none;
+  font-size: 0.93rem;
+  color:     var(--text-secondary);
+  line-height: 1.85;
+  margin-top: 4px;
+}
+
+.lb-purport.visible {
+  display:   block;
+  animation: purport-in 0.32s ease;
+}
+
+.lb-purport p           { margin-bottom: 12px; }
+.lb-purport p:last-child { margin-bottom: 0; }
+.lb-purport .no-purport { font-style: italic; color: var(--text-muted); }
+
+/* ── Purport button active state ─────────────────────────────────────────── */
+.lb-icon-btn.active {
+  background:   var(--accent-glow);
+  color:        var(--accent);
+  border-color: var(--border-accent);
+}
+
+/* ── Error box visibility ────────────────────────────────────────────────── */
+.error-msg {
+  display:  none;
+  min-height: 0;
+}
+
+.error-msg.visible {
+  display:   block;
+  min-height: 22px;
+}
+
+/* ── Loading state on lb-card ────────────────────────────────────────────── */
+.lb-card.loading { opacity: 0.6; pointer-events: none; transition: opacity 0.2s; }
+
+/* ── Mobile: stack the chapter + verse fields ────────────────────────────── */
+@media (max-width: 520px) {
+  .search-row  { flex-wrap: wrap; }
+  .chapter-field { width: 100%; flex: none; text-align: left; }
+}
