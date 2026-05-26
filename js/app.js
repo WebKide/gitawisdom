@@ -228,7 +228,9 @@ async function handleFormSubmit(e) {
   e.preventDefault();
   clearError();
 
-  const chapterNum = parseInt(dom.chapterInput.value, 10);
+  const chapterNum = window._getSelectedChapter();
+  if (!chapterNum) { showError('Please select a chapter.'); return; }
+
   const verseStr   = dom.verseInput.value.trim();
 
   if (!chapterNum || !verseStr) {
@@ -247,8 +249,15 @@ async function handleFormSubmit(e) {
 async function handleRandom() {
   clearError();
   const { chapter, ref } = randomVerse();
-  dom.chapterInput.value  = chapter;
-  dom.verseInput.value    = ref;
+  // Sync the dropdown display
+  document.getElementById('chapter-trigger-text').textContent = `Ch. ${chapter}`;
+  const opt = document.querySelector(`#chapter-list [data-value="${chapter}"]`);
+  if (opt) {
+    document.querySelectorAll('.custom-select-option')
+      .forEach(o => o.removeAttribute('aria-selected'));
+    opt.setAttribute('aria-selected', 'true');
+  }
+  dom.verseInput.value = ref;
   await displayVerse(chapter, ref);
 }
 
@@ -340,6 +349,81 @@ dom.chapterInput.addEventListener('input', () => {
     dom.verseInput.select();
   }
 });
+
+// ─── Custom chapter dropdown ──────────────────────────────────────────────────
+(function initChapterSelect() {
+  const wrap     = document.getElementById('chapter-select');
+  const trigger  = document.getElementById('chapter-trigger');
+  const trigText = document.getElementById('chapter-trigger-text');
+  const list     = document.getElementById('chapter-list');
+  const options  = list.querySelectorAll('.custom-select-option');
+
+  // Selected value — mirrors what chapter-input used to provide
+  let selectedValue = null;
+
+  function openList() {
+    wrap.classList.add('open');
+    trigger.setAttribute('aria-expanded', 'true');
+    list.style.display = 'block';
+  }
+
+  function closeList() {
+    wrap.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+  }
+
+  function selectOption(opt) {
+    selectedValue = parseInt(opt.dataset.value, 10);
+
+    // Update trigger label to show "Ch. 16" compactly
+    trigText.textContent = `Ch. ${selectedValue}`;
+
+    // Mark selected state
+    options.forEach(o => o.removeAttribute('aria-selected'));
+    opt.setAttribute('aria-selected', 'true');
+
+    // Feed value into the existing state path app.js uses
+    // dom.chapterInput no longer exists as an <input> so we patch handleFormSubmit
+    closeList();
+  }
+
+  // Expose selected value globally so handleFormSubmit can read it
+  window._getSelectedChapter = () => selectedValue;
+
+  trigger.addEventListener('click', () => {
+    wrap.classList.contains('open') ? closeList() : openList();
+  });
+
+  options.forEach(opt => {
+    opt.addEventListener('click', () => selectOption(opt));
+  });
+
+  // Close on outside click
+  document.addEventListener('click', e => {
+    if (!wrap.contains(e.target)) closeList();
+  });
+
+  // Keyboard: arrows move through options, Enter selects, Esc closes
+  trigger.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openList(); }
+  });
+
+  list.addEventListener('keydown', e => {
+    const current = list.querySelector('[aria-selected="true"]') || options[0];
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const next = current.nextElementSibling;
+      if (next) { selectOption(next); next.scrollIntoView({ block: 'nearest' }); }
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = current.previousElementSibling;
+      if (prev) { selectOption(prev); prev.scrollIntoView({ block: 'nearest' }); }
+    }
+    if (e.key === 'Escape') closeList();
+    if (e.key === 'Enter')  closeList();
+  });
+})();
 
 // Initialise
 dom.chapterInput.setAttribute('min', '1');
