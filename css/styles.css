@@ -144,6 +144,16 @@ body {
 .intro ul li { margin-top: 3px; }
 
 /* ─── Search panel ───────────────────────────────────────────────────────── */
+.panel-title {
+  font-family:    var(--font-display);
+  font-size:      clamp(1rem, 3vw, 1.35rem);
+  font-weight:    700;
+  color:          #5865f2;
+  letter-spacing: 0.05em;
+  margin-bottom:  14px;
+  text-shadow:    0 2px 16px rgba(88, 101, 242, 0.3);
+}
+
 .search-panel {
   width:         100%;
   margin-top:    28px;
