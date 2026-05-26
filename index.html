@@ -13,10 +13,10 @@
   <!-- ONE entry-point, type="module" — gitacore.js is imported inside app.js -->
   <script type="module" src="js/app.js"></script>
   <!-- favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
 </head>
 
 <body>
@@ -58,6 +58,7 @@
       verse-form, chapter-input, verse-input, random-btn, error-box
   -->
   <section class="search-panel fade-in" aria-label="Verse lookup">
+    <h2 class="banner-title">Gītā-Vāṇī</h2>
 
     <form id="verse-form" class="search-row" autocomplete="off" novalidate>
       <input
@@ -66,7 +67,7 @@
         type="number"
         inputmode="numeric"
         min="1" max="18"
-        placeholder="Ch."
+        placeholder="Chapter number — e.g. 1-18"
         aria-label="Chapter number (1–18)"
       />
       <input
@@ -74,7 +75,7 @@
         class="verse-input"
         type="text"
         inputmode="text"
-        placeholder="Verse — e.g. 4 or 1-3"
+        placeholder="Verse number — e.g. 23 or 3-5"
         autocorrect="off"
         autocapitalize="none"
         spellcheck="false"
@@ -135,7 +136,7 @@
 
       <div class="lb-header-actions">
         <button id="lb-purport-btn" class="lb-icon-btn" title="Read Prabhupāda's purport (P)" aria-label="Toggle purport">
-          🖊 Purport
+          🖊️ 𝙿𝚄𝚁𝙿𝙾𝚁𝚃
         </button>
         <button id="lb-close" class="lb-close-btn" title="Close (Esc)" aria-label="Close viewer">
           &times;
@@ -149,13 +150,12 @@
       <p id="lb-dedicatory"   class="lb-dedicatory"></p>
       <p id="lb-chapter-line" class="lb-chapter-line"></p>
 
-      <!-- TEXT label + Sanskrit verse -->
-      <p class="section-label">TEXT</p>
+      <!-- TEXT label + Sanskrit verse, <p class="section-label">📜 𝚃𝙴𝚇𝚃</p> -->
       <p id="lb-text-num"  class="lb-text-num"></p>
       <pre id="lb-sanskrit" class="lb-sanskrit" lang="sa"></pre>
 
       <!-- Synonyms -->
-      <p class="section-label">📖 SYNONYMS</p>
+      <p class="section-label">📖 𝚂𝚈𝙽𝙾𝙽𝚈𝙼𝚂</p>
       <div class="lb-synonyms-wrap">
         <span id="lb-synonyms"></span>
       </div>
@@ -177,6 +177,11 @@
         class="lb-signature"
         loading="lazy"
       />
+
+      <!-- Close-purport anchor — only visible while purport is open -->
+      <button id="lb-purport-close" class="lb-purport-close-btn" aria-label="Close purport">
+        ✕ Close Purport
+      </button>
 
     </div><!-- /.lb-body -->
 
