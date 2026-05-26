@@ -58,7 +58,7 @@
       verse-form, chapter-input, verse-input, random-btn, error-box
   -->
   <section class="search-panel fade-in" aria-label="Verse lookup">
-    <h2 class="banner-title">Gītā-Vāṇī</h2>
+    <h2 class="panel-title">Gītā-Vāṇī</h2>
 
     <form id="verse-form" class="search-row" autocomplete="off" novalidate>
       <input
@@ -131,7 +131,10 @@
           width="28" height="28"
           loading="lazy"
         />
-        <span class="lb-author-name">Bhagavad Gītā &mdash; As It Is</span>
+        <!-- ── Author avatar, book name, chapter and verse ── -->
+        <span class="lb-author-name">Bhagavad Gītā &mdash; As It Is
+          <b id="lb-author-ref"></b>
+        </span>
       </div>
 
       <div class="lb-header-actions">
@@ -172,7 +175,7 @@
 
       <!-- Prabhupāda's signature -->
       <img
-        src="https://i.imgur.com/BGsgSOi.png"
+        src="https://i.imgur.com/iOWO0k2.png"
         alt="Śrīla Prabhupāda's signature"
         class="lb-signature"
         loading="lazy"
