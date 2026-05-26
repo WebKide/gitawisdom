@@ -115,6 +115,8 @@ function renderVerse() {
 
   dom.lbDedicatory.textContent  = DEDICATORY;
   dom.lbChapterLine.textContent = `Chapter ${chapter} · ${titlePart}`;
+  document.getElementById('lb-author-ref').textContent = ` (${chapter}.${verseRef})`;
+
   dom.lbTextNum.textContent     = verseRef.includes('-')
     ? `TEXTS ${verseRef}`
     : `TEXT ${verseRef}`;
