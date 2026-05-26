@@ -61,15 +61,36 @@
     <h2 class="panel-title">Gītā-Vāṇī</h2>
 
     <form id="verse-form" class="search-row" autocomplete="off" novalidate>
-      <input
-        id="chapter-input"
-        class="verse-input chapter-field"
-        type="number"
-        inputmode="numeric"
-        min="1" max="18"
-        placeholder="Chapter number — e.g. 1-18"
-        aria-label="Chapter number (1–18)"
-      />
+
+      <!-- Select chapter dropdown -->
+      <div id="chapter-select" class="custom-select" role="combobox" aria-label="Chapter">
+        <button type="button" class="custom-select-trigger" id="chapter-trigger" aria-haspopup="listbox" aria-expanded="false">
+          <span id="chapter-trigger-text">Chapter…</span>
+          <span class="custom-select-arrow">&#9660;</span>
+        </button>
+        <ul class="custom-select-list" id="chapter-list" role="listbox" aria-label="Select a chapter">
+          <li class="custom-select-option" role="option" data-value="1"><b>1 · First</b><small>Observing the Armies on the Battlefield of Kurukṣetra</small></li>
+          <li class="custom-select-option" role="option" data-value="2"><b>2 · Second</b><small>Contents of the Gītā Summarized</small></li>
+          <li class="custom-select-option" role="option" data-value="3"><b>3 · Third</b><small>Karma-yoga</small></li>
+          <li class="custom-select-option" role="option" data-value="4"><b>4 · Fourth</b><small>Transcendental Knowledge</small></li>
+          <li class="custom-select-option" role="option" data-value="5"><b>5 · Fifth</b><small>Karma-yoga — Action in Kṛṣṇa Consciousness</small></li>
+          <li class="custom-select-option" role="option" data-value="6"><b>6 · Sixth</b><small>Sāṅkhya-yoga</small></li>
+          <li class="custom-select-option" role="option" data-value="7"><b>7 · Seventh</b><small>Knowledge of the Absolute</small></li>
+          <li class="custom-select-option" role="option" data-value="8"><b>8 · Eighth</b><small>Attaining the Supreme</small></li>
+          <li class="custom-select-option" role="option" data-value="9"><b>9 · Ninth</b><small>The Most Confidential Knowledge</small></li>
+          <li class="custom-select-option" role="option" data-value="10"><b>10 · Tenth</b><small>The Opulence of the Absolute</small></li>
+          <li class="custom-select-option" role="option" data-value="11"><b>11 · Eleventh</b><small>The Universal Form</small></li>
+          <li class="custom-select-option" role="option" data-value="12"><b>12 · Twelfth</b><small>Devotional Service</small></li>
+          <li class="custom-select-option" role="option" data-value="13"><b>13 · Thirteenth</b><small>Nature, the Enjoyer, and Consciousness</small></li>
+          <li class="custom-select-option" role="option" data-value="14"><b>14 · Fourteenth</b><small>The Three Modes of Material Nature</small></li>
+          <li class="custom-select-option" role="option" data-value="15"><b>15 · Fifteenth</b><small>The Yoga of the Supreme Person</small></li>
+          <li class="custom-select-option" role="option" data-value="16"><b>16 · Sixteenth</b><small>The Divine and Demoniac Natures</small></li>
+          <li class="custom-select-option" role="option" data-value="17"><b>17 · Seventeenth</b><small>The Divisions of Faith</small></li>
+          <li class="custom-select-option" role="option" data-value="18"><b>18 · Eighteenth</b><small>Conclusion — The Perfection of Renunciation</small></li>
+        </ul>
+      </div>
+
+      <!-- input verse number -->
       <input
         id="verse-input"
         class="verse-input"
@@ -81,6 +102,7 @@
         spellcheck="false"
         aria-label="Verse number or range"
       />
+
       <button type="submit" class="btn btn-primary" aria-label="Look up verse">
         Look up
       </button>
