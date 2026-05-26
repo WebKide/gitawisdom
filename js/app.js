@@ -136,6 +136,10 @@ function renderVerse() {
   // Purport
   const purportRaw = (verseData['Purport-En'] ?? '').trim();
   if (showPurport) {
+
+    // When purport opens — show the Red "Close Purport" bottom
+    document.getElementById('lb-purport-close').style.display = 'block';
+
     if (purportRaw) {
       const paras = purportRaw.split(/\n\n+/).filter(Boolean);
       dom.lbPurport.innerHTML = paras
@@ -149,6 +153,9 @@ function renderVerse() {
     dom.lbPurportBtn.textContent = '✕ Close Purport';
     dom.lbPurportBtn.classList.add('active');
   } else {
+    // When purport closes — hide the Red "Close Purport" button again
+    document.getElementById('lb-purport-close').style.display = 'none';
+
     dom.lbPurport.innerHTML = '';
     dom.lbPurport.classList.remove('visible');
     dom.lbPurportBtn.textContent = '🖊 Purport';
@@ -314,7 +321,9 @@ dom.lbClose.addEventListener('click', closeLightbox);
 dom.lbOverlay.addEventListener('click', closeLightbox);
 dom.lbPrev.addEventListener('click', goPrev);
 dom.lbNext.addEventListener('click', goNext);
+
 dom.lbPurportBtn.addEventListener('click', togglePurport);
+document.getElementById('lb-purport-close').addEventListener('click', togglePurport);
 
 // ─── Smart chapter.verse input splitting ─────────────────────────────────────
 // Typing "16.4" or "16 4" in the chapter field auto-splits
