@@ -377,6 +377,16 @@ body {
 
 .lb-close-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); }
 
+#lb-close {
+  color:       #ed4245;
+  font-weight: 700;
+}
+
+#lb-close:hover {
+  color:       #ffffff;
+  background:  #ed4245;
+}
+
 /* ─── Card body ──────────────────────────────────────────────────────────── */
 .lb-body {
   padding: 20px 22px 6px;
@@ -414,6 +424,10 @@ body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom:  10px;
+}
+
+#lb-text-num::before {
+  content: '📜 ';
 }
 
 /* Sanskrit verse */
@@ -508,6 +522,38 @@ body {
 .lb-purport-wrap.visible {
   display:   block;
   animation: purport-in 0.32s ease;
+}
+
+#lb-purport-btn.active {
+  background:  #c07d10;
+  color:       #ffffff;
+  font-weight: 700;
+  border-color: #a06800;
+}
+
+#lb-purport-btn.active:hover {
+  background:  #a06800;
+}
+
+.lb-purport-close-btn {
+  display:       none;  /* Red "Close Purport" bottom hidden until purport opens */
+  width:         100%;
+  margin-top:    18px;
+  padding:       10px 0;
+  background:    #ed4245;
+  color:         #ffffff;
+  font-family:   var(--font-display);
+  font-size:     0.78rem;
+  font-weight:   700;
+  letter-spacing: 0.08em;
+  border:        none;
+  border-radius: var(--radius);
+  cursor:        pointer;
+  transition:    background var(--transition);
+}
+
+.lb-purport-close-btn:hover {
+  background: #c03537;
 }
 
 @keyframes purport-in {
@@ -756,18 +802,20 @@ body.lb-active { overflow: hidden; }
 
 /* ── Sanskrit verse — pre preserves the half-śloka line breaks ───────────── */
 .lb-sanskrit {
-  font-family:    var(--font-body);
-  font-size:      1.06rem;
-  font-style:     italic;
-  color:          var(--text-primary);
-  line-height:    1.8;
-  white-space:    pre-wrap;      /* honour \n, wrap at container edge */
-  word-break:     break-word;
-  margin-bottom:  18px;
-  padding-left:   12px;
-  border-left:    2px solid var(--accent);
-  background:     transparent;
-  border-radius:  0;
+  /* changed alignement from left to center */
+  text-align:   center;
+  padding-left: 0;
+  border-left:  none;
+  font-family:  var(--font-body);
+  font-size:    1.06rem;
+  font-style:   italic;
+  color:        var(--text-primary);
+  line-height:  1.8;
+  white-space:  pre-wrap;      /* honour \n, wrap at container edge */
+  word-break:   break-word;
+  margin-bottom: 18px;
+  background:   transparent;
+  border-radius: 0;
 }
 
 /* ── Chapter-end colophon ────────────────────────────────────────────────── */
