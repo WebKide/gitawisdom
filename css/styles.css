@@ -156,10 +156,11 @@ body {
   display:  flex;
   gap:      10px;
   width:    100%;
+  align-items: stretch;       /* all three children same height */
 }
 
 .verse-input {
-  flex:          1;
+  flex:          none;        /* explicit widths below, not flex-grow */
   background:    var(--bg-input);
   border:        1px solid var(--border);
   border-radius: var(--radius);
@@ -168,14 +169,16 @@ body {
   font-size:     1rem;
   padding:       11px 16px;
   outline:       none;
-  transition:    border-color var(--transition), box-shadow var(--transition);
+  transition:    border-color var(--transition), box-shadow var(--transition),
+                 background var(--transition);
+  /* hide the browser spinner arrows — clean look */
+  -moz-appearance:    textfield;
 }
 
-.verse-input::placeholder { color: var(--text-muted); }
-
-.verse-input:focus {
-  border-color: var(--accent);
-  box-shadow:   0 0 0 3px var(--accent-glow);
+.verse-input::-webkit-outer-spin-button,
+.verse-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* ─── Buttons ────────────────────────────────────────────────────────────── */
@@ -755,9 +758,43 @@ body {
 
 /* ── Chapter input (narrow number field) ─────────────────────────────────── */
 .chapter-field {
-  width:     72px;
-  flex:      none;
-  text-align: center;
+  width:            90px;
+  background:       #2a2218;   /* warm dark amber tint */
+  border-color:     #5a3e1a;
+  text-align:       center;
+}
+
+.chapter-field:focus {
+  border-color: var(--accent);
+  box-shadow:   0 0 0 3px var(--accent-glow);
+  background:   #32280f;
+}
+
+/* ── Verse field — wider, cool tint ─────────────────────────────────────── */
+.verse-field {
+  width:            160px;
+  background:       #1a1f2a;   /* cool dark blue tint */
+  border-color:     #1e3a5a;
+  text-align:       center;
+}
+
+.verse-field:focus {
+  border-color: #5865f2;       /* blurple focus ring matches purport button */
+  box-shadow:   0 0 0 3px rgba(88, 101, 242, 0.2);
+  background:   #1a2235;
+}
+
+/* ── Button — fixed width, never stretches ───────────────────────────────── */
+.search-row .btn-primary {
+  flex: none;
+}
+
+/* ── Mobile: stack vertically ────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .search-row        { flex-wrap: wrap; }
+  .chapter-field,
+  .verse-field       { width: 100%; text-align: left; }
+  .search-row .btn-primary { width: 100%; }
 }
 
 /* ── Lightbox root (was .lightbox-overlay, now split into .lightbox + .lb-overlay) ── */
