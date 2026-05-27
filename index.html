@@ -7,229 +7,377 @@
   <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday parenting challenges." />
   <title>GitaWisdom</title>
   <meta name="author" content="WebKide" />
+
+  <!-- Google Fonts — display: Waldemar · body: Noto Serif (Kelvinch fallback) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Waldemar&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" />
+
   <link rel="stylesheet" href="css/styles.css" />
-  <!-- ONE entry-point, type="module" — gitacore.js is imported inside app.js -->
+
+  <!-- Single JS entry-point; gitacore.js is imported as an ES module inside app.js -->
   <script type="module" src="js/app.js"></script>
-  <!-- favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="manifest" href="site.webmanifest" />
 </head>
 
 <body>
 
-<!-- ═══════════════════════════════ LANDING PAGE ════════════════════════════ -->
+<!-- ═══════════════════════════════════ LANDING PAGE ════════════════════════════ -->
 <main class="page-wrap">
 
-  <!-- Banner -->
+  <!-- ── Banner ── -->
   <header class="banner fade-in">
     <span class="banner-lotus" aria-hidden="true">𑁍</span>
     <h1 class="banner-title">「 GitaWisdom 」</h1>
-    <p class="banner-subtitle">Bhagavad Gītā As It Is &mdash; Original 1972 Edition</p>
+    <p class="banner-subtitle">Bhagavad Gītā  &mdash; As It Is (1972 Macmillan Unabriged Edition)</p>
   </header>
 
   <div class="divider fade-in"></div>
 
-  <!-- Intro / instructions -->
+  <!-- ── Intro / instructions ── -->
   <section class="intro fade-in" aria-label="How to use">
     <p>
       <strong>oṁ namo bhagavate vāsudevāya</strong><br />
       Find instant wisdom, clarity, and emotional strength for everyday parenting challenges.<br />
-      Click <strong>GitaWisdom</strong> to recibe inspiration from the Bhagavad Gītā.<br />
+      Click <strong>GitaWisdom</strong> to recive inspiration from the Bhagavad Gītā.<br /><br />
 
-      OR:<br />
+      OR:<br /><br />
       
-      Select a chapter and enter a verse number below — the śloka appears with its Sanskrit text, word-for-word synonyms, and Śrīla Prabhupāda's translation.
+      Select a Chapter and enter a number below — the verse appears with its Sanskrit text, word-for-word synonyms, and Bhaktivedānta’s translation and purport.
     </p>
   </section>
 
   <div class="divider fade-in"></div>
 
-    <button id="random-btn" class="btn btn-oracle" aria-label="Random verse — GitaWisdom">
-      ✦ &nbsp;GitaWisdom &nbsp;✦
-    </button>
+  <!-- ── Wisdom Oracle / random button ── -->
+  <button id="random-btn" class="btn btn-oracle" aria-label="Random verse — GitaWisdom">
+    ✦ &nbsp;GitaWisdom &nbsp;✦
+  </button>
 
-  <!-- ── Search form ── -->
-  <!--
-    IDs must match exactly what app.js queries:
-      verse-form, chapter-input, verse-input, random-btn, error-box
+  <!-- ── Search form ──
+       IDs app.js depends on: verse-form, verse-input, random-btn, error-box
+       Chapter comes from the custom dropdown via window._getSelectedChapter().
   -->
   <section class="search-panel fade-in" aria-label="Verse lookup">
     <h2 class="panel-title">GitaWisdom</h2>
 
     <form id="verse-form" class="search-row" autocomplete="off" novalidate>
 
-      <!-- Select chapter dropdown -->
+      <!-- Custom chapter dropdown -->
       <div id="chapter-select" class="custom-select" role="combobox" aria-label="Chapter">
-        <button type="button" class="custom-select-trigger" id="chapter-trigger" aria-haspopup="listbox" aria-expanded="false">
+        <button type="button"
+                class="custom-select-trigger"
+                id="chapter-trigger"
+                aria-haspopup="listbox"
+                aria-expanded="false">
           <span id="chapter-trigger-text">Chapter…</span>
           <span class="custom-select-arrow">&#9660;</span>
         </button>
-        <ul class="custom-select-list" id="chapter-list" role="listbox" aria-label="Select a chapter">
-          <li class="custom-select-option" role="option" data-value="1"><b>1 · First</b><small>Observing the Armies on the Battlefield of Kurukṣetra</small></li>
-          <li class="custom-select-option" role="option" data-value="2"><b>2 · Second</b><small>Contents of the Gītā Summarized</small></li>
-          <li class="custom-select-option" role="option" data-value="3"><b>3 · Third</b><small>Karma-yoga</small></li>
-          <li class="custom-select-option" role="option" data-value="4"><b>4 · Fourth</b><small>Transcendental Knowledge</small></li>
-          <li class="custom-select-option" role="option" data-value="5"><b>5 · Fifth</b><small>Karma-yoga — Action in Kṛṣṇa Consciousness</small></li>
-          <li class="custom-select-option" role="option" data-value="6"><b>6 · Sixth</b><small>Sāṅkhya-yoga</small></li>
-          <li class="custom-select-option" role="option" data-value="7"><b>7 · Seventh</b><small>Knowledge of the Absolute</small></li>
-          <li class="custom-select-option" role="option" data-value="8"><b>8 · Eighth</b><small>Attaining the Supreme</small></li>
-          <li class="custom-select-option" role="option" data-value="9"><b>9 · Ninth</b><small>The Most Confidential Knowledge</small></li>
-          <li class="custom-select-option" role="option" data-value="10"><b>10 · Tenth</b><small>The Opulence of the Absolute</small></li>
-          <li class="custom-select-option" role="option" data-value="11"><b>11 · Eleventh</b><small>The Universal Form</small></li>
-          <li class="custom-select-option" role="option" data-value="12"><b>12 · Twelfth</b><small>Devotional Service</small></li>
-          <li class="custom-select-option" role="option" data-value="13"><b>13 · Thirteenth</b><small>Nature, the Enjoyer, and Consciousness</small></li>
-          <li class="custom-select-option" role="option" data-value="14"><b>14 · Fourteenth</b><small>The Three Modes of Material Nature</small></li>
-          <li class="custom-select-option" role="option" data-value="15"><b>15 · Fifteenth</b><small>The Yoga of the Supreme Person</small></li>
-          <li class="custom-select-option" role="option" data-value="16"><b>16 · Sixteenth</b><small>The Divine and Demoniac Natures</small></li>
-          <li class="custom-select-option" role="option" data-value="17"><b>17 · Seventeenth</b><small>The Divisions of Faith</small></li>
-          <li class="custom-select-option" role="option" data-value="18"><b>18 · Eighteenth</b><small>Conclusion — The Perfection of Renunciation</small></li>
-        </ul>
-      </div>
 
-      <!-- input verse number -->
+        <!-- Verse counts in labels (M9 / point 7 optional enhancement) -->
+        <ul class="custom-select-list" id="chapter-list" role="listbox" aria-label="Select a chapter">
+          <li class="custom-select-option" role="option" data-value="1">
+            <b>1 · First Chapter <span class="verse-count">(46 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Observing the Armies on the Battlefield of Kurukṣetra</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="2">
+            <b>2 · Second Chapter <span class="verse-count">(72 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Contents of the Gītā Summarized</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="3">
+            <b>3 · Third Chapter <span class="verse-count">(43 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Karma-yoga</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="4">
+            <b>4 · Fourth Chapter <span class="verse-count">(42 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Transcendental Knowledge</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="5">
+            <b>5 · Fifth Chapter <span class="verse-count">(29 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Karma-yoga — Action in Kṛṣṇa Consciousness</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="6">
+            <b>6 · Sixth Chapter <span class="verse-count">(47 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Sāṅkhya-yoga</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="7">
+            <b>7 · Seventh Chapter <span class="verse-count">(30 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Knowledge of the Absolute</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="8">
+            <b>8 · Eighth Chapter <span class="verse-count">(28 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Attaining the Supreme</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="9">
+            <b>9 · Ninth Chapter <span class="verse-count">(34 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>The Most Confidential Knowledge</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="10">
+            <b>10 · Tenth Chapter <span class="verse-count">(42 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>The Opulence of the Absolute</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="11">
+            <b>11 · Eleventh Chapter <span class="verse-count">(55 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>The Universal Form</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="12">
+            <b>12 · Twelfth Chapter <span class="verse-count">(20 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Devotional Service</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="13">
+            <b>13 · Thirteenth Chapter <span class="verse-count">(35 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Nature, the Enjoyer, and Consciousness</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="14">
+            <b>14 · Fourteenth Chapter <span class="verse-count">(27 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>The Three Modes of Material Nature</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="15">
+            <b>15 · Fifteenth Chapter <span class="verse-count">(20 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>The Yoga of the Supreme Person</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="16">
+            <b>16 · Sixteenth Chapter <span class="verse-count">(24 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>The Divine and Demoniac Natures</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="17">
+            <b>17 · Seventeenth Chapter <span class="verse-count">(28 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>The Divisions of Faith</small>
+          </li>
+          <li class="custom-select-option" role="option" data-value="18">
+            <b>18 · Eighteenth Chapter <span class="verse-count">(78 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+            <small>Conclusion — The Perfection of Renunciation</small>
+          </li>
+        </ul>
+      </div><!-- /#chapter-select -->
+
+      <!-- Verse number input — integer only, defaults to 1 (M3 / point 7) -->
       <input
         id="verse-input"
-        class="verse-input"
-        type="text"
-        inputmode="text"
-        placeholder="Verse number — e.g. 23 or 3-5"
+        class="verse-input verse-field"
+        type="number"
+        inputmode="numeric"
+        min="1"
+        max="81"
+        value="1"
+        placeholder="Verse…"
         autocorrect="off"
         autocapitalize="none"
         spellcheck="false"
-        aria-label="Verse number or range"
+        aria-label="Verse number — range is auto-resolved"
       />
 
       <button type="submit" class="btn btn-primary" aria-label="Look up verse">
-        Look up
+        𝖫𝗈𝗈𝗄 𝗎𝗉
       </button>
     </form>
 
+    <!-- Error message box (enhanced visibility — point 3) -->
     <p id="error-box" class="error-msg" role="alert" aria-live="polite"></p>
 
-  </section>
+  </section><!-- /.search-panel -->
 
-  <!-- Intro / instructions -->
+  <!-- ── Usage instructions ── -->
   <section class="intro fade-in" aria-label="How to use">
-    <p>
-      <strong>oṁ namo nārāyaṇāya</strong>
-    </p>
+    <p><strong>oṁ namo nārāyaṇāya</strong></p>
     <ul>
       <li>Single verse — chapter <code>16</code> &nbsp;verse <code>4</code></li>
-      <li>Grouped text — chapter <code>16</code> &nbsp;verse <code>1-3</code>
-          &nbsp;<em>(auto-resolved if you enter any verse in the group)</em></li>
+      <li>Grouped texts — just type any verse number inside the group
+          (e.g. enter <code>27</code> for Ch.17 — auto-resolves to TEXTS 26–27)</li>
       <li>Press <strong>GitaWisdom</strong> for a random verse from any of the 18 chapters</li>
       <li>Navigate with <strong>← →</strong> arrow keys, swipe left/right, or the buttons inside the viewer</li>
       <li>Press <strong>Esc</strong> or click outside the card to close and reset</li>
+      <li>Press <strong>P</strong> inside the viewer to toggle the Purport</li>
     </ul>
   </section>
 
   <div class="divider fade-in"></div>
 
-  <!-- Page footer -->
+  <!-- ── Page footer ── -->
   <footer class="page-footer fade-in">
     <p>
-      His Divine Grace A.C. Bhaktivedānta Swami Prabhupāda.<br /> 
-      the Founder-Ācārya of ISKCON and greatest exponent of Kṛṣṇa consciousness in the western world.<br /> 
-      Bhagavad-gītā As It Is &mdash; 1972 Unabriged Edition (Macmillan)
+      His Divine Grace A.C. Bhaktivedānta Swami Prabhupāda.<br />
+      the Founder-Ācārya of ISKCON and greatest exponent of Kṛṣṇa consciousness
+      in the western world.<br />
+      Bhagavad-gītā As It Is &mdash; 1972 Unabridged Edition (Macmillan)<br /><br />
+      To<br />
+      ŚRĪLA BALADEVA VIDYĀBHŪṢAṆA<br />
+      who presented so nicely<br />
+      the "Govinda-bhāṣya" commentary<br />
+      on Vedānta philosophy
     </p>
   </footer>
 
 </main>
 
 
-<!-- ════════════════════════════ LIGHTBOX OVERLAY ═══════════════════════════ -->
-<!--
-  IDs app.js needs:
-    lightbox, lb-overlay, lb-card, lb-close,
-    lb-prev, lb-next, lb-purport-btn,
-    lb-dedicatory, lb-chapter-line, lb-text-num,
-    lb-sanskrit, lb-synonyms, lb-translation,
-    lb-purport, lb-footer, lb-chapter-end
+<!-- ══════════════════════════════ LIGHTBOX OVERLAY ══════════════════════════════
+     IDs app.js requires:
+       lightbox, lb-overlay, lb-card, lb-close,
+       lb-prev, lb-next, lb-purport-btn, lb-font-increase, lb-font-decrease,
+       lb-verse-section, lb-purport-section,
+       lb-chapter-heading, lb-dedicatory, lb-chapter-line, lb-author-ref,
+       lb-text-num, lb-sanskrit, lb-synonyms, lb-translation,
+       lb-purport, lb-purport-close, lb-footer, lb-chapter-end
 -->
 <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Verse viewer">
 
-  <!-- Backdrop — click to close -->
+  <!-- Backdrop — click fires closeLightbox() -->
   <div id="lb-overlay" class="lb-overlay"></div>
 
   <article id="lb-card" class="lb-card">
 
-    <!-- ── Header ── -->
+    <!-- ══ Card header ══ -->
     <header class="lb-header">
+
+      <!-- Book title + current reference -->
       <div class="lb-author">
         <img
-          src="https://i.imgur.com/iZ6CHAz.png"
-          alt="Bhagavad Gītā icon"
+          src="assets/images/ACBhaktivedantaSwami.png"
+          alt="A.C. Bhaktivedānta Swami"
           class="lb-author-icon"
           width="28" height="28"
           loading="lazy"
         />
-        <!-- ── Author avatar, book name, chapter and verse ── -->
-        <span class="lb-author-name">Bhagavad Gītā &mdash; As It Is
+        <span class="lb-author-name">
+          Bg &mdash; 
           <b id="lb-author-ref"></b>
         </span>
       </div>
 
+      <!-- Right-hand action buttons -->
       <div class="lb-header-actions">
-        <button id="lb-purport-btn" class="lb-icon-btn" title="Read Prabhupāda's purport (P)" aria-label="Toggle purport">
+
+        <!-- Font-size controls (point 11) ᴀ− +ᴬ -->
+        <button id="lb-font-decrease"
+                class="lb-icon-btn lb-font-btn"
+                title="Decrease text size"
+                aria-label="Decrease text size">
+          [ᴀA−]
+        </button>
+        <button id="lb-font-increase"
+                class="lb-icon-btn lb-font-btn"
+                title="Increase text size"
+                aria-label="Increase text size">
+          [+ᴀA]
+        </button>
+
+        <!-- Purport toggle -->
+        <button id="lb-purport-btn"
+                class="lb-icon-btn"
+                title="Read the Bhaktivedānta purport (P)"
+                aria-label="Toggle purport">
           🖊️ 𝙿𝚄𝚁𝙿𝙾𝚁𝚃
         </button>
-        <button id="lb-close" class="lb-close-btn" title="Close (Esc)" aria-label="Close viewer">
+
+        <!-- Close -->
+        <button id="lb-close"
+                class="lb-close-btn"
+                title="Close (Esc)"
+                aria-label="Close viewer">
           &times;
         </button>
       </div>
-    </header>
 
-    <!-- ── Body ── -->
+    </header><!-- /.lb-header -->
+
+    <!-- ══ Card body ══ -->
     <div class="lb-body">
 
+      <!-- Meta: dedicatory + chapter line (always visible) -->
       <p id="lb-dedicatory"   class="lb-dedicatory"></p>
       <p id="lb-chapter-line" class="lb-chapter-line"></p>
 
-      <!-- TEXT label + Sanskrit verse, <p class="section-label">📜 𝚃𝙴𝚇𝚃</p> -->
-      <p id="lb-text-num"  class="lb-text-num"></p>
-      <pre id="lb-sanskrit" class="lb-sanskrit" lang="sa"></pre>
+      <!-- M6: Chapter heading — updated during prev/next navigation -->
+      <h3 id="lb-chapter-heading" class="lb-chapter-heading"></h3>
 
-      <!-- Synonyms -->
-      <p class="section-label">📖 𝚂𝚈𝙽𝙾𝙽𝚈𝙼𝚂</p>
-      <div class="lb-synonyms-wrap">
-        <span id="lb-synonyms"></span>
-      </div>
+      <!-- ══════════════════════════════════
+           VERSE SECTION
+           Visible in verse mode.
+           Hidden in purport mode.
+           Wrapper ID: lb-verse-section
+      ══════════════════════════════════ -->
+      <div id="lb-verse-section">
 
-      <!-- Translation -->
-      <p class="section-label">🗒️ TRANSLATION</p>
-      <blockquote id="lb-translation" class="lb-translation"></blockquote>
+        <!-- TEXT label — e.g. "📜 TEXT 4" or "📜 TEXTS 26-27" -->
+        <p id="lb-text-num" class="section-label"></p>
 
-      <!-- Purport (hidden until toggled) -->
-      <div id="lb-purport" class="lb-purport"></div>
+        <!-- Sanskrit verse — lines joined with <br> by renderVerse() -->
+        <p id="lb-sanskrit" class="lb-sanskrit" lang="sa"></p>
 
-      <!-- Chapter-end colophon -->
+        <!-- Synonyms -->
+        <p class="section-label">📖 𝚂𝚈𝙽𝙾𝙽𝚈𝙼𝚂</p>
+        <div class="lb-synonyms-wrap">
+          <span id="lb-synonyms"></span>
+        </div>
+
+        <!-- Translation -->
+        <p class="section-label">🗒️ 𝚃𝚁𝙰𝙽𝚂𝙻𝙰𝚃𝙸𝙾𝙽</p>
+        <blockquote id="lb-translation" class="lb-translation"></blockquote>
+
+      </div><!-- /#lb-verse-section -->
+
+      <!-- ══════════════════════════════════
+           PURPORT SECTION (U5)
+           Hidden in verse mode.
+           Visible in purport mode.
+           Wrapper ID: lb-purport-section
+      ══════════════════════════════════ -->
+      <div id="lb-purport-section" class="hidden">
+
+        <!-- Purport dedicatory / greeting (point 4 / U5) -->
+        <p class="lb-purport-dedicatory">
+          𝖬𝗒 𝖣𝖾𝖺𝗋 𝗋𝖾𝖺𝖽𝖾𝗋,<br />
+          𝖯𝗅𝖾𝖺𝗌𝖾 𝖺𝖼𝖼𝖾𝗉𝗍 𝗆𝗒 𝖻𝗅𝖾𝗌𝗌𝗂𝗇𝗀𝗌.
+        </p>
+
+        <!-- Purport section label -->
+        <p class="section-label">🖊 𝙿𝚄𝚁𝙿𝙾𝚁𝚃</p>
+
+        <!-- Purport body — paragraphs injected by renderVerse() -->
+        <div id="lb-purport" class="lb-purport"></div>
+
+        <!-- Prabhupāda's signature — shown inside purport section -->
+        <img
+          src="assets/images/signature.svg"
+          alt="Your ever wel-wisher, A.C. Bhaktivedānta Swami"
+          class="lb-signature"
+          loading="lazy"
+        />
+
+        <!-- Red "Close Purport" button — full width, below signature (U7 / point 4)
+             Visibility managed via .visible CSS class, not inline style -->
+        <button id="lb-purport-close"
+                class="lb-purport-close-btn"
+                aria-label="Close purport">
+          ✕ 𝖢𝗅𝗈𝗌𝖾 𝖯𝗎𝗋𝗉𝗈𝗋𝗍
+        </button>
+
+      </div><!-- /#lb-purport-section -->
+
+      <!-- Chapter-end colophon (always at the bottom, shown only on last verse) -->
       <p id="lb-chapter-end" class="lb-chapter-end"></p>
-
-      <!-- Prabhupāda's signature -->
-      <img
-        src="https://i.imgur.com/iOWO0k2.png"
-        alt="Śrīla Prabhupāda's signature"
-        class="lb-signature"
-        loading="lazy"
-      />
-
-      <!-- Close-purport anchor — only visible while purport is open -->
-      <button id="lb-purport-close" class="lb-purport-close-btn" aria-label="Close purport">
-        ✕ Close Purport
-      </button>
 
     </div><!-- /.lb-body -->
 
-    <!-- ── Footer / nav bar ── -->
+    <!-- ══ Footer / navigation bar ══ -->
     <footer class="lb-footer-bar">
       <span id="lb-footer" class="lb-footer-text"></span>
       <nav class="lb-nav-row" aria-label="Verse navigation">
-        <button id="lb-prev" class="lb-nav-btn" title="Previous verse (← or swipe right)" aria-label="Previous verse">&#8592;</button>
-        <button id="lb-next" class="lb-nav-btn" title="Next verse  (→ or swipe left)"  aria-label="Next verse">&#8594;</button>
+        <button id="lb-prev"
+                class="lb-nav-btn"
+                title="Previous verse (← or swipe right)"
+                aria-label="Previous verse">&#8592;</button>
+        <button id="lb-next"
+                class="lb-nav-btn"
+                title="Next verse (→ or swipe left)"
+                aria-label="Next verse">&#8594;</button>
       </nav>
     </footer>
 
