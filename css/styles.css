@@ -1,24 +1,25 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    GitaWisdom  ·  styles.css
-   Dark aesthetic.
-   Typefaces: Cinzel Decorative (display) + EB Garamond (Sanskrit/body)
+   Author: WebKide
+   Dark aesthetic — Discord-inspired.
+   Typefaces: Waldemar (display) + Kelvinch / Noto Serif (body)
    Accent: #F5A623 (saffron)
    ═══════════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Sans+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Waldemar&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 /* ─── Design tokens ──────────────────────────────────────────────────────── */
 :root {
-  --bg-base:       #1e1f22;   /* Discord dark background */
-  --bg-mid:        #2b2d31;   /* Discord channel bg */
-  --bg-card:       #313338;   /* Discord message bg */
+  --bg-base:       #1e1f22;
+  --bg-mid:        #2b2d31;
+  --bg-card:       #313338;
   --bg-card-alt:   #2e3035;
   --bg-input:      #1e1f22;
-  --accent:        #f5a623;   /* Saffron — from the Discord bot embed */
+  --accent:        #f5a623;
   --accent-dim:    #c07d10;
   --accent-glow:   rgba(245, 166, 35, 0.18);
-  --text-primary:  #dbdee1;   /* Discord primary text */
-  --text-secondary:#949ba4;   /* Discord muted */
+  --text-primary:  #dbdee1;
+  --text-secondary:#949ba4;
   --text-muted:    #5c6068;
   --text-heading:  #f2f3f5;
   --border:        rgba(255,255,255,0.06);
@@ -27,9 +28,15 @@
   --shadow-glow:   0 0 28px rgba(245,166,35,0.14);
   --radius:        8px;
   --radius-lg:     12px;
-  --font-display:  'Cinzel Decorative', serif;
-  --font-body:     'EB Garamond', Georgia, serif;
+
+  /* Typefaces — point 11: Waldemar replaces Cinzel Decorative; Kelvinch/Noto Serif replaces EB Garamond */
+  --font-display:  'Waldemar', sans-serif;
+  --font-body:     'Kelvinch', 'Noto Serif', serif;
+
   --transition:    0.22s ease;
+
+  /* In-reader font size — controlled by JS font-size buttons (point 11) */
+  --lb-font-size:  16px;
 }
 
 /* ─── Reset / base ───────────────────────────────────────────────────────── */
@@ -48,6 +55,10 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
 }
 
+/* ─── Utility ────────────────────────────────────────────────────────────── */
+/* U5 — used to toggle verse-section vs purport-section visibility */
+.hidden { display: none !important; }
+
 /* ─── Page layout ────────────────────────────────────────────────────────── */
 .page-wrap {
   max-width:     680px;
@@ -64,7 +75,6 @@ body {
   width:         100%;
   text-align:    center;
   padding:       52px 0 32px;
-  position:      relative;
 }
 
 .banner-lotus {
@@ -82,50 +92,47 @@ body {
 }
 
 .banner-title {
-  font-family:   var(--font-display);
-  font-size:     clamp(1.2rem, 4vw, 1.7rem);
-  font-weight:   700;
-  color:         var(--accent);
+  font-family:    var(--font-display);
+  font-size:      clamp(1.2rem, 4vw, 1.7rem);
+  font-weight:    700;
+  color:          var(--accent);
   letter-spacing: 0.04em;
-  line-height:   1.2;
-  text-shadow:   0 2px 20px rgba(245,166,35,0.3);
+  line-height:    1.2;
+  text-shadow:    0 2px 20px rgba(245,166,35,0.3);
 }
 
 .banner-subtitle {
-  font-family:   var(--font-body);
-  font-size:     0.95rem;
-  color:         var(--text-secondary);
-  margin-top:    6px;
-  font-style:    italic;
+  font-family:    var(--font-body);
+  font-size:      0.95rem;
+  color:          var(--text-secondary);
+  margin-top:     6px;
+  font-style:     italic;
   letter-spacing: 0.01em;
 }
 
 /* ─── Divider ────────────────────────────────────────────────────────────── */
 .divider {
-  width:         100%;
-  height:        1px;
-  background:    linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity:       0.3;
-  margin:        24px 0;
+  width:      100%;
+  height:     1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity:    0.3;
+  margin:     24px 0;
 }
 
 /* ─── Intro text ─────────────────────────────────────────────────────────── */
 .intro {
-  width:        100%;
-  background:   var(--bg-mid);
-  border:       1px solid var(--border);
-  border-left:  3px solid var(--accent);
+  width:         100%;
+  background:    var(--bg-mid);
+  border:        1px solid var(--border);
+  border-left:   3px solid var(--accent);
   border-radius: var(--radius);
-  padding:      18px 22px;
-  font-size:    0.93rem;
-  color:        var(--text-secondary);
-  line-height:  1.7;
+  padding:       18px 22px;
+  font-size:     0.93rem;
+  color:         var(--text-secondary);
+  line-height:   1.7;
 }
 
-.intro strong {
-  color:   var(--text-primary);
-  font-weight: 600;
-}
+.intro strong { color: var(--text-primary); font-weight: 600; }
 
 .intro code {
   background:    rgba(255,255,255,0.08);
@@ -136,11 +143,7 @@ body {
   color:         var(--accent);
 }
 
-.intro ul {
-  margin:       8px 0 0 18px;
-  list-style:   disc;
-}
-
+.intro ul { margin: 8px 0 0 18px; list-style: disc; }
 .intro ul li { margin-top: 3px; }
 
 /* ─── Search panel ───────────────────────────────────────────────────────── */
@@ -155,22 +158,22 @@ body {
 }
 
 .search-panel {
-  width:         100%;
-  margin-top:    28px;
-  display:       flex;
+  width:          100%;
+  margin-top:     28px;
+  display:        flex;
   flex-direction: column;
-  gap:           12px;
+  gap:            12px;
 }
 
 .search-row {
-  display:  flex;
-  gap:      10px;
-  width:    100%;
-  align-items: stretch;       /* all three children same height */
+  display:     flex;
+  gap:         10px;
+  width:       100%;
+  align-items: stretch;
 }
 
 .verse-input {
-  flex:          none;        /* explicit widths below, not flex-grow */
+  flex:          none;
   background:    var(--bg-input);
   border:        1px solid var(--border);
   border-radius: var(--radius);
@@ -181,8 +184,8 @@ body {
   outline:       none;
   transition:    border-color var(--transition), box-shadow var(--transition),
                  background var(--transition);
-  /* hide the browser spinner arrows — clean look */
-  -moz-appearance:    textfield;
+  /* Remove browser spinner arrows */
+  -moz-appearance: textfield;
 }
 
 .verse-input::-webkit-outer-spin-button,
@@ -191,52 +194,30 @@ body {
   margin: 0;
 }
 
-/* ─── Buttons ────────────────────────────────────────────────────────────── */
-.btn {
-  font-family:   var(--font-display);
-  font-size:     0.78rem;
-  letter-spacing: 0.06em;
-  font-weight:   400;
-  padding:       11px 22px;
-  border:        none;
-  border-radius: var(--radius);
-  cursor:        pointer;
-  transition:    background var(--transition), transform 0.12s, box-shadow var(--transition);
-  white-space:   nowrap;
-  user-select:   none;
-}
-
-.btn:active { transform: scale(0.96); }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
-
-.btn-primary {
-  background: var(--accent);
-  color:      #1a1000;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background:  var(--accent-dim);
-  box-shadow:  var(--shadow-glow);
-}
-
-.btn-oracle {
-  background:  var(--bg-card);
-  color:       var(--accent);
-  border:      1px solid var(--border-accent);
-}
-
-.btn-oracle:hover:not(:disabled) {
-  background:  var(--bg-card-alt);
-  box-shadow:  var(--shadow-glow);
-}
-
-/* ─── Error message ──────────────────────────────────────────────────────── */
+/* ─── Error message — enhanced visibility (point 3) ─────────────────────── */
 .error-msg {
-  min-height:  22px;
-  font-size:   0.88rem;
-  color:       #f04747;
-  text-align:  center;
-  padding:     2px 0;
+  display:       none;     /* hidden by default; shown via .visible */
+  min-height:    0;
+  font-size:     0.92rem;
+  font-weight:   600;
+  color:         #ff5555;
+  background:    rgba(255, 60, 60, 0.12);
+  border:        1px solid rgba(255, 60, 60, 0.35);
+  border-left:   3px solid #ff5555;
+  border-radius: var(--radius);
+  padding:       10px 14px;
+  text-align:    left;
+}
+
+.error-msg.visible {
+  display:   block;
+  min-height: 22px;
+  animation: error-in 0.25s ease;
+}
+
+@keyframes error-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shake {
@@ -249,23 +230,59 @@ body {
 
 .shake { animation: shake 0.42s ease; }
 
-/* ─── Lightbox overlay ───────────────────────────────────────────────────── */
-.lightbox-overlay {
-  position:   fixed;
-  inset:      0;
-  z-index:    1000;
-  background: rgba(0, 0, 0, 0.82);
-  display:    none;
-  align-items: flex-start;
-  justify-content: center;
-  padding:    24px 16px 40px;
-  overflow-y: auto;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+.btn {
+  font-family:    var(--font-display);
+  font-size:      0.78rem;
+  letter-spacing: 0.06em;
+  font-weight:    400;
+  padding:        11px 22px;
+  border:         none;
+  border-radius:  var(--radius);
+  cursor:         pointer;
+  transition:     background var(--transition), transform 0.12s, box-shadow var(--transition);
+  white-space:    nowrap;
+  user-select:    none;
 }
 
-.lightbox-overlay.active {
-  display: flex;
+.btn:active   { transform: scale(0.96); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--accent);
+  color:      #1a1000;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-dim);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-oracle {
+  background: var(--bg-card);
+  color:      var(--accent);
+  border:     1px solid var(--border-accent);
+}
+
+.btn-oracle:hover:not(:disabled) {
+  background: var(--bg-card-alt);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ─── Lightbox overlay ───────────────────────────────────────────────────── */
+.lightbox {
+  display:         none;
+  position:        fixed;
+  inset:           0;
+  z-index:         1000;
+  align-items:     flex-start;
+  justify-content: center;
+  padding:         24px 16px 40px;
+  overflow-y:      auto;
+}
+
+.lightbox.open {
+  display:   flex;
   animation: overlay-in 0.22s ease;
 }
 
@@ -274,19 +291,34 @@ body {
   to   { opacity: 1; }
 }
 
+/* Backdrop — behind the card, click triggers closeLightbox() */
+.lb-overlay {
+  position:           fixed;
+  inset:              0;
+  background:         rgba(0, 0, 0, 0.82);
+  backdrop-filter:    blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index:            -1;
+}
+
+/* Body scroll lock while lightbox is open */
+body.lb-active { overflow: hidden; }
+
 /* ─── Lightbox card ──────────────────────────────────────────────────────── */
 .lb-card {
-  width:         100%;
-  max-width:     640px;
-  background:    var(--bg-card);
-  border-radius: var(--radius-lg);
-  border:        1px solid var(--border);
-  border-top:    3px solid var(--accent);
-  box-shadow:    var(--shadow-card), var(--shadow-glow);
-  overflow:      hidden;
-  position:      relative;
-  /* entrance animation */
-  animation:     card-enter 0.38s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
+  width:          100%;
+  max-width:      640px;
+  background:     var(--bg-card);
+  border-radius:  var(--radius-lg);
+  border:         1px solid var(--border);
+  border-top:     3px solid var(--accent);
+  box-shadow:     var(--shadow-card), var(--shadow-glow);
+  overflow:       hidden;
+  position:       relative;
+  animation:      card-enter 0.38s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
+
+  /* In-reader font size — changed by JS via CSS variable (point 11) */
+  font-size: var(--lb-font-size);
 }
 
 @keyframes card-enter {
@@ -294,23 +326,7 @@ body {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.lb-card.exiting {
-  animation: card-exit 0.26s ease forwards;
-}
-
-@keyframes card-exit {
-  to { opacity: 0; transform: translateY(14px) scale(0.97); }
-}
-
-.lb-card.refreshing {
-  animation: card-refresh 0.28s ease;
-}
-
-@keyframes card-refresh {
-  0%   { opacity: 1; transform: scale(1); }
-  40%  { opacity: 0.55; transform: scale(0.985); }
-  100% { opacity: 1; transform: scale(1); }
-}
+.lb-card.loading { opacity: 0.6; pointer-events: none; transition: opacity 0.2s; }
 
 /* ─── Card header ────────────────────────────────────────────────────────── */
 .lb-header {
@@ -340,64 +356,78 @@ body {
 }
 
 .lb-author-name {
-  font-family:   var(--font-display);
-  font-size:     0.68rem;
-  color:         var(--accent);
+  font-family:    var(--font-display);
+  font-size:      0.68rem;
+  color:          var(--accent);
   letter-spacing: 0.03em;
-  white-space:   nowrap;
-  overflow:      hidden;
-  text-overflow: ellipsis;
+  white-space:    nowrap;
+  overflow:       hidden;
+  text-overflow:  ellipsis;
 }
 
 .lb-header-actions {
-  display: flex;
-  gap:     6px;
+  display:     flex;
+  gap:         6px;
   flex-shrink: 0;
+  align-items: center;
 }
 
+/* ─── Icon buttons (header) ──────────────────────────────────────────────── */
 .lb-icon-btn {
-  background:    transparent;
-  border:        1px solid var(--border);
-  border-radius: var(--radius);
-  color:         var(--text-secondary);
-  padding:       6px 10px;
-  font-size:     0.82rem;
-  cursor:        pointer;
-  transition:    background var(--transition), color var(--transition), border-color var(--transition);
-  font-family:   var(--font-display);
-  font-size:     0.7rem;
+  background:     transparent;
+  border:         1px solid var(--border);
+  border-radius:  var(--radius);
+  color:          var(--text-secondary);
+  padding:        6px 10px;
+  font-size:      0.7rem;
+  font-family:    var(--font-display);
   letter-spacing: 0.04em;
+  cursor:         pointer;
+  transition:     background var(--transition), color var(--transition),
+                  border-color var(--transition);
+  white-space:    nowrap;
 }
 
 .lb-icon-btn:hover {
-  background:    var(--bg-mid);
-  color:         var(--accent);
-  border-color:  var(--border-accent);
+  background:   var(--bg-mid);
+  color:        var(--accent);
+  border-color: var(--border-accent);
 }
 
+/* Active state for the purport button */
+.lb-icon-btn.active {
+  background:   var(--accent-glow);
+  color:        var(--accent);
+  border-color: var(--border-accent);
+  font-weight:  700;
+}
+
+/* Font-size buttons (point 11) — slightly narrower than purport btn */
+.lb-font-btn {
+  padding:     6px 8px;
+  font-size:   0.8rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+/* Close button */
 .lb-close-btn {
   background:    transparent;
   border:        none;
-  color:         var(--text-muted);
+  color:         #ed4245;
   font-size:     1.4rem;
+  font-weight:   700;
   line-height:   1;
   cursor:        pointer;
   padding:       2px 4px;
   border-radius: 4px;
-  transition:    color var(--transition), background var(--transition);
   flex-shrink:   0;
+  transition:    color var(--transition), background var(--transition);
 }
 
-.lb-close-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); }
-
-#lb-close {
-  color:       #ed4245;
-  font-weight: 700;
-}
-
-#lb-close:hover {
-  color:       #ffffff;
-  background:  #ed4245;
+.lb-close-btn:hover {
+  color:      #ffffff;
+  background: #ed4245;
 }
 
 /* ─── Card body ──────────────────────────────────────────────────────────── */
@@ -405,79 +435,63 @@ body {
   padding: 20px 22px 6px;
 }
 
-/* Dedicatory */
+/* Dedicatory (top of card) */
 .lb-dedicatory {
-  font-family:   var(--font-body);
-  font-style:    italic;
-  font-size:     0.82rem;
-  color:         var(--text-muted);
+  font-family:    var(--font-body);
+  font-style:     italic;
+  font-size:      0.82rem;
+  color:          var(--text-muted);
   letter-spacing: 0.04em;
-  margin-bottom: 3px;
+  margin-bottom:  3px;
 }
 
-/* Chapter title */
-.lb-chapter-title {
-  font-family:   var(--font-display);
-  font-size:     0.78rem;
-  color:         var(--text-secondary);
-  letter-spacing: 0.04em;
-  margin-bottom: 18px;
-  line-height:   1.4;
-}
-
-.lb-chapter-title strong {
-  color: var(--accent);
-}
-
-/* TEXT label */
-.lb-text-num {
+/* Chapter line */
+.lb-chapter-line {
   font-family:    var(--font-display);
-  font-size:      0.72rem;
-  color:          var(--accent);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom:  10px;
+  font-size:      0.76rem;
+  color:          var(--text-secondary);
+  letter-spacing: 0.04em;
+  margin-bottom:  6px;
+  line-height:    1.4;
 }
 
-#lb-text-num::before {
-  content: '📜 ';
-}
-
-/* Sanskrit verse */
-.lb-verse-text {
-  font-family:   var(--font-body);
-  font-size:     1.08rem;
-  font-style:    italic;
-  color:         var(--text-primary);
-  line-height:   1.75;
-  display:       flex;
-  flex-direction: column;
-  gap:           2px;
-  margin-bottom: 18px;
-  padding-left:  12px;
-  border-left:   2px solid var(--accent);
-}
-
-.lb-verse-text .uvaca {
-  color:       var(--accent);
-  font-style:  italic;
-  font-weight: 500;
-  font-size:   0.95rem;
-}
-
-.lb-verse-text .verse-line {
-  display: block;
+/* M6: Chapter heading H3 — updated during prev/next navigation */
+.lb-chapter-heading {
+  font-family:    var(--font-display);
+  font-size:      clamp(0.78rem, 2vw, 0.92rem);
+  font-weight:    700;
+  color:          var(--text-heading);
+  letter-spacing: 0.03em;
+  line-height:    1.35;
+  margin-bottom:  18px;
+  padding:        8px 12px;
+  background:     rgba(245,166,35,0.06);
+  border-radius:  var(--radius);
+  border-left:    3px solid var(--accent);
 }
 
 /* ─── Section labels ─────────────────────────────────────────────────────── */
 .section-label {
-  font-family:   var(--font-display);
-  font-size:     0.68rem;
+  font-family:    var(--font-display);
+  font-size:      0.68rem;
   letter-spacing: 0.12em;
-  color:         var(--text-muted);
+  color:          var(--text-muted);
   text-transform: uppercase;
-  margin-bottom: 8px;
-  margin-top:    18px;
+  margin-bottom:  8px;
+  margin-top:     18px;
+}
+
+/* ─── Sanskrit verse ─────────────────────────────────────────────────────── */
+/* Rendered as a <p> with <br> line breaks — centered, italic, body font */
+.lb-sanskrit {
+  text-align:    center;
+  font-family:   var(--font-body);
+  font-size:     calc(var(--lb-font-size) * 1.06);  /* scales with reader size */
+  font-style:    italic;
+  color:         var(--text-primary);
+  line-height:   1.8;
+  margin-bottom: 18px;
+  white-space:   normal;
 }
 
 /* ─── Synonyms ───────────────────────────────────────────────────────────── */
@@ -486,123 +500,57 @@ body {
   border-radius: var(--radius);
   border:        1px solid var(--border);
   padding:       12px 14px;
-  font-size:     0.88rem;
+  font-size:     calc(var(--lb-font-size) * 0.88);
   line-height:   1.8;
   color:         var(--text-secondary);
-  margin-bottom: 0;
 }
 
-.syn-word {
-  font-style:  italic;
-  font-weight: 600;
-  color:       var(--text-primary);
-}
-
-.syn-dash { color: var(--text-muted); }
-
+.syn-word    { font-style: italic; font-weight: 600; color: var(--text-primary); }
+.syn-dash    { color: var(--text-muted); }
 .syn-meaning { color: var(--text-secondary); }
-
-.syn-sep {
-  color:   var(--text-muted);
-  margin:  0 1px;
-}
-
-.syn-plain { color: var(--text-secondary); }
+.syn-sep     { color: var(--accent); margin: 0 2px; }  /* ; separator */
+.syn-plain   { color: var(--text-secondary); }
 
 /* ─── Translation ────────────────────────────────────────────────────────── */
-.lb-translation-wrap {
-  margin-top: 4px;
-}
-
 .lb-translation {
   background:    rgba(245, 166, 35, 0.07);
   border-left:   3px solid var(--accent);
   border-radius: 0 var(--radius) var(--radius) 0;
   padding:       12px 16px;
-  font-size:     1rem;
+  font-size:     calc(var(--lb-font-size) * 1.0);
   font-weight:   500;
   color:         var(--text-heading);
   line-height:   1.75;
   font-style:    italic;
+  margin-top:    4px;
 }
 
-/* ─── Purport ────────────────────────────────────────────────────────────── */
-.lb-purport-wrap {
-  display:    none;
-  margin-top: 4px;
+/* ─── Purport section (U5) ───────────────────────────────────────────────── */
+
+/* Dedicatory greeting shown at top of purport view (point 4 / U5) */
+.lb-purport-dedicatory {
+  font-family:    var(--font-body);
+  font-style:     italic;
+  font-size:      calc(var(--lb-font-size) * 0.92);
+  color:          var(--text-secondary);
+  text-align:     center;
+  padding:        10px 14px;
+  margin-bottom:  12px;
+  border-bottom:  1px solid var(--border);
+  line-height:    1.7;
 }
 
-.lb-purport-wrap.visible {
-  display:   block;
-  animation: purport-in 0.32s ease;
-}
-
-#lb-purport-btn.active {
-  background:  #c07d10;
-  color:       #ffffff;
-  font-weight: 700;
-  border-color: #a06800;
-}
-
-#lb-purport-btn.active:hover {
-  background:  #a06800;
-}
-
-.lb-purport-close-btn {
-  display:       none;  /* Red "Close Purport" bottom hidden until purport opens */
-  width:         100%;
-  margin-top:    18px;
-  padding:       10px 0;
-  background:    #ed4245;
-  color:         #ffffff;
-  font-family:   var(--font-display);
-  font-size:     0.78rem;
-  font-weight:   700;
-  letter-spacing: 0.08em;
-  border:        none;
-  border-radius: var(--radius);
-  cursor:        pointer;
-  transition:    background var(--transition);
-}
-
-.lb-purport-close-btn:hover {
-  background: #c03537;
-}
-
-@keyframes purport-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
+/* Purport body */
 .lb-purport {
-  font-size:  0.93rem;
-  color:      var(--text-secondary);
-  line-height: 1.85;
-}
-
-.lb-purport p {
-  margin-bottom: 12px;
-}
-
-.lb-purport p:last-child { margin-bottom: 0; }
-
-.no-purport {
-  font-style: italic;
-  color:      var(--text-muted);
-}
-
-/* ─── Colophon ───────────────────────────────────────────────────────────── */
-.lb-colophon {
-  margin-top:  16px;
-  padding:     10px 14px;
-  background:  rgba(245,166,35,0.06);
-  border:      1px solid var(--border-accent);
-  border-radius: var(--radius);
-  font-size:   0.83rem;
-  font-style:  italic;
+  font-size:   calc(var(--lb-font-size) * 0.93);
   color:       var(--text-secondary);
-  text-align:  center;
+  line-height: 1.85;
+  margin-top:  4px;
 }
+
+.lb-purport p           { margin-bottom: 12px; }
+.lb-purport p:last-child { margin-bottom: 0; }
+.lb-purport .no-purport { font-style: italic; color: var(--text-muted); }
 
 /* ─── Signature image ────────────────────────────────────────────────────── */
 .lb-signature {
@@ -616,7 +564,53 @@ body {
   filter:     brightness(0.85);
 }
 
-/* ─── Card footer ────────────────────────────────────────────────────────── */
+/* ─── Red "Close Purport" button (U7 fix) ────────────────────────────────── */
+/* Visibility is managed via .visible class, NOT inline style */
+.lb-purport-close-btn {
+  display:        none;   /* hidden by default */
+  width:          100%;
+  margin-top:     18px;
+  padding:        10px 0;
+  background:     #ed4245;
+  color:          #ffffff;
+  font-family:    var(--font-display);
+  font-size:      0.78rem;
+  font-weight:    700;
+  letter-spacing: 0.08em;
+  border:         none;
+  border-radius:  var(--radius);
+  cursor:         pointer;
+  transition:     background var(--transition);
+}
+
+/* U7: shown via class, not inline style */
+.lb-purport-close-btn.visible {
+  display:   block;
+  animation: purport-in 0.28s ease;
+}
+
+.lb-purport-close-btn:hover { background: #c03537; }
+
+/* ─── Chapter-end colophon ───────────────────────────────────────────────── */
+.lb-chapter-end {
+  display:       none;
+  margin-top:    16px;
+  padding:       10px 14px;
+  background:    rgba(245,166,35,0.06);
+  border:        1px solid var(--border-accent);
+  border-radius: var(--radius);
+  font-size:     0.83rem;
+  font-style:    italic;
+  color:         var(--text-secondary);
+  text-align:    center;
+}
+
+.lb-chapter-end.visible {
+  display:   block;
+  animation: purport-in 0.3s ease;
+}
+
+/* ─── Card footer / nav bar ──────────────────────────────────────────────── */
 .lb-footer-bar {
   display:         flex;
   align-items:     center;
@@ -629,12 +623,11 @@ body {
 }
 
 .lb-footer-text {
-  font-size:    0.78rem;
-  color:        var(--text-muted);
-  font-family:  var(--font-body);
-  font-style:   italic;
-  flex:         1;
-  min-width:    0;
+  font-size:   0.78rem;
+  color:       var(--text-muted);
+  font-style:  italic;
+  flex:        1;
+  min-width:   0;
 }
 
 .lb-nav-row {
@@ -642,15 +635,6 @@ body {
   align-items: center;
   gap:         8px;
   flex-shrink: 0;
-}
-
-.lb-nav-info {
-  font-family:   var(--font-display);
-  font-size:     0.68rem;
-  color:         var(--accent);
-  letter-spacing: 0.06em;
-  min-width:     60px;
-  text-align:    center;
 }
 
 .lb-nav-btn {
@@ -661,8 +645,9 @@ body {
   padding:       6px 12px;
   font-size:     1rem;
   cursor:        pointer;
-  transition:    background var(--transition), color var(--transition), border-color var(--transition);
   line-height:   1;
+  transition:    background var(--transition), color var(--transition),
+                 border-color var(--transition);
 }
 
 .lb-nav-btn:hover {
@@ -671,50 +656,13 @@ body {
   border-color: var(--border-accent);
 }
 
-/* ─── Spinner ────────────────────────────────────────────────────────────── */
-.lb-spinner {
-  position:   absolute;
-  inset:      0;
-  background: rgba(49, 51, 56, 0.8);
-  display:    none;
-  align-items: center;
-  justify-content: center;
-  z-index:    10;
-  border-radius: var(--radius-lg);
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes purport-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.spinner-ring {
-  width:        38px;
-  height:       38px;
-  border:       3px solid var(--border);
-  border-top:   3px solid var(--accent);
-  border-radius: 50%;
-  animation:    spin 0.75s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ─── Page footer ────────────────────────────────────────────────────────── */
-.page-footer {
-  margin-top:  48px;
-  text-align:  center;
-  font-size:   0.8rem;
-  color:       var(--text-muted);
-  font-style:  italic;
-  line-height: 1.7;
-}
-
-.page-footer a {
-  color:           var(--accent);
-  text-decoration: none;
-  opacity:         0.8;
-}
-
-.page-footer a:hover { opacity: 1; }
-
-/* ─── Load-in animation (landing page) ──────────────────────────────────── */
+/* ─── Load-in (landing page stagger) ────────────────────────────────────── */
 .fade-in {
   opacity:   0;
   transform: translateY(14px);
@@ -731,46 +679,27 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── Mobile ─────────────────────────────────────────────────────────────── */
-@media (max-width: 520px) {
-  .page-wrap       { padding: 0 12px 48px; }
-  .banner          { padding: 36px 0 24px; }
-  .banner-lotus    { font-size: 40px; }
-  .banner-title    { font-size: 1.1rem; }
-  .search-row      { flex-direction: column; }
-  .btn             { width: 100%; text-align: center; }
-  .verse-input     { font-size: 0.97rem; }
-  .lightbox-overlay { padding: 12px 8px 32px; }
-  .lb-body         { padding: 16px 15px 6px; }
-  .lb-header       { padding: 10px 12px 8px; }
-  .lb-author-name  { display: none; }
-  .lb-footer-bar   { flex-direction: column; align-items: flex-start; }
-  .lb-nav-row      { width: 100%; justify-content: space-between; }
-  .lb-footer-text  { width: 100%; }
+/* ─── Page footer ────────────────────────────────────────────────────────── */
+.page-footer {
+  margin-top:  48px;
+  text-align:  center;
+  font-size:   0.8rem;
+  color:       var(--text-muted);
+  font-style:  italic;
+  line-height: 1.7;
 }
 
-@media (max-width: 360px) {
-  .banner-title { font-size: 1rem; }
-}
+.page-footer a { color: var(--accent); text-decoration: none; opacity: 0.8; }
+.page-footer a:hover { opacity: 1; }
 
-/* ─── Scrollbar (webkit) ─────────────────────────────────────────────────── */
-::-webkit-scrollbar              { width: 6px; }
-::-webkit-scrollbar-track        { background: var(--bg-base); }
-::-webkit-scrollbar-thumb        { background: var(--text-muted); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover  { background: var(--text-secondary); }
-
-/* Selection highlight */
-::selection { background: var(--accent-glow); color: var(--text-heading); }
-
-/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+/* ─── Custom dropdown ────────────────────────────────────────────────────── */
 .custom-select {
-  position:  relative;
-  flex:      none;
-  width:     200px;
-  z-index:   100;
+  position: relative;
+  flex:     none;
+  width:    200px;
+  z-index:  100;
 }
 
-/* ── Trigger button (the visible "input") ────────────────────────────────── */
 .custom-select-trigger {
   display:         flex;
   align-items:     center;
@@ -806,34 +735,32 @@ body {
   transition:  transform var(--transition);
 }
 
-.custom-select.open .custom-select-arrow {
-  transform: rotate(180deg);
-}
+.custom-select.open .custom-select-arrow { transform: rotate(180deg); }
 
-/* ── Dropdown list ───────────────────────────────────────────────────────── */
+/* Dropdown list */
 .custom-select-list {
-  display:          none;
-  position:         absolute;
-  top:              calc(100% + 4px);
-  left:             0;
-  width:            280px;          /* wider than trigger to fit long titles */
-  max-height:       340px;
-  overflow-y:       auto;
-  background:       var(--bg-card);
-  border:           1px solid var(--border-accent);
-  border-radius:    var(--radius);
-  box-shadow:       var(--shadow-card);
-  list-style:       none;
-  padding:          4px 0;
-  z-index:          200;
+  display:       none;
+  position:      absolute;
+  top:           calc(100% + 4px);
+  left:          0;
+  width:         300px;
+  max-height:    340px;
+  overflow-y:    auto;
+  background:    var(--bg-card);
+  border:        1px solid var(--border-accent);
+  border-radius: var(--radius);
+  box-shadow:    var(--shadow-card);
+  list-style:    none;
+  padding:       4px 0;
+  z-index:       200;
 }
 
 .custom-select.open .custom-select-list {
   display:   block;
-  animation: purport-in 0.18s ease;   /* reuse existing fade-up keyframe */
+  animation: purport-in 0.18s ease;
 }
 
-/* ── Each option ─────────────────────────────────────────────────────────── */
+/* Dropdown option */
 .custom-select-option {
   display:        flex;
   flex-direction: column;
@@ -843,18 +770,14 @@ body {
   border-bottom:  1px solid var(--border);
 }
 
-.custom-select-option:last-child {
-  border-bottom: none;
-}
+.custom-select-option:last-child { border-bottom: none; }
 
 .custom-select-option:hover,
 .custom-select-option[aria-selected="true"] {
   background: rgba(88, 101, 242, 0.15);
 }
 
-.custom-select-option[aria-selected="true"] b {
-  color: #5865f2;
-}
+.custom-select-option[aria-selected="true"] b { color: #5865f2; }
 
 .custom-select-option b {
   font-size:   0.88rem;
@@ -863,184 +786,72 @@ body {
   line-height: 1.3;
 }
 
+/* Verse count badge inside dropdown label (point 7) */
+.custom-select-option b .verse-count {
+  font-weight: 400;
+  color:       var(--text-muted);
+  font-size:   0.82em;
+}
+
 .custom-select-option small {
   font-size:   0.78rem;
   color:       var(--text-muted);
   margin-top:  2px;
   line-height: 1.35;
-  white-space: normal;    /* allow the long subtitle to wrap */
+  white-space: normal;
 }
 
-/* ── Scrollbar inside the list ───────────────────────────────────────────── */
+/* Scrollbar inside list */
 .custom-select-list::-webkit-scrollbar       { width: 4px; }
 .custom-select-list::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
 
-/* ── Mobile: full width ──────────────────────────────────────────────────── */
-@media (max-width: 520px) {
-  .custom-select,
-  .custom-select-list { width: 100%; }
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   Patch block — IDs / classes introduced by the corrected index.html
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* ── Chapter input (narrow number field) ─────────────────────────────────── */
-.chapter-field {
-  width:            90px;
-  background:       #2a2218;   /* warm dark amber tint */
-  border-color:     #5a3e1a;
-  text-align:       center;
-}
-
-.chapter-field:focus {
-  border-color: var(--accent);
-  box-shadow:   0 0 0 3px var(--accent-glow);
-  background:   #32280f;
-}
-
-/* ── Verse field — wider, cool tint ─────────────────────────────────────── */
+/* ─── Verse field (integer input) ────────────────────────────────────────── */
 .verse-field {
-  width:            160px;
-  background:       #1a1f2a;   /* cool dark blue tint */
-  border-color:     #1e3a5a;
-  text-align:       center;
+  width:       140px;
+  background:  #1a1f2a;
+  border-color: #1e3a5a;
+  text-align:  center;
 }
 
 .verse-field:focus {
-  border-color: #5865f2;       /* blurple focus ring matches purport button */
+  border-color: #5865f2;
   box-shadow:   0 0 0 3px rgba(88, 101, 242, 0.2);
   background:   #1a2235;
+  outline:      none;
 }
 
-/* ── Button — fixed width, never stretches ───────────────────────────────── */
-.search-row .btn-primary {
-  flex: none;
-}
-
-/* ── Mobile: stack vertically ────────────────────────────────────────────── */
+/* ─── Mobile ─────────────────────────────────────────────────────────────── */
 @media (max-width: 520px) {
-  .search-row        { flex-wrap: wrap; }
-  .chapter-field,
-  .verse-field       { width: 100%; text-align: left; }
-  .search-row .btn-primary { width: 100%; }
+  .page-wrap       { padding: 0 12px 48px; }
+  .banner          { padding: 36px 0 24px; }
+  .banner-lotus    { font-size: 40px; }
+  .banner-title    { font-size: 1.1rem; }
+  .search-row      { flex-wrap: wrap; }
+  .btn             { width: 100%; text-align: center; }
+  .verse-input     { font-size: 0.97rem; }
+  .custom-select,
+  .custom-select-list,
+  .verse-field     { width: 100%; text-align: left; }
+  .lightbox        { padding: 12px 8px 32px; }
+  .lb-body         { padding: 16px 15px 6px; }
+  .lb-header       { padding: 10px 12px 8px; }
+  .lb-author-name  { display: none; }
+  .lb-footer-bar   { flex-direction: column; align-items: flex-start; }
+  .lb-nav-row      { width: 100%; justify-content: space-between; }
+  .lb-footer-text  { width: 100%; }
+  /* Stack font-size buttons neatly on mobile */
+  .lb-font-btn     { padding: 6px 6px; }
 }
 
-/* ── Lightbox root (was .lightbox-overlay, now split into .lightbox + .lb-overlay) ── */
-.lightbox {
-  display:    none;            /* hidden by default         */
-  position:   fixed;
-  inset:      0;
-  z-index:    1000;
-  align-items: flex-start;
-  justify-content: center;
-  padding:    24px 16px 40px;
-  overflow-y: auto;
+@media (max-width: 360px) {
+  .banner-title { font-size: 1rem; }
 }
 
-.lightbox.open {
-  display:   flex;
-  animation: overlay-in 0.22s ease;
-}
+/* ─── Scrollbar (webkit) ─────────────────────────────────────────────────── */
+::-webkit-scrollbar             { width: 6px; }
+::-webkit-scrollbar-track       { background: var(--bg-base); }
+::-webkit-scrollbar-thumb       { background: var(--text-muted); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
 
-/* Backdrop — sits behind the card, click fires closeLightbox() */
-.lb-overlay {
-  position: fixed;
-  inset:    0;
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: -1;          /* behind .lb-card inside the same stacking context */
-}
-
-/* body scroll lock */
-body.lb-active { overflow: hidden; }
-
-/* ── Chapter line (subtitle inside card) ─────────────────────────────────── */
-.lb-chapter-line {
-  font-family:   var(--font-display);
-  font-size:     0.76rem;
-  color:         var(--text-secondary);
-  letter-spacing: 0.04em;
-  margin-bottom: 16px;
-  line-height:   1.4;
-}
-
-/* ── Sanskrit verse — pre preserves the half-śloka line breaks ───────────── */
-.lb-sanskrit {
-  /* changed alignement from left to center */
-  text-align:   center;
-  padding-left: 0;
-  border-left:  none;
-  font-family:  var(--font-body);
-  font-size:    1.06rem;
-  font-style:   italic;
-  color:        var(--text-primary);
-  line-height:  1.8;
-  white-space:  pre-wrap;      /* honour \n, wrap at container edge */
-  word-break:   break-word;
-  margin-bottom: 18px;
-  background:   transparent;
-  border-radius: 0;
-}
-
-/* ── Chapter-end colophon ────────────────────────────────────────────────── */
-.lb-chapter-end {
-  display:       none;           /* shown via .visible class  */
-  margin-top:    16px;
-  padding:       10px 14px;
-  background:    rgba(245,166,35,0.06);
-  border:        1px solid var(--border-accent);
-  border-radius: var(--radius);
-  font-size:     0.83rem;
-  font-style:    italic;
-  color:         var(--text-secondary);
-  text-align:    center;
-}
-
-.lb-chapter-end.visible { display: block; animation: purport-in 0.3s ease; }
-
-/* ── Purport div — hidden until .visible added by JS ────────────────────── */
-.lb-purport {
-  display:   none;
-  font-size: 0.93rem;
-  color:     var(--text-secondary);
-  line-height: 1.85;
-  margin-top: 4px;
-}
-
-.lb-purport.visible {
-  display:   block;
-  animation: purport-in 0.32s ease;
-}
-
-.lb-purport p           { margin-bottom: 12px; }
-.lb-purport p:last-child { margin-bottom: 0; }
-.lb-purport .no-purport { font-style: italic; color: var(--text-muted); }
-
-/* ── Purport button active state ─────────────────────────────────────────── */
-.lb-icon-btn.active {
-  background:   var(--accent-glow);
-  color:        var(--accent);
-  border-color: var(--border-accent);
-}
-
-/* ── Error box visibility ────────────────────────────────────────────────── */
-.error-msg {
-  display:  none;
-  min-height: 0;
-}
-
-.error-msg.visible {
-  display:   block;
-  min-height: 22px;
-}
-
-/* ── Loading state on lb-card ────────────────────────────────────────────── */
-.lb-card.loading { opacity: 0.6; pointer-events: none; transition: opacity 0.2s; }
-
-/* ── Mobile: stack the chapter + verse fields ────────────────────────────── */
-@media (max-width: 520px) {
-  .search-row  { flex-wrap: wrap; }
-  .chapter-field { width: 100%; flex: none; text-align: left; }
-}
+/* Selection highlight */
+::selection { background: var(--accent-glow); color: var(--text-heading); }
