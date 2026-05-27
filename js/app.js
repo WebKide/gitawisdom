@@ -97,6 +97,10 @@ function openLightbox() {
   document.body.classList.add('lb-active');
   dom.lbCard.scrollTop = 0;
   setTimeout(() => dom.lbClose.focus(), 120);
+
+  // Prevent mobile keyboard from opening while the lightbox is active
+  dom.verseInput.setAttribute('readonly', '');
+  dom.verseInput.setAttribute('inputmode', 'none');
 }
 
 function closeLightbox() {
@@ -112,10 +116,15 @@ function closeLightbox() {
 
   // Reset form fields
   dom.verseInput.value = '1';   // default back to 1
+
+  // Restore input for the next lookup
+  dom.verseInput.removeAttribute('readonly');
+  dom.verseInput.setAttribute('inputmode', 'numeric');
+
   clearError();
 
-  // Return focus to verse input
-  setTimeout(() => dom.verseInput.focus(), 80);
+// Return focus to the random button (not verse input — avoids mobile keyboard)
+  setTimeout(() => dom.randomBtn.focus(), 80);
 }
 
 // ─── HTML escape helper ───────────────────────────────────────────────────────

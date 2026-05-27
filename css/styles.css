@@ -78,12 +78,25 @@ body {
 }
 
 .banner-lotus {
+  display:       block;
+  margin:        0 auto 8px;
+  width:         360px;
+  height:        auto;
   font-size:     52px;
   line-height:   1;
   filter:        drop-shadow(0 0 18px rgba(245,166,35,0.4));
   animation:     lotus-pulse 4s ease-in-out infinite;
   display:       block;
   margin-bottom: 16px;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.banner-lotus img {
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 @keyframes lotus-pulse {
@@ -128,11 +141,17 @@ body {
   border-radius: var(--radius);
   padding:       18px 22px;
   font-size:     0.93rem;
-  color:         var(--text-secondary);
+  color:         var(--text-primary);
   line-height:   1.7;
 }
 
 .intro strong { color: var(--text-primary); font-weight: 600; }
+
+.intro p {
+  color:          var(--text-secondary);
+  text-align:     center;
+  font-style:     italic;
+}
 
 .intro code {
   background:    rgba(255,255,255,0.08);
@@ -151,7 +170,8 @@ body {
   font-family:    var(--font-display);
   font-size:      clamp(1rem, 3vw, 1.35rem);
   font-weight:    700;
-  color:          #5865f2;
+  color:          #6276bb;
+  align-items:   center;
   letter-spacing: 0.05em;
   margin-bottom:  14px;
   text-shadow:    0 2px 16px rgba(88, 101, 242, 0.3);
@@ -262,6 +282,7 @@ body {
   background: var(--bg-card);
   color:      var(--accent);
   border:     1px solid var(--border-accent);
+  margin-top: 16px;
 }
 
 .btn-oracle:hover:not(:disabled) {
@@ -562,6 +583,15 @@ body.lb-active { overflow: hidden; }
   margin-top: 20px;
   opacity:    0.7;
   filter:     brightness(0.85);
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.lb-signature img {
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 /* ─── Red "Close Purport" button (U7 fix) ────────────────────────────────── */
@@ -697,7 +727,7 @@ body.lb-active { overflow: hidden; }
   position: relative;
   flex:     none;
   width:    200px;
-  z-index:  100;
+  z-index:  300;
 }
 
 .custom-select-trigger {
@@ -741,7 +771,8 @@ body.lb-active { overflow: hidden; }
 .custom-select-list {
   display:       none;
   position:      absolute;
-  top:           calc(100% + 4px);
+  bottom:        calc(100% + 4px);
+  top:           auto;
   left:          0;
   width:         300px;
   max-height:    340px;
@@ -752,7 +783,7 @@ body.lb-active { overflow: hidden; }
   box-shadow:    var(--shadow-card);
   list-style:    none;
   padding:       4px 0;
-  z-index:       200;
+  z-index:       400;
 }
 
 .custom-select.open .custom-select-list {
@@ -777,7 +808,7 @@ body.lb-active { overflow: hidden; }
   background: rgba(88, 101, 242, 0.15);
 }
 
-.custom-select-option[aria-selected="true"] b { color: #5865f2; }
+.custom-select-option[aria-selected="true"] b { color: #6276bb; }
 
 .custom-select-option b {
   font-size:   0.88rem;
@@ -814,7 +845,7 @@ body.lb-active { overflow: hidden; }
 }
 
 .verse-field:focus {
-  border-color: #5865f2;
+  border-color: #6276bb;
   box-shadow:   0 0 0 3px rgba(88, 101, 242, 0.2);
   background:   #1a2235;
   outline:      none;

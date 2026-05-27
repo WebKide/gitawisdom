@@ -33,8 +33,15 @@
 
   <!-- ── Banner ── -->
   <header class="banner fade-in">
-    <span class="banner-lotus" aria-hidden="true">𑁍</span>
-    <h1 class="banner-title">「 GitaWisdom 」</h1>
+    <img
+      src="assets/images/wisdomoracle.svg"
+      alt=""
+      class="banner-lotus"
+      aria-hidden="true"
+      draggable="false"
+    />
+
+    <!-- ── <h1 class="banner-title">「 GitaWisdom 」</h1> ── -->
     <p class="banner-subtitle">Bhagavad Gītā  &mdash; As It Is (1972 Macmillan Unabriged Edition)</p>
   </header>
 
@@ -42,30 +49,40 @@
 
   <!-- ── Intro / instructions ── -->
   <section class="intro fade-in" aria-label="How to use">
-    <p>
-      <strong>oṁ namo bhagavate vāsudevāya</strong><br />
-      Find instant wisdom, clarity, and emotional strength for everyday parenting challenges.<br />
-      Click <strong>GitaWisdom</strong> to recive inspiration from the Bhagavad Gītā.<br /><br />
+    <p>॥ oṁ namo nārāyaṇāya ॥</p>
 
-      OR:<br /><br />
-      
-      Select a Chapter and enter a number below — the verse appears with its Sanskrit text, word-for-word synonyms, and Bhaktivedānta’s translation and purport.
-    </p>
+    <ul>
+      <li>Find instant wisdom, clarity, and emotional strength for everyday parenting challenges.</li>
+      <li>Click <strong><code>GitaWisdom</code></strong> to recive inspiration from the Bhagavad Gītā.</li>
+    </ul>
+    
   </section>
-
-  <div class="divider fade-in"></div>
 
   <!-- ── Wisdom Oracle / random button ── -->
   <button id="random-btn" class="btn btn-oracle" aria-label="Random verse — GitaWisdom">
     ✦ &nbsp;GitaWisdom &nbsp;✦
   </button>
 
+  <div class="divider fade-in"></div>
+
+  <!-- ── Usage instructions ── -->
+  <section class="intro fade-in" aria-label="How to use">
+    <p>॥ oṁ namo bhagavate vāsudevāya ॥<br />
+
+    <ul>
+      <li>Bhagavad-gītā As It Is <code>1972 Unabridged Edition (Macmillan)</code></li>
+    </ul>
+    <strong>His Divine Grace A.C. Bhaktivedānta Swami Prabhupāda</strong><br />
+    the Founder-Ācārya of ISKCON and greatest exponent of <br />Kṛṣṇa consciousness in the western world.</p>
+  </section>
+
   <!-- ── Search form ──
        IDs app.js depends on: verse-form, verse-input, random-btn, error-box
        Chapter comes from the custom dropdown via window._getSelectedChapter().
+
+       <h2 class="panel-title">GitaWisdom</h2>
   -->
   <section class="search-panel fade-in" aria-label="Verse lookup">
-    <h2 class="panel-title">GitaWisdom</h2>
 
     <form id="verse-form" class="search-row" autocomplete="off" novalidate>
 
@@ -183,34 +200,13 @@
 
   </section><!-- /.search-panel -->
 
-  <!-- ── Usage instructions ── -->
-  <section class="intro fade-in" aria-label="How to use">
-    <p><strong>oṁ namo nārāyaṇāya</strong></p>
-    <ul>
-      <li>Single verse — chapter <code>16</code> &nbsp;verse <code>4</code></li>
-      <li>Grouped texts — just type any verse number inside the group
-          (e.g. enter <code>27</code> for Ch.17 — auto-resolves to TEXTS 26–27)</li>
-      <li>Press <strong>GitaWisdom</strong> for a random verse from any of the 18 chapters</li>
-      <li>Navigate with <strong>← →</strong> arrow keys, swipe left/right, or the buttons inside the viewer</li>
-      <li>Press <strong>Esc</strong> or click outside the card to close and reset</li>
-      <li>Press <strong>P</strong> inside the viewer to toggle the Purport</li>
-    </ul>
-  </section>
-
   <div class="divider fade-in"></div>
 
   <!-- ── Page footer ── -->
   <footer class="page-footer fade-in">
-    <p>
-      His Divine Grace A.C. Bhaktivedānta Swami Prabhupāda.<br />
-      the Founder-Ācārya of ISKCON and greatest exponent of Kṛṣṇa consciousness
-      in the western world.<br />
-      Bhagavad-gītā As It Is &mdash; 1972 Unabridged Edition (Macmillan)<br /><br />
-      To<br />
+    <p>To<br />
       ŚRĪLA BALADEVA VIDYĀBHŪṢAṆA<br />
-      who presented so nicely<br />
-      the "Govinda-bhāṣya" commentary<br />
-      on Vedānta philosophy
+      who presented so nicely the “Govinda-bhāṣya” commentary on Vedānta philosophy
     </p>
   </footer>
 
@@ -246,7 +242,7 @@
           loading="lazy"
         />
         <span class="lb-author-name">
-          Bg &mdash; 
+          <strong>Bhagavad Gītā As It Is</strong> 
           <b id="lb-author-ref"></b>
         </span>
       </div>
@@ -259,13 +255,13 @@
                 class="lb-icon-btn lb-font-btn"
                 title="Decrease text size"
                 aria-label="Decrease text size">
-          [ᴀA−]
+          ᴀA−
         </button>
         <button id="lb-font-increase"
                 class="lb-icon-btn lb-font-btn"
                 title="Increase text size"
                 aria-label="Increase text size">
-          [+ᴀA]
+          +ᴀA
         </button>
 
         <!-- Purport toggle -->
@@ -349,6 +345,7 @@
           alt="Your ever wel-wisher, A.C. Bhaktivedānta Swami"
           class="lb-signature"
           loading="lazy"
+          draggable="false"
         />
 
         <!-- Red "Close Purport" button — full width, below signature (U7 / point 4)
