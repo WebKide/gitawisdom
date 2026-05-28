@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1e1f22" />
-  <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday parenting challenges." />
-  <title>GitaWisdom</title>
+  <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
+  <title>Wisdom Oracle</title>
   <meta name="author" content="WebKide" />
 
   <!-- Google Fonts — display: Waldemar · body: Noto Serif (Kelvinch fallback) -->
@@ -16,7 +16,7 @@
 
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Single JS entry-point; gitacore.js is imported as an ES module inside app.js -->
+  <!-- Single JS entry-point; gitacore.js and ichingcore.js imported as ES modules -->
   <script type="module" src="js/app.js"></script>
 
   <!-- Favicons -->
@@ -40,51 +40,50 @@
       aria-hidden="true"
       draggable="false"
     />
-
-    <!-- ── <h1 class="banner-title">「 GitaWisdom 」</h1> ── -->
-    <p class="banner-subtitle">Bhagavad Gītā  &mdash; As It Is (1972 Macmillan Unabriged Edition)</p>
+    <p class="banner-subtitle">Find wisdom, clarity, and emotional strength for everyday challenges.</p>
   </header>
 
   <div class="divider fade-in"></div>
 
-  <!-- ── Intro / instructions ── -->
-  <section class="intro fade-in" aria-label="How to use">
-    <p>॥ oṁ namo nārāyaṇāya ॥</p>
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       GITA ORACLE SECTION
+  ══════════════════════════════════════════════════════════════════════════ -->
 
+  <!-- ── Gita intro ── -->
+  <section class="intro fade-in" aria-label="About the Gita Oracle">
+    <p>॥&nbsp;oṁ namo nārāyaṇāya&nbsp;॥</p>
     <ul>
-      <li>Find instant wisdom, clarity, and emotional strength for everyday challenges.</li>
-      <li>Click <strong><code>GitaWisdom</code></strong> to recive inspiration from the Bhagavad Gītā.</li>
+      <li>Connect with ancient tradition through the Gītā Wisdom. Every verse offers deep insights from the Bhagavad Gītā. Let this timeless guideline enlighten your path today. Use it to build self-awareness and spiritual harmony.</li>
+      <li>Click <strong>&nbsp;✦ Wisdom Oracle ✦&nbsp;</strong> to receive instant inspiration from the Bhagavad-gītā As It Is <code>1972 Unabridged Edition (Macmillan)</code></li>
     </ul>
-    
   </section>
 
-  <!-- ── Wisdom Oracle / random button ── -->
-  <button id="random-btn" class="btn btn-oracle" aria-label="Random verse — GitaWisdom">
+  <!-- ── Gita random button — SILENT: does NOT populate dropdown or input ── -->
+  <!-- Clicking this button runs randomVerse() in the background only.        -->
+  <button id="gita-random-btn" class="btn btn-oracle" aria-label="Random verse — GitaWisdom">
     ✦ &nbsp;Wisdom Oracle &nbsp;✦
   </button>
 
   <div class="divider fade-in"></div>
 
-  <!-- ── Usage instructions ── -->
-  <section class="intro fade-in" aria-label="How to use">
-    <p>॥ oṁ namo bhagavate vāsudevāya ॥<br />
-
+  <!-- ── Gita author credit ── -->
+  <section class="intro fade-in" aria-label="About the author">
+    <p>॥ oṁ viṣṇave namaḥ ॥</p>
     <ul>
       <li>Bhagavad-gītā As It Is <code>1972 Unabridged Edition (Macmillan)</code></li>
     </ul>
     <strong>His Divine Grace A.C. Bhaktivedānta Swami Prabhupāda</strong><br />
-    the Founder-Ācārya of ISKCON and greatest exponent of <br />Kṛṣṇa consciousness in the western world.</p>
+    the Founder-Ācārya of ISKCON and greatest exponent of<br />Kṛṣṇa consciousness in the western world.
   </section>
 
-  <!-- ── Search form ──
-       IDs app.js depends on: verse-form, verse-input, random-btn, error-box
-       Chapter comes from the custom dropdown via window._getSelectedChapter().
-
-       <h2 class="panel-title">GitaWisdom</h2>
+  <!-- ── Gita search panel ──
+       IDs used in app.js:
+         gita-form, gita-verse-input, gita-random-btn, gita-error-box
+         chapter-select, chapter-trigger, chapter-trigger-text, chapter-list
   -->
   <section class="search-panel fade-in" aria-label="Verse lookup">
 
-    <form id="verse-form" class="search-row" autocomplete="off" novalidate>
+    <form id="gita-form" class="search-row" autocomplete="off" novalidate>
 
       <!-- Custom chapter dropdown -->
       <div id="chapter-select" class="custom-select" role="combobox" aria-label="Chapter">
@@ -97,7 +96,6 @@
           <span class="custom-select-arrow">&#9660;</span>
         </button>
 
-        <!-- Verse counts in labels (M9 / point 7 optional enhancement) -->
         <ul class="custom-select-list" id="chapter-list" role="listbox" aria-label="Select a chapter">
           <li class="custom-select-option" role="option" data-value="1">
             <b>1 · First Chapter <span class="verse-count">(46 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
@@ -174,20 +172,19 @@
         </ul>
       </div><!-- /#chapter-select -->
 
-      <!-- Verse number input — integer only, defaults to 1 (M3 / point 7) -->
+      <!-- Verse number input — empty by default (spec: no trailing "1") -->
       <input
-        id="verse-input"
+        id="gita-verse-input"
         class="verse-input verse-field"
         type="number"
         inputmode="numeric"
         min="1"
         max="81"
-        value="1"
         placeholder="Verse…"
         autocorrect="off"
         autocapitalize="none"
         spellcheck="false"
-        aria-label="Verse number — range is auto-resolved"
+        aria-label="Verse number"
       />
 
       <button type="submit" class="btn btn-primary" aria-label="Look up verse">
@@ -195,32 +192,126 @@
       </button>
     </form>
 
-    <!-- Error message box (enhanced visibility — point 3) -->
-    <p id="error-box" class="error-msg" role="alert" aria-live="polite"></p>
+    <!-- Gita error box -->
+    <p id="gita-error-box" class="error-msg" role="alert" aria-live="polite"></p>
 
-  </section><!-- /.search-panel -->
+  </section><!-- /.search-panel (gita) -->
 
   <div class="divider fade-in"></div>
 
-  <!-- ── Page footer ── -->
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       ICHING ORACLE SECTION
+       Accent colour: #6276bb  dim: #5768a4  left-border: #6761f6
+  ══════════════════════════════════════════════════════════════════════════ -->
+
+  <!-- ── iChing intro ── -->
+  <section class="intro intro--iching fade-in" aria-label="About the iChing Oracle">
+    <p>॥&nbsp;oṁ namo bhagavate vāsudevāya&nbsp;॥</p>
+    <ul>
+      <li>Connect with ancient tradition through the iChing Oracle. Every hexagram offers deep insights from the Book of Changes. Let this timeless wisdom enlighten your path today. It is perfect for daily meditation and peaceful reflection.</li>
+      <li>Click <strong>&nbsp;✦ iChing Oracle ✦&nbsp;</strong> to receive instant inspiration from the Book of Changes — <code>Richard Wilhelm's translation of the I Ching</code></li>
+    </ul>
+  </section>
+
+  <!-- ── iChing random button — SILENT: does NOT populate input ── -->
+  <!-- Clicking this button runs randomHexagram() in the background only.     -->
+  <button id="iching-random-btn" class="btn btn-oracle btn-oracle--iching" aria-label="Random hexagram — iChing Oracle">
+    ✦ &nbsp;iChing Oracle &nbsp;✦
+  </button>
+
+  <div class="divider fade-in"></div>
+
+  <!-- ── iChing author credit ── -->
+  <section class="intro intro--iching fade-in" aria-label="About Richard Wilhelm">
+    <p>॥ oṁ śāntiḥ śāntiḥ śāntiḥ ॥</p>
+    <ul>
+      <li>The Book of Changes <code>Richard Wilhelm's translation of the I Ching</code></li>
+    </ul>
+    <strong>Richard Wilhelm</strong> was a German missionary and scholar who lived in China for decades. He learned from master Chinese sages to truly grasp the book's deep spiritual meaning.
+  </section>
+
+  <!-- ── iChing lookup panel ──
+       IDs used in app.js: iching-form, iching-input, iching-btn, iching-error-box
+       No chapter dropdown — single file, hexagram 1–64 (plus 65–66 special).
+       Empty input = random hexagram.
+  -->
+  <section class="search-panel fade-in" aria-label="Hexagram lookup">
+
+    <form id="iching-form" class="search-row" autocomplete="off" novalidate>
+
+      <!-- Hexagram number input — empty = random (spec) -->
+      <input
+        id="iching-input"
+        class="verse-input verse-field verse-field--iching"
+        type="number"
+        inputmode="numeric"
+        min="1"
+        max="66"
+        placeholder="Hexagram 1–64…"
+        autocorrect="off"
+        autocapitalize="none"
+        spellcheck="false"
+        aria-label="Hexagram number 1 to 64, leave empty for random"
+      />
+
+      <!-- Toss Coins: empty input → random; number → that hexagram -->
+      <button id="iching-btn" type="submit" class="btn btn-primary btn-primary--iching" aria-label="Toss coins or look up hexagram">
+        ☯ &nbsp;Toss Coins
+      </button>
+    </form>
+
+    <!-- iChing error box -->
+    <p id="iching-error-box" class="error-msg" role="alert" aria-live="polite"></p>
+
+  </section><!-- /.search-panel (iching) -->
+
+  <div class="divider fade-in"></div>
+
+  <!-- ── Page footer — full-width darker block with circular image ──
+       imgfooter.png sits like a Discord embed footer icon (28×28, circular).
+       TODO: Replace ACBhaktivedantaSwami.png below with imgfooter.png when
+             that image is ready/confirmed.
+  -->
   <footer class="page-footer fade-in">
-    <p>To<br />
-      ŚRĪLA BALADEVA VIDYĀBHŪṢAṆA<br />
-      who presented so nicely the “Govinda-bhāṣya” commentary on Vedānta philosophy
-    </p>
+    <div class="footer-inner">
+      <img
+        src="assets/images/ACBhaktivedantaSwami.png"
+        alt=""
+        class="footer-icon"
+        width="28"
+        height="28"
+        loading="lazy"
+        aria-hidden="true"
+      />
+      <!-- TODO: replace src above with "assets/images/imgfooter.png" once confirmed -->
+      <p>
+        To ŚRĪLA BALADEVA VIDYĀBHŪṢAṆA<br />
+        who presented so nicely the "Govinda-bhāṣya" commentary on Vedānta philosophy.
+      </p>
+    </div>
   </footer>
 
-</main>
+</main><!-- /.page-wrap -->
 
 
 <!-- ══════════════════════════════ LIGHTBOX OVERLAY ══════════════════════════════
+     Shared by both Gita and iChing oracles.
+     The header branding (icon + title) is swapped by app.js on each open.
+
      IDs app.js requires:
        lightbox, lb-overlay, lb-card, lb-close,
-       lb-prev, lb-next, lb-purport-btn, lb-font-increase, lb-font-decrease,
+       lb-prev, lb-next,
+       lb-purport-btn, lb-font-increase, lb-font-decrease,
+       lb-author-icon, lb-author-title, lb-author-ref,
        lb-verse-section, lb-purport-section,
-       lb-chapter-heading, lb-dedicatory, lb-chapter-line, lb-author-ref,
-       lb-text-num, lb-sanskrit, lb-synonyms, lb-translation,
-       lb-purport, lb-purport-close, lb-footer, lb-chapter-end
+       lb-chapter-heading,
+       lb-text-num,
+       lb-translation  (shown FIRST — main feature)
+       lb-sanskrit     (shown SECOND)
+       lb-synonyms     (shown THIRD)
+       lb-open-purport-btn  (bottom blue btn: "Read Purport / Commentary")
+       lb-purport, lb-return-btn,
+       lb-footer, lb-chapter-end
 -->
 <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Verse viewer">
 
@@ -232,17 +323,20 @@
     <!-- ══ Card header ══ -->
     <header class="lb-header">
 
-      <!-- Book title + current reference -->
+      <!-- Book / oracle title + current reference -->
       <div class="lb-author">
+        <!-- TODO (iChing): swap src to 'assets/images/iching-author.png' in ichingcore.js
+             once that image is created. app.js handles the swap automatically. -->
         <img
+          id="lb-author-icon"
           src="assets/images/ACBhaktivedantaSwami.png"
           alt="A.C. Bhaktivedānta Swami"
           class="lb-author-icon"
           width="28" height="28"
           loading="lazy"
         />
-        <span class="lb-author-name">
-          <strong>Bhagavad Gītā As It Is</strong> 
+        <span id="lb-author-title" class="lb-author-name">
+          <strong><i>Bhagavad Gītā</i> As It Is</strong>
           <b id="lb-author-ref"></b>
         </span>
       </div>
@@ -250,12 +344,12 @@
       <!-- Right-hand action buttons -->
       <div class="lb-header-actions">
 
-        <!-- Font-size controls (point 11) ᴀ− +ᴬ -->
+        <!-- Font-size controls -->
         <button id="lb-font-decrease"
                 class="lb-icon-btn lb-font-btn"
                 title="Decrease text size"
                 aria-label="Decrease text size">
-          ᴀA−
+          Aᴀ−
         </button>
         <button id="lb-font-increase"
                 class="lb-icon-btn lb-font-btn"
@@ -264,11 +358,11 @@
           +ᴀA
         </button>
 
-        <!-- Purport toggle -->
+        <!-- Purport / commentary toggle (top header) -->
         <button id="lb-purport-btn"
-                class="lb-icon-btn"
-                title="Read the Bhaktivedānta purport (P)"
-                aria-label="Toggle purport">
+                class="lb-icon-btn lb-purport-top-btn"
+                title="Read the purport / commentary (P)"
+                aria-label="Toggle purport or commentary">
           🖊️ 𝙿𝚄𝚁𝙿𝙾𝚁𝚃
         </button>
 
@@ -286,79 +380,95 @@
     <!-- ══ Card body ══ -->
     <div class="lb-body">
 
-      <!-- Meta: dedicatory + chapter line (always visible) -->
-      <p id="lb-dedicatory"   class="lb-dedicatory"></p>
-      <p id="lb-chapter-line" class="lb-chapter-line"></p>
-
-      <!-- M6: Chapter heading — updated during prev/next navigation -->
+      <!-- Chapter / hexagram heading — updated during navigation -->
       <h3 id="lb-chapter-heading" class="lb-chapter-heading"></h3>
 
       <!-- ══════════════════════════════════
-           VERSE SECTION
-           Visible in verse mode.
-           Hidden in purport mode.
-           Wrapper ID: lb-verse-section
+           VERSE / HEXAGRAM SECTION
+           Display order (spec):
+             1. Translation  ← main feature, shown first
+             2. Sanskrit / hexagram lines
+             3. Synonyms / judgment lines
+             4. "Read Purport / Commentary" bottom button
+           Visible in verse mode; hidden in purport mode.
       ══════════════════════════════════ -->
       <div id="lb-verse-section">
 
-        <!-- TEXT label — e.g. "📜 TEXT 4" or "📜 TEXTS 26-27" -->
+        <!-- TEXT / HEXAGRAM label — e.g. "TEXT 4" or "HEXAGRAM 17" -->
         <p id="lb-text-num" class="section-label"></p>
 
-        <!-- Sanskrit verse — lines joined with <br> by renderVerse() -->
+        <!-- 1. Translation / Judgment — FIRST (main feature) -->
+        <p class="section-label">🗒️ 𝚃𝚁𝙰𝙽𝚂𝙻𝙰𝚃𝙸𝙾𝙽</p>
+        <blockquote id="lb-translation" class="lb-translation"></blockquote>
+
+        <!-- 2. Sanskrit / hexagram lines — SECOND -->
+        <p class="section-label">📜 𝚂𝙰𝙽𝚂𝙺𝚁𝙸𝚃</p>
         <p id="lb-sanskrit" class="lb-sanskrit" lang="sa"></p>
 
-        <!-- Synonyms -->
+        <!-- 3. Synonyms / judgment lines — THIRD -->
         <p class="section-label">📖 𝚂𝚈𝙽𝙾𝙽𝚈𝙼𝚂</p>
         <div class="lb-synonyms-wrap">
           <span id="lb-synonyms"></span>
         </div>
 
-        <!-- Translation -->
-        <p class="section-label">🗒️ 𝚃𝚁𝙰𝙽𝚂𝙻𝙰𝚃𝙸𝙾𝙽</p>
-        <blockquote id="lb-translation" class="lb-translation"></blockquote>
+        <!-- Bottom "Read Purport / Commentary" button (blue, 65% width, right-aligned) -->
+        <!-- Shown in verse/hexagram view; hidden in purport/commentary view.           -->
+        <!-- Label set dynamically by app.js: "📖 Read Purport" or "📖 Read Commentary" -->
+        <button id="lb-open-purport-btn"
+                class="lb-bottom-btn lb-open-purport-btn"
+                aria-label="Open purport or commentary">
+          📖 Read Purport
+        </button>
 
       </div><!-- /#lb-verse-section -->
 
       <!-- ══════════════════════════════════
-           PURPORT SECTION (U5)
-           Hidden in verse mode.
-           Visible in purport mode.
-           Wrapper ID: lb-purport-section
+           PURPORT / COMMENTARY SECTION
+           Hidden in verse mode; visible in purport mode.
       ══════════════════════════════════ -->
       <div id="lb-purport-section" class="hidden">
 
-        <!-- Purport dedicatory / greeting (point 4 / U5) -->
+        <!-- Purport dedicatory greeting (Gita only; hidden for iChing by JS) -->
         <p class="lb-purport-dedicatory">
-          𝖬𝗒 𝖣𝖾𝖺𝗋 𝗋𝖾𝖺𝖽𝖾𝗋,<br />
-          𝖯𝗅𝖾𝖺𝗌𝖾 𝖺𝖼𝖼𝖾𝗉𝗍 𝗆𝗒 𝖻𝗅𝖾𝗌𝗌𝗂𝗇𝗀𝗌.
+          My Dear reader,<br />
+          Please accept my blessings.
         </p>
 
-        <!-- Purport section label -->
+        <!-- Section label — changes to "COMMENTARY" for iChing via JS class -->
         <p class="section-label">🖊 𝙿𝚄𝚁𝙿𝙾𝚁𝚃</p>
 
-        <!-- Purport body — paragraphs injected by renderVerse() -->
+        <!-- Purport / commentary body — paragraphs injected by renderVerse() -->
         <div id="lb-purport" class="lb-purport"></div>
 
-        <!-- Prabhupāda's signature — shown inside purport section -->
+        <div class="divider fade-in"></div>
+
+        <!-- Prabhupāda signature — shown for Gita, hidden for iChing by JS -->
         <img
           src="assets/images/signature.svg"
-          alt="Your ever wel-wisher, A.C. Bhaktivedānta Swami"
+          alt="Your ever well-wisher, A.C. Bhaktivedānta Swami"
           class="lb-signature"
           loading="lazy"
           draggable="false"
         />
 
-        <!-- Red "Close Purport" button — full width, below signature (U7 / point 4)
-             Visibility managed via .visible CSS class, not inline style -->
-        <button id="lb-purport-close"
-                class="lb-purport-close-btn"
-                aria-label="Close purport">
-          ✕ 𝖢𝗅𝗈𝗌𝖾 𝖯𝗎𝗋𝗉𝗈𝗋𝗍
+        <!-- Closing dedication (Gita only; hidden for iChing by JS) -->
+        <p class="lb-purport-dedicatory">
+          Your ever well-wisher,<br />
+          A.C. Bhaktivedānta Swami
+        </p>
+
+        <!-- Bottom "Return to Verse / Hexagram" button (red, 65% width, right-aligned) -->
+        <!-- Shown in purport/commentary view; hidden in verse view.                     -->
+        <!-- Label set dynamically by app.js: "Return to Verse" or "Return to Hexagram" -->
+        <button id="lb-return-btn"
+                class="lb-bottom-btn lb-return-btn"
+                aria-label="Return to verse or hexagram view">
+          ↩ Return to Verse
         </button>
 
       </div><!-- /#lb-purport-section -->
 
-      <!-- Chapter-end colophon (always at the bottom, shown only on last verse) -->
+      <!-- Chapter-end colophon (shown only on last verse of a Gita chapter) -->
       <p id="lb-chapter-end" class="lb-chapter-end"></p>
 
     </div><!-- /.lb-body -->
@@ -369,12 +479,12 @@
       <nav class="lb-nav-row" aria-label="Verse navigation">
         <button id="lb-prev"
                 class="lb-nav-btn"
-                title="Previous verse (← or swipe right)"
-                aria-label="Previous verse">&#8592;</button>
+                title="Previous (← or swipe right)"
+                aria-label="Previous verse or hexagram">&#8592;</button>
         <button id="lb-next"
                 class="lb-nav-btn"
-                title="Next verse (→ or swipe left)"
-                aria-label="Next verse">&#8594;</button>
+                title="Next (→ or swipe left)"
+                aria-label="Next verse or hexagram">&#8594;</button>
       </nav>
     </footer>
 
