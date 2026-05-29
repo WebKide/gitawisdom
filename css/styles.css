@@ -1,117 +1,133 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   GitaWisdom  ·  styles.css
+   GitaWisdom + iChing Oracle  ·  styles.css
    Author: WebKide
    Dark aesthetic — Discord-inspired.
    Typefaces: Waldemar (display) + Kelvinch / Noto Serif (body)
-   Accent: #F5A623 (saffron)
+
+   Gita accent:   --accent       #F5A623 (saffron)
+   iChing accent: --iching-accent #6276bb (indigo-blue)
+                  --iching-dim   #5768a4
+                  --iching-border #6761f6 (left border on intro sections)
+   Red buttons:   #c8615f
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Waldemar&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 /* ─── Design tokens ──────────────────────────────────────────────────────── */
 :root {
+  /* Base palette */
   --bg-base:       #1e1f22;
   --bg-mid:        #2b2d31;
   --bg-card:       #313338;
   --bg-card-alt:   #2e3035;
   --bg-input:      #1e1f22;
+
+  /* Gita / saffron accent */
   --accent:        #f5a623;
   --accent-dim:    #c07d10;
   --accent-glow:   rgba(245, 166, 35, 0.18);
-  --text-primary:  #dbdee1;
-  --text-secondary:#949ba4;
-  --text-muted:    #5c6068;
-  --text-heading:  #f2f3f5;
+
+  /* iChing / indigo-blue accent */
+  --iching-accent: #512f86;
+  --iching-dim:    #7334d3;
+  --iching-glow:   rgba(98, 118, 187, 0.20);
+  --iching-border: #6761f6;  /* left-border on iChing intro sections */
+
+  /* Lilac buttons (purport close / return) */
+  --lilac-btn:       #512f86;
+  --lilac-btn-hover: #7334d3;
+  --red-btn:         #c8615f;
+
+  /* Text */
+  --text-primary:   #dbdee1;
+  --text-secondary: #949ba4;
+  --text-muted:     #5c6068;
+  --text-heading:   #f2f3f5;
+
+  /* Borders / shadows */
   --border:        rgba(255,255,255,0.06);
   --border-accent: rgba(245,166,35,0.35);
   --shadow-card:   0 8px 40px rgba(0,0,0,0.55);
   --shadow-glow:   0 0 28px rgba(245,166,35,0.14);
+
+  /* Radii */
   --radius:        8px;
   --radius-lg:     12px;
 
-  /* Typefaces — point 11: Waldemar replaces Cinzel Decorative; Kelvinch/Noto Serif replaces EB Garamond */
+  /* Typefaces */
   --font-display:  'Waldemar', sans-serif;
   --font-body:     'Kelvinch', 'Noto Serif', serif;
 
-  --transition:    0.22s ease;
+  --transition:     0.22s ease;
 
-  /* In-reader font size — controlled by JS font-size buttons (point 11) */
+  /* In-reader font size — controlled by JS font-size buttons */
   --lb-font-size:  16px;
 }
 
 /* ─── Reset / base ───────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ─── Show/hide layout ────────────────────────────────────────────────────
+* {
+  outline: 1px solid red;
+} ─ */
+
+/* ─── Full page ──────────────────────────────────────────────────────────── */
 html { scroll-behavior: smooth; }
 
 body {
-  font-family:      var(--font-body);
-  font-size:        16px;
-  background-color: var(--bg-base);
-  color:            var(--text-primary);
-  min-height:       100vh;
+  font-family:            var(--font-body);
+  font-size:              16px;
+  background-color:       var(--bg-base);
+  color:                  var(--text-primary);
+  min-height:             100vh;
   -webkit-font-smoothing: antialiased;
   /* Subtle noise texture — pure CSS grain */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  /* to deal with swipe and page scroll */
+  overscroll-behavior-x: none;
+  position: relative;
+  width: 100%;
 }
 
 /* ─── Utility ────────────────────────────────────────────────────────────── */
-/* U5 — used to toggle verse-section vs purport-section visibility */
+/* Used to toggle verse-section vs purport-section visibility */
 .hidden { display: none !important; }
 
 /* ─── Page layout ────────────────────────────────────────────────────────── */
 .page-wrap {
-  max-width:     680px;
-  margin:        0 auto;
-  padding:       0 20px 60px;
-  display:       flex;
+  max-width:      680px;
+  margin:         0 auto;
+  padding:        0 20px 0;   /* footer handles bottom spacing */
+  display:        flex;
   flex-direction: column;
-  align-items:   center;
-  gap:           0;
+  align-items:    center;
+  gap:            0;
 }
 
 /* ─── Banner ─────────────────────────────────────────────────────────────── */
 .banner {
-  width:         100%;
-  text-align:    center;
-  padding:       52px 0 32px;
+  width:      100%;
+  text-align: center;
+  padding:    52px 0 32px;
 }
 
 .banner-lotus {
-  display:       block;
-  margin:        0 auto 8px;
-  width:         360px;
-  height:        auto;
-  font-size:     52px;
-  line-height:   1;
-  filter:        drop-shadow(0 0 18px rgba(245,166,35,0.4));
-  animation:     lotus-pulse 4s ease-in-out infinite;
-  display:       block;
-  margin-bottom: 16px;
-  -webkit-user-drag: none;
+  display:               block;
+  margin:                0 auto 16px;
+  width:                 360px;
+  height:                auto;
+  filter:                drop-shadow(0 0 18px rgba(245,166,35,0.4));
+  animation:             lotus-pulse 4s ease-in-out infinite;
+  -webkit-user-drag:     none;
   -webkit-touch-callout: none;
-  user-select: none;
-  pointer-events: none;
-}
-
-.banner-lotus img {
-  -webkit-user-drag: none;
-  user-select: none;
+  user-select:           none;
+  pointer-events:        none;
 }
 
 @keyframes lotus-pulse {
-  0%, 100% { filter: drop-shadow(0 0 14px rgba(245,166,35,0.35)); }
-  50%       { filter: drop-shadow(0 0 28px rgba(245,166,35,0.65)); }
-}
-
-.banner-title {
-  font-family:    var(--font-display);
-  font-size:      clamp(1.2rem, 4vw, 1.7rem);
-  font-weight:    700;
-  color:          var(--accent);
-  letter-spacing: 0.04em;
-  line-height:    1.2;
-  text-shadow:    0 2px 20px rgba(245,166,35,0.3);
+  0%, 100% { filter: drop-shadow(0 0 14px rgba(255,255,255,0.35)); }
+  50%       { filter: drop-shadow(0 0 28px rgba(255,255,255,0.65)); }
 }
 
 .banner-subtitle {
@@ -132,12 +148,21 @@ body {
   margin:     24px 0;
 }
 
+/* ─── Separator ──────────────────────────────────────────────────────────── */
+.separator {
+  width:      100%;
+  height:     1px;
+  background: linear-gradient(90deg, transparent, var(--text-muted), transparent);
+  opacity:    0.3;
+  margin:     24px 0;
+}
+
 /* ─── Intro text ─────────────────────────────────────────────────────────── */
 .intro {
   width:         100%;
   background:    var(--bg-mid);
   border:        1px solid var(--border);
-  border-left:   3px solid var(--accent);
+  border-left:   3px solid var(--accent);   /* Gita default: saffron */
   border-radius: var(--radius);
   padding:       18px 22px;
   font-size:     0.93rem;
@@ -145,12 +170,17 @@ body {
   line-height:   1.7;
 }
 
+/* iChing intro variant — indigo-blue left border */
+.intro--iching {
+  border-left-color: var(--iching-border);
+}
+
 .intro strong { color: var(--text-primary); font-weight: 600; }
 
 .intro p {
-  color:          var(--text-secondary);
-  text-align:     center;
-  font-style:     italic;
+  color:      var(--text-secondary);
+  text-align: center;
+  font-style: italic;
 }
 
 .intro code {
@@ -162,21 +192,12 @@ body {
   color:         var(--accent);
 }
 
+.intro--iching code { color: var(--iching-accent); }
+
 .intro ul { margin: 8px 0 0 18px; list-style: disc; }
 .intro ul li { margin-top: 3px; }
 
 /* ─── Search panel ───────────────────────────────────────────────────────── */
-.panel-title {
-  font-family:    var(--font-display);
-  font-size:      clamp(1rem, 3vw, 1.35rem);
-  font-weight:    700;
-  color:          #6276bb;
-  align-items:   center;
-  letter-spacing: 0.05em;
-  margin-bottom:  14px;
-  text-shadow:    0 2px 16px rgba(88, 101, 242, 0.3);
-}
-
 .search-panel {
   width:          100%;
   margin-top:     28px;
@@ -214,9 +235,9 @@ body {
   margin: 0;
 }
 
-/* ─── Error message — enhanced visibility (point 3) ─────────────────────── */
+/* ─── Error message ──────────────────────────────────────────────────────── */
 .error-msg {
-  display:       none;     /* hidden by default; shown via .visible */
+  display:       none;   /* hidden by default; shown via .visible */
   min-height:    0;
   font-size:     0.92rem;
   font-weight:   600;
@@ -230,9 +251,9 @@ body {
 }
 
 .error-msg.visible {
-  display:   block;
+  display:    block;
   min-height: 22px;
-  animation: error-in 0.25s ease;
+  animation:  error-in 0.25s ease;
 }
 
 @keyframes error-in {
@@ -242,10 +263,10 @@ body {
 
 @keyframes shake {
   0%,100% { transform: translateX(0); }
-  20%      { transform: translateX(-6px); }
-  40%      { transform: translateX(6px); }
-  60%      { transform: translateX(-4px); }
-  80%      { transform: translateX(4px); }
+  20%     { transform: translateX(-6px); }
+  40%     { transform: translateX(6px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX(4px); }
 }
 
 .shake { animation: shake 0.42s ease; }
@@ -268,6 +289,7 @@ body {
 .btn:active   { transform: scale(0.96); }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
+/* Gita "Look up" button — saffron */
 .btn-primary {
   background: var(--accent);
   color:      #1a1000;
@@ -278,6 +300,18 @@ body {
   box-shadow: var(--shadow-glow);
 }
 
+/* iChing "Toss Coins" button — indigo-blue */
+.btn-primary--iching {
+  background: var(--iching-accent);
+  color:      #ffffff;
+}
+
+.btn-primary--iching:hover:not(:disabled) {
+  background: var(--iching-dim);
+  box-shadow: 0 0 28px rgba(98,118,187,0.28);
+}
+
+/* Oracle random button — Gita */
 .btn-oracle {
   background: var(--bg-card);
   color:      var(--accent);
@@ -288,6 +322,16 @@ body {
 .btn-oracle:hover:not(:disabled) {
   background: var(--bg-card-alt);
   box-shadow: var(--shadow-glow);
+}
+
+/* Oracle random button — iChing variant */
+.btn-oracle--iching {
+  color:        var(--iching-accent);
+  border-color: rgba(98,118,187,0.35);
+}
+
+.btn-oracle--iching:hover:not(:disabled) {
+  box-shadow: 0 0 28px rgba(98,118,187,0.18);
 }
 
 /* ─── Lightbox overlay ───────────────────────────────────────────────────── */
@@ -312,39 +356,35 @@ body {
   to   { opacity: 1; }
 }
 
-/* Backdrop — behind the card, click triggers closeLightbox() */
 .lb-overlay {
-  position:           fixed;
-  inset:              0;
-  background:         rgba(0, 0, 0, 0.82);
-  backdrop-filter:    blur(4px);
+  position:                fixed;
+  inset:                   0;
+  background:              rgba(0,0,0,0.82);
+  backdrop-filter:         blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  z-index:            -1;
+  z-index:                 -1;
 }
 
-/* Body scroll lock while lightbox is open */
 body.lb-active { overflow: hidden; }
 
 /* ─── Lightbox card ──────────────────────────────────────────────────────── */
 .lb-card {
-  width:          100%;
-  max-width:      640px;
-  background:     var(--bg-card);
-  border-radius:  var(--radius-lg);
-  border:         1px solid var(--border);
-  border-top:     3px solid var(--accent);
-  box-shadow:     var(--shadow-card), var(--shadow-glow);
-  overflow:       hidden;
-  position:       relative;
-  animation:      card-enter 0.38s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
-
-  /* In-reader font size — changed by JS via CSS variable (point 11) */
-  font-size: var(--lb-font-size);
+  width:         100%;
+  max-width:     640px;
+  background:    var(--bg-card);
+  border-radius: var(--radius-lg);
+  border:        1px solid var(--border);
+  border-top:    3px solid var(--accent);
+  box-shadow:    var(--shadow-card), var(--shadow-glow);
+  overflow:      hidden;
+  position:      relative;
+  animation:     card-enter 0.38s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
+  font-size:     var(--lb-font-size);
 }
 
 @keyframes card-enter {
   from { opacity: 0; transform: translateY(24px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 
 .lb-card.loading { opacity: 0.6; pointer-events: none; transition: opacity 0.2s; }
@@ -415,7 +455,19 @@ body.lb-active { overflow: hidden; }
   border-color: var(--border-accent);
 }
 
-/* Active state for the purport button */
+/* Top purport button — green tint to stand out from other icon buttons */
+.lb-purport-top-btn {
+  color:        #4caf7d;
+  border-color: rgba(76, 175, 125, 0.35);
+}
+
+.lb-purport-top-btn:hover {
+  background:   rgba(76,175,125,0.12);
+  color:        #6fcf97;
+  border-color: rgba(76,175,125,0.55);
+}
+
+/* Active state — when purport is showing */
 .lb-icon-btn.active {
   background:   var(--accent-glow);
   color:        var(--accent);
@@ -423,7 +475,7 @@ body.lb-active { overflow: hidden; }
   font-weight:  700;
 }
 
-/* Font-size buttons (point 11) — slightly narrower than purport btn */
+/* Font-size buttons */
 .lb-font-btn {
   padding:     6px 8px;
   font-size:   0.8rem;
@@ -431,11 +483,11 @@ body.lb-active { overflow: hidden; }
   font-weight: 600;
 }
 
-/* Close button */
+/* Close button #c8615f --red-pink*/
 .lb-close-btn {
-  background:    transparent;
+  background:    var(--red-btn);
   border:        none;
-  color:         #ed4245;
+  color:         var(--text-primary);
   font-size:     1.4rem;
   font-weight:   700;
   line-height:   1;
@@ -447,36 +499,14 @@ body.lb-active { overflow: hidden; }
 }
 
 .lb-close-btn:hover {
-  color:      #ffffff;
-  background: #ed4245;
+  background: var(--text-primary);
+  color:      var(--red-btn);
 }
 
 /* ─── Card body ──────────────────────────────────────────────────────────── */
-.lb-body {
-  padding: 20px 22px 6px;
-}
+.lb-body { padding: 20px 22px 6px; }
 
-/* Dedicatory (top of card) */
-.lb-dedicatory {
-  font-family:    var(--font-body);
-  font-style:     italic;
-  font-size:      0.82rem;
-  color:          var(--text-muted);
-  letter-spacing: 0.04em;
-  margin-bottom:  3px;
-}
-
-/* Chapter line */
-.lb-chapter-line {
-  font-family:    var(--font-display);
-  font-size:      0.76rem;
-  color:          var(--text-secondary);
-  letter-spacing: 0.04em;
-  margin-bottom:  6px;
-  line-height:    1.4;
-}
-
-/* M6: Chapter heading H3 — updated during prev/next navigation */
+/* Chapter / hexagram heading */
 .lb-chapter-heading {
   font-family:    var(--font-display);
   font-size:      clamp(0.78rem, 2vw, 0.92rem);
@@ -488,7 +518,7 @@ body.lb-active { overflow: hidden; }
   padding:        8px 12px;
   background:     rgba(245,166,35,0.06);
   border-radius:  var(--radius);
-  border-left:    3px solid var(--accent);
+  border-left:    3px solid var(--text-muted);
 }
 
 /* ─── Section labels ─────────────────────────────────────────────────────── */
@@ -496,18 +526,32 @@ body.lb-active { overflow: hidden; }
   font-family:    var(--font-display);
   font-size:      0.68rem;
   letter-spacing: 0.12em;
-  color:          var(--text-muted);
+  color:          var(--text-secondary);
   text-transform: uppercase;
   margin-bottom:  8px;
   margin-top:     18px;
 }
 
-/* ─── Sanskrit verse ─────────────────────────────────────────────────────── */
-/* Rendered as a <p> with <br> line breaks — centered, italic, body font */
+/* ─── Translation / Judgment — shown FIRST in verse view ─────────────────── */
+.lb-translation {
+  background:    rgba(245, 166, 35, 0.07);
+  border-left:   3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding:       12px 16px;
+  font-size:     calc(var(--lb-font-size) * 1.08);  /* slightly larger: main feature */
+  font-weight:   600;
+  color:         var(--text-heading);
+  line-height:   1.75;
+  font-style:    italic;
+  margin-top:    4px;
+  margin-bottom: 4px;
+}
+
+/* ─── Sanskrit / hexagram lines — shown SECOND ───────────────────────────── */
 .lb-sanskrit {
   text-align:    center;
   font-family:   var(--font-body);
-  font-size:     calc(var(--lb-font-size) * 1.06);  /* scales with reader size */
+  font-size:     calc(var(--lb-font-size) * 1.0);
   font-style:    italic;
   color:         var(--text-primary);
   line-height:   1.8;
@@ -515,7 +559,7 @@ body.lb-active { overflow: hidden; }
   white-space:   normal;
 }
 
-/* ─── Synonyms ───────────────────────────────────────────────────────────── */
+/* ─── Synonyms / judgment lines — shown THIRD ────────────────────────────── */
 .lb-synonyms-wrap {
   background:    var(--bg-mid);
   border-radius: var(--radius);
@@ -529,39 +573,68 @@ body.lb-active { overflow: hidden; }
 .syn-word    { font-style: italic; font-weight: 600; color: var(--text-primary); }
 .syn-dash    { color: var(--text-muted); }
 .syn-meaning { color: var(--text-secondary); }
-.syn-sep     { color: var(--accent); margin: 0 2px; }  /* ; separator */
+.syn-sep     { color: var(--accent); margin: 0 2px; }
 .syn-plain   { color: var(--text-secondary); }
 
-/* ─── Translation ────────────────────────────────────────────────────────── */
-.lb-translation {
-  background:    rgba(245, 166, 35, 0.07);
-  border-left:   3px solid var(--accent);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  padding:       12px 16px;
-  font-size:     calc(var(--lb-font-size) * 1.0);
-  font-weight:   500;
-  color:         var(--text-heading);
-  line-height:   1.75;
-  font-style:    italic;
-  margin-top:    4px;
-}
-
-/* ─── Purport section (U5) ───────────────────────────────────────────────── */
-
-/* Dedicatory greeting shown at top of purport view (point 4 / U5) */
-.lb-purport-dedicatory {
-  font-family:    var(--font-body);
-  font-style:     italic;
-  font-size:      calc(var(--lb-font-size) * 0.92);
-  color:          var(--text-secondary);
+/* ─── Bottom action buttons (65% width, right-aligned) ───────────────────── */
+/*
+ * Two bottom buttons share base styles:
+ *   .lb-open-purport-btn — shown in VERSE view  — dark-theme blue
+ *   .lb-return-btn       — shown in PURPORT view — red (#c8615f)
+ *
+ * Visibility is managed via .visible class (never inline style).
+ */
+.lb-bottom-btn {
+  display:        none;   /* hidden by default */
+  width:          65%;
+  margin-top:     20px;
+  margin-left:    auto;   /* right-align */
+  padding:        10px 0;
+  font-family:    var(--font-display);
+  font-size:      0.78rem;
+  font-weight:    700;
+  letter-spacing: 0.07em;
+  border:         none;
+  border-radius:  var(--radius);
+  cursor:         pointer;
+  transition:     background var(--transition);
   text-align:     center;
-  padding:        10px 14px;
-  margin-bottom:  12px;
-  border-bottom:  1px solid var(--border);
-  line-height:    1.7;
 }
 
-/* Purport body */
+.lb-bottom-btn.visible {
+  display:   block;
+  animation: purport-in 0.28s ease;
+}
+
+/* Blue — "Read Purport / Commentary" */
+.lb-open-purport-btn {
+  background: var(--iching-accent);
+  color:      #ffffff;
+}
+
+.lb-open-purport-btn:hover { background: var(--iching-dim); }
+
+/* Red — "Return to Verse / Hexagram" */
+.lb-return-btn {
+  background: var(--lilac-btn);
+  color:      #ffffff;
+}
+
+.lb-return-btn:hover { background: var(--lilac-btn-hover); }
+
+/* ─── Purport / commentary section ──────────────────────────────────────── */
+.lb-purport-dedicatory {
+  font-family:   var(--font-body);
+  font-style:    italic;
+  font-size:     calc(var(--lb-font-size) * 0.62);
+  color:         var(--text-secondary);
+  text-align:    center;
+  padding:       10px 14px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  line-height:   1.7;
+}
+
 .lb-purport {
   font-size:   calc(var(--lb-font-size) * 0.93);
   color:       var(--text-secondary);
@@ -569,57 +642,25 @@ body.lb-active { overflow: hidden; }
   margin-top:  4px;
 }
 
-.lb-purport p           { margin-bottom: 12px; }
+.lb-purport p            { margin-bottom: 12px; }
 .lb-purport p:last-child { margin-bottom: 0; }
-.lb-purport .no-purport { font-style: italic; color: var(--text-muted); }
+.lb-purport .no-purport  { font-style: italic; color: var(--text-muted); }
 
 /* ─── Signature image ────────────────────────────────────────────────────── */
 .lb-signature {
-  display:    block;
-  width:      100%;
-  max-height: 54px;
-  object-fit: contain;
-  object-position: center;
-  margin-top: 20px;
-  opacity:    0.7;
-  filter:     brightness(0.85);
-  -webkit-user-drag: none;
+  display:               block;
+  width:                 100%;
+  max-height:            54px;
+  object-fit:            contain;
+  object-position:       center;
+  margin-top:            20px;
+  opacity:               0.7;
+  filter:                brightness(0.85);
+  -webkit-user-drag:     none;
   -webkit-touch-callout: none;
-  user-select: none;
-  pointer-events: none;
+  user-select:           none;
+  pointer-events:        none;
 }
-
-.lb-signature img {
-  -webkit-user-drag: none;
-  user-select: none;
-}
-
-/* ─── Red "Close Purport" button (U7 fix) ────────────────────────────────── */
-/* Visibility is managed via .visible class, NOT inline style */
-.lb-purport-close-btn {
-  display:        none;   /* hidden by default */
-  width:          100%;
-  margin-top:     18px;
-  padding:        10px 0;
-  background:     #ed4245;
-  color:          #ffffff;
-  font-family:    var(--font-display);
-  font-size:      0.78rem;
-  font-weight:    700;
-  letter-spacing: 0.08em;
-  border:         none;
-  border-radius:  var(--radius);
-  cursor:         pointer;
-  transition:     background var(--transition);
-}
-
-/* U7: shown via class, not inline style */
-.lb-purport-close-btn.visible {
-  display:   block;
-  animation: purport-in 0.28s ease;
-}
-
-.lb-purport-close-btn:hover { background: #c03537; }
 
 /* ─── Chapter-end colophon ───────────────────────────────────────────────── */
 .lb-chapter-end {
@@ -640,7 +681,7 @@ body.lb-active { overflow: hidden; }
   animation: purport-in 0.3s ease;
 }
 
-/* ─── Card footer / nav bar ──────────────────────────────────────────────── */
+/* ─── Card footer / navigation bar ──────────────────────────────────────── */
 .lb-footer-bar {
   display:         flex;
   align-items:     center;
@@ -653,11 +694,11 @@ body.lb-active { overflow: hidden; }
 }
 
 .lb-footer-text {
-  font-size:   0.78rem;
-  color:       var(--text-muted);
-  font-style:  italic;
-  flex:        1;
-  min-width:   0;
+  font-size:  0.78rem;
+  color:      var(--text-muted);
+  font-style: italic;
+  flex:       1;
+  min-width:  0;
 }
 
 .lb-nav-row {
@@ -692,6 +733,10 @@ body.lb-active { overflow: hidden; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* ─── Load-in (landing page stagger) ────────────────────────────────────── */
 .fade-in {
   opacity:   0;
@@ -705,18 +750,46 @@ body.lb-active { overflow: hidden; }
 .fade-in:nth-child(4) { animation-delay: 0.35s; }
 .fade-in:nth-child(5) { animation-delay: 0.42s; }
 
-@keyframes fade-up {
-  to { opacity: 1; transform: translateY(0); }
+/* ─── Page footer ────────────────────────────────────────────────────────── */
+/*
+ * Full-width darker block, lighter grey top border, Discord embed style.
+ * Contains a circular 28×28 image (imgfooter.png — see TODO in index.html).
+ * The page-wrap's padding-bottom is removed; footer provides its own spacing.
+ */
+.page-footer {
+  width:        calc(100% + 40px);  /* bleed past .page-wrap's 20px padding */
+  margin-left:  -20px;
+  margin-right: -20px;
+  margin-top:   40px;
+  background:   #18191c;            /* darker than --bg-base */
+  border-top:   1px solid rgba(255,255,255,0.10);
+  padding:      16px 20px 20px;     /* compact height as requested */
 }
 
-/* ─── Page footer ────────────────────────────────────────────────────────── */
-.page-footer {
-  margin-top:  48px;
-  text-align:  center;
+.footer-inner {
+  max-width:   640px;
+  margin:      0 auto;
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+}
+
+/* Circular footer icon — mirrors Discord embed footer icon style */
+.footer-icon {
+  width:         28px;
+  height:        28px;
+  border-radius: 50%;
+  object-fit:    cover;
+  flex-shrink:   0;
+  opacity:       0.7;
+  /* TODO: update src in index.html to "assets/images/imgfooter.png" */
+}
+
+.page-footer p {
   font-size:   0.8rem;
   color:       var(--text-muted);
   font-style:  italic;
-  line-height: 1.7;
+  line-height: 1.5;
 }
 
 .page-footer a { color: var(--accent); text-decoration: none; opacity: 0.8; }
@@ -744,16 +817,10 @@ body.lb-active { overflow: hidden; }
   font-size:       0.95rem;
   cursor:          pointer;
   text-align:      left;
+  white-space:     normal;
+  overflow:        visible;
+  text-overflow:   unset;
   transition:      border-color var(--transition), box-shadow var(--transition);
-
-  /* replacing to show full text in the chapter selection button
-  white-space:     nowrap;
-  overflow:        hidden;
-  text-overflow:   ellipsis; */
-
-  white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
 }
 
 .custom-select-trigger:focus,
@@ -773,7 +840,7 @@ body.lb-active { overflow: hidden; }
 
 .custom-select.open .custom-select-arrow { transform: rotate(180deg); }
 
-/* Dropdown list */
+/* Dropdown list — opens upward to avoid overlap with oracle button below */
 .custom-select-list {
   display:       none;
   position:      absolute;
@@ -797,7 +864,6 @@ body.lb-active { overflow: hidden; }
   animation: purport-in 0.18s ease;
 }
 
-/* Dropdown option */
 .custom-select-option {
   display:        flex;
   flex-direction: column;
@@ -811,10 +877,10 @@ body.lb-active { overflow: hidden; }
 
 .custom-select-option:hover,
 .custom-select-option[aria-selected="true"] {
-  background: rgba(88, 101, 242, 0.15);
+  background: rgba(98,118,187,0.15);
 }
 
-.custom-select-option[aria-selected="true"] b { color: #6276bb; }
+.custom-select-option[aria-selected="true"] b { color: var(--iching-accent); }
 
 .custom-select-option b {
   font-size:   0.88rem;
@@ -823,7 +889,6 @@ body.lb-active { overflow: hidden; }
   line-height: 1.3;
 }
 
-/* Verse count badge inside dropdown label (point 7) */
 .custom-select-option b .verse-count {
   font-weight: 400;
   color:       var(--text-muted);
@@ -838,31 +903,33 @@ body.lb-active { overflow: hidden; }
   white-space: normal;
 }
 
-/* Scrollbar inside list */
 .custom-select-list::-webkit-scrollbar       { width: 4px; }
 .custom-select-list::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
 
-/* ─── Verse field (integer input) ────────────────────────────────────────── */
+/* ─── Verse / hexagram input field ──────────────────────────────────────── */
 .verse-field {
-  width:       140px;
-  background:  #1a1f2a;
+  width:        140px;
+  background:   #1a1f2a;
   border-color: #1e3a5a;
-  text-align:  center;
+  text-align:   center;
 }
 
 .verse-field:focus {
-  border-color: #6276bb;
-  box-shadow:   0 0 0 3px rgba(88, 101, 242, 0.2);
+  border-color: var(--iching-accent);
+  box-shadow:   0 0 0 3px rgba(98,118,187,0.2);
   background:   #1a2235;
   outline:      none;
 }
 
+/* iChing input — same base, slightly different focus ring colour already
+   handled by verse-field:focus using --iching-accent */
+.verse-field--iching::placeholder { color: var(--text-muted); }
+
 /* ─── Mobile ─────────────────────────────────────────────────────────────── */
 @media (max-width: 520px) {
-  .page-wrap       { padding: 0 12px 48px; }
+  .page-wrap       { padding: 0 12px 0; }
   .banner          { padding: 36px 0 24px; }
   .banner-lotus    { font-size: 40px; }
-  .banner-title    { font-size: 1.1rem; }
   .search-row      { flex-wrap: wrap; }
   .btn             { width: 100%; text-align: center; }
   .verse-input     { font-size: 0.97rem; }
@@ -876,12 +943,11 @@ body.lb-active { overflow: hidden; }
   .lb-footer-bar   { flex-direction: column; align-items: flex-start; }
   .lb-nav-row      { width: 100%; justify-content: space-between; }
   .lb-footer-text  { width: 100%; }
-  /* Stack font-size buttons neatly on mobile */
   .lb-font-btn     { padding: 6px 6px; }
-}
-
-@media (max-width: 360px) {
-  .banner-title { font-size: 1rem; }
+  /* Bottom buttons full-width on mobile */
+  .lb-bottom-btn   { width: 100%; }
+  /* Footer bleeds correctly on narrow screens */
+  .page-footer     { width: calc(100% + 24px); margin-left: -12px; margin-right: -12px; }
 }
 
 /* ─── Scrollbar (webkit) ─────────────────────────────────────────────────── */
