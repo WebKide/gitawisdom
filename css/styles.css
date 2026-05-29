@@ -108,6 +108,7 @@ body {
 /* ─── Banner ─────────────────────────────────────────────────────────────── */
 .banner {
   width:      100%;
+  max-width:  100%; /* ensure container doesn't exceed viewport */
   text-align: center;
   padding:    52px 0 32px;
 }
@@ -115,8 +116,9 @@ body {
 .banner-lotus {
   display:               block;
   margin:                0 auto 16px;
-  width:                 360px;
-  height:                auto;
+  width:                 100%;      /* responsive width */
+  max-width:             360px;     /* optional, caps max size */
+  height:                auto;      /* maintain aspect ratio */
   filter:                drop-shadow(0 0 18px rgba(245,166,35,0.4));
   animation:             lotus-pulse 4s ease-in-out infinite;
   -webkit-user-drag:     none;
@@ -126,8 +128,13 @@ body {
 }
 
 @keyframes lotus-pulse {
-  0%, 100% { filter: drop-shadow(0 0 14px rgba(255,255,255,0.35)); }
-  50%       { filter: drop-shadow(0 0 28px rgba(255,255,255,0.65)); }
+  0%, 100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 .banner-subtitle {
@@ -516,9 +523,9 @@ body.lb-active { overflow: hidden; }
   line-height:    1.35;
   margin-bottom:  18px;
   padding:        8px 12px;
-  background:     rgba(245,166,35,0.06);
+  background:     rgba(81,47,134,0.23);
   border-radius:  var(--radius);
-  border-left:    3px solid var(--text-muted);
+  border-left:    3px solid var(--text-primary);
 }
 
 /* ─── Section labels ─────────────────────────────────────────────────────── */
@@ -530,19 +537,30 @@ body.lb-active { overflow: hidden; }
   text-transform: uppercase;
   margin-bottom:  8px;
   margin-top:     18px;
+
+  display: flex;           /* enable horizontal flex layout */
+  align-items: center;     /* vertically center text and line */
+}
+
+.section-label::after {
+  content: '';             /* empty content for the line */
+  flex-grow: 1;            /* take up remaining horizontal space */
+  margin-left: 8px;        /* space between text and line */
+  border-bottom: 1px solid var(--text-secondary); /* solid line */
+  opacity: 0.5;            /* optional: make it a bit lighter than text */
 }
 
 /* ─── Translation / Judgment — shown FIRST in verse view ─────────────────── */
 .lb-translation {
-  background:    rgba(245, 166, 35, 0.07);
-  border-left:   3px solid var(--accent);
+  background:    rgba(30, 32, 37, 0.96);
+  border-left:   3px solid #7188d8;
   border-radius: 0 var(--radius) var(--radius) 0;
   padding:       12px 16px;
   font-size:     calc(var(--lb-font-size) * 1.08);  /* slightly larger: main feature */
-  font-weight:   600;
+  font-weight:   400;
   color:         var(--text-heading);
   line-height:   1.75;
-  font-style:    italic;
+  font-style:    normal;
   margin-top:    4px;
   margin-bottom: 4px;
 }
@@ -623,12 +641,22 @@ body.lb-active { overflow: hidden; }
 .lb-return-btn:hover { background: var(--lilac-btn-hover); }
 
 /* ─── Purport / commentary section ──────────────────────────────────────── */
-.lb-purport-dedicatory {
+.lb-purport-dedicatory-top {
   font-family:   var(--font-body);
   font-style:    italic;
-  font-size:     calc(var(--lb-font-size) * 0.62);
+  font-size:     calc(var(--lb-font-size) * 0.82);
   color:         var(--text-secondary);
-  text-align:    center;
+  text-align:    left;
+  padding:       10px 14px 0 14px;
+  margin-bottom: 0;
+}
+
+.lb-purport-dedicatory {
+  font-family:   var(--font-body);
+  font-style:    normal;
+  font-size:     calc(var(--lb-font-size) * 0.82);
+  color:         var(--text-secondary);
+  text-align:    left;
   padding:       10px 14px;
   margin-bottom: 12px;
   border-bottom: 1px solid var(--border);
@@ -637,7 +665,7 @@ body.lb-active { overflow: hidden; }
 
 .lb-purport {
   font-size:   calc(var(--lb-font-size) * 0.93);
-  color:       var(--text-secondary);
+  color:       var(--text-primary);
   line-height: 1.85;
   margin-top:  4px;
 }
@@ -652,7 +680,7 @@ body.lb-active { overflow: hidden; }
   width:                 100%;
   max-height:            54px;
   object-fit:            contain;
-  object-position:       center;
+  object-position:       left;
   margin-top:            20px;
   opacity:               0.7;
   filter:                brightness(0.85);

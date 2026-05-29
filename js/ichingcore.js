@@ -8,10 +8,6 @@
  *   Word-for-Word, Translation-En, Purport-En, etc.)
  *   No Uvaca-line, no Sanskrit — Verse-Text holds the hexagram name/lines.
  *   Hexagrams 1–64 are canonical. Entry 65 = "ask again", 66 = "no answer".
- *
- * TODO: Replace ICHING_AUTHOR_ICON with the correct iChing image once created.
- *       e.g. change 'assets/images/ACBhaktivedantaSwami.png'
- *            to    'assets/images/iching-author.png'  (or similar)
  */
 
 'use strict';
@@ -62,15 +58,15 @@ const HEXAGRAM_NAMES = {
   59: 'Huan — Dispersion',            60: 'Chieh — Limitation',
   61: 'Chung Fu — Inner Truth',       62: 'Hsiao Kuo — Preponderance of the Small',
   63: 'Chi Chi — After Completion',   64: 'Wei Chi — Before Completion',
-  65: 'Ask Again Later',              66: 'No Answer at This Time',
+  65: 'Zaici — Ask Again Later',      66: 'Ling — No answer at this time',
 };
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 // TODO: Replace ICHING_AUTHOR_ICON with the correct iChing image once created.
 //       Change the path below to 'assets/images/iching-author.png' (or similar).
-const ICHING_AUTHOR_ICON  = 'assets/images/ACBhaktivedantaSwami.png';
+const ICHING_AUTHOR_ICON  = 'assets/images/ichingcoin.png';
 const ICHING_AUTHOR_TITLE = 'I Ching — Book of Changes';
-const ICHING_SUBTITLE     = "Richard Wilhelm's Translation";
+const ICHING_SUBTITLE     = "Richard Wilhelm’s Translation";
 
 // Randomised "no commentary" fallback messages (mirrors NO_PURPORT in gitacore.js)
 const NO_COMMENTARY = [

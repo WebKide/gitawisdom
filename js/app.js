@@ -12,6 +12,7 @@
 import {
   BG_CHAPTER_INFO,
   DEDICATORY,
+  DEDICATORY_CLOSINGS,
   NO_PURPORT,
   loadChapterData,
   validateVerse,
@@ -376,6 +377,11 @@ function renderVerse() {
       const fallback = pool[Math.floor(Math.random() * pool.length)];
       dom.lbPurport.innerHTML = `<p class="no-purport">${escHtml(fallback)}</p>`;
     }
+
+    // ← INSERT DEDICATORY .random(CLOSING) HERE
+    const closing = DEDICATORY_CLOSINGS[Math.floor(Math.random() * DEDICATORY_CLOSINGS.length)];
+    const dedicatoryTop = dom.lbPurportSection.querySelector('.lb-purport-dedicatory-top');
+    if (dedicatoryTop) dedicatoryTop.innerHTML = closing;
 
     // Signature: show for Gita, hide for iChing
     const sig = dom.lbCard.querySelector('.lb-signature');

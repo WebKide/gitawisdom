@@ -38,15 +38,43 @@ const FOOTER_ICON   = 'assets/images/imgfooter.png';
 const SIGNATURE_URL = 'assets/images/signature.svg';
 const DEDICATORY    = 'oṁ namo bhagavate vāsudevāya';
 
+// Random closing salutations — one is picked each time a purport is rendered
+const DEDICATORY_CLOSINGS = [
+  'Be happy in Kṛṣṇa consciousness.<br />Your ever well-wisher,',
+  'Hope this meets you in good health.<br />Your ever well-wisher,',
+  'Hoping this meets you well, and looking forward to seeing you again.<br />Your ever well-wisher,',
+  'I am depending on you all to carry on this great mission in my absence. Chant and hear, and Kṛṣṇa will bless you.<br />Your ever well-wisher,',
+  'I am very pleased with your endeavor. I hope you are well.<br />Your ever well-wisher,',
+  'I hope this meets you in good health and cheerful mood.<br />Your ever well-wisher,',
+  'I hope you are all well.<br />Your ever well-wisher,',
+  'I hope you are feeling well.<br />Your ever well-wisher,',
+  'I hope your questions are fully answered. I shall look forward to seeing you all again.<br />Your ever well-wisher,',
+  'Please convey my blessings to your good wife. I hope you are both well.<br />Your ever well-wisher,',
+  'Please follow these principles sincerely.<br />Your ever well-wisher,',
+  'Please keep me informed of your progress.<br />Your ever well-wisher,',
+  'Please offer my blessings to all the devotees.<br />Your ever well-wisher,',
+  'Thank you once more for your great service. I hope you are well.<br />Your ever well-wisher,',
+  'Thank you very much again for your sincere service to Kṛṣṇa. Kṛṣṇa’s blessings are always upon you.<br />Your ever well-wisher,',
+  'Thank you very much for your sincere service. I hope you are well.<br />Your ever well-wisher,',
+  'Thanking you once more for your sincere service, I hope you are well.<br />Your ever well-wisher,',
+];
+
 // Randomised "no purport" messages — intentionally varied (M5: NOT a bug, keep random)
 const NO_PURPORT = [
-  'This śloka does not contain a purport.',
-  'No purport for this śloka.',
-  'There is no purport provided for this śloka.',
-  'This verse has no accompanying purport.',
-  'This śloka does not include a Bhaktivedānta purport.',
-  'No Bhaktivedānta purport provided for this verse.',
   'No Bhaktivedānta purport accompanies this śloka.',
+  'No Bhaktivedānta purport provided for this verse.',
+  'No commentary was writte for this śloka.',
+  'No explanatory purport is included for this verse.',
+  'No purport for this śloka.',
+  'No purport is attached to this śloka.',
+  'Purport not written for this verse.',
+  'There is no purport for this particular verse.',
+  'There is no purport provided for this śloka.',
+  'This verse comes without a purport.',
+  'This verse has no accompanying purport.',
+  'This śloka does not contain a purport.',
+  'This śloka does not include a Bhaktivedānta purport.',
+  'This śloka stands without a purport.',
 ];
 
 // Chapter JSON cache — avoids re-fetching the same file
@@ -337,6 +365,7 @@ export {
   FOOTER_ICON,
   SIGNATURE_URL,
   DEDICATORY,
+  DEDICATORY_CLOSINGS,
   NO_PURPORT,
   loadChapterData,
   validateVerse,
