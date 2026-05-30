@@ -344,6 +344,20 @@
       <!-- Right-hand action buttons -->
       <div class="lb-header-actions">
 
+        <!-- Copy and Share buttons — always visible; Share falls back to Copy if API unavailable -->
+        <button id="lb-copy-btn"
+                class="lb-icon-btn"
+                title="Copy to clipboard"
+                aria-label="Copy verse">
+          COPY
+        </button>
+        <button id="lb-share-btn"
+                class="lb-icon-btn"
+                title="Share verse"
+                aria-label="Share verse">
+          SHARE
+        </button>
+
         <!-- Font-size controls -->
         <button id="lb-font-decrease"
                 class="lb-icon-btn lb-font-btn"
@@ -363,7 +377,7 @@
                 class="lb-icon-btn lb-purport-top-btn"
                 title="Read the purport / commentary (P)"
                 aria-label="Toggle purport or commentary">
-          🖊️ 𝙿𝚄𝚁𝙿𝙾𝚁𝚃
+          🖊️ PURPORT
         </button>
 
         <!-- Close -->
@@ -398,15 +412,15 @@
         <p id="lb-text-num" class="section-label"></p>
 
         <!-- 1. Translation / Judgment — FIRST (main feature) -->
-        <p class="section-label">🗒️ 𝚃𝚁𝙰𝙽𝚂𝙻𝙰𝚃𝙸𝙾𝙽</p>
+        <p class="section-label">🗒️ TRANSLATION</p>
         <blockquote id="lb-translation" class="lb-translation"></blockquote>
 
         <!-- 2. Sanskrit / hexagram lines — SECOND -->
-        <p class="section-label">📜 𝚂𝙰𝙽𝚂𝙺𝚁𝙸𝚃</p>
+        <p class="section-label">📜 SANSKRIT</p>
         <p id="lb-sanskrit" class="lb-sanskrit" lang="sa"></p>
 
         <!-- 3. Synonyms / judgment lines — THIRD -->
-        <p class="section-label">📖 𝚂𝚈𝙽𝙾𝙽𝚈𝙼𝚂</p>
+        <p class="section-label">📖 SYNONYMS</p>
         <div class="lb-synonyms-wrap">
           <span id="lb-synonyms"></span>
         </div>
@@ -437,7 +451,7 @@
         </p>
 
         <!-- Section label — changes to "COMMENTARY" for iChing via JS class -->
-        <p class="section-label">🖊 𝙿𝚄𝚁𝙿𝙾𝚁𝚃</p>
+        <p class="section-label">🖊 PURPORT</p>
 
         <!-- Purport / commentary body — paragraphs injected by renderVerse() -->
         <div id="lb-purport" class="lb-purport"></div>

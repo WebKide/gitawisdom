@@ -118,6 +118,10 @@ const dom = {
   // Footer / meta
   lbFooter:         document.getElementById('lb-footer'),
   lbChapterEnd:     document.getElementById('lb-chapter-end'),
+
+  // Share / Copy
+  lbCopyBtn:        document.getElementById('lb-copy-btn'),
+  lbShareBtn:       document.getElementById('lb-share-btn'),
 };
 
 // ─── Error helpers ────────────────────────────────────────────────────────────
@@ -239,6 +243,10 @@ function applyLightboxBranding() {
 
     // Re-cache the ref span (innerHTML replaced it)
     dom._lbAuthorRef = dom.lbAuthorTitle.querySelector('b');
+
+    // show COPY / SHARE buttons from card view
+    dom.lbCopyBtn.style.display  = 'none';
+    dom.lbShareBtn.style.display = 'none';
   } else {
     dom.lbAuthorIcon.src = 'assets/images/ACBhaktivedantaSwami.png';
     dom.lbAuthorIcon.alt = 'A.C. Bhaktivedānta Swami';
@@ -246,6 +254,10 @@ function applyLightboxBranding() {
       `<strong><i>Bhagavad Gītā</i> As It Is</strong> <b id="lb-author-ref"></b>`;
 
     dom._lbAuthorRef = dom.lbAuthorTitle.querySelector('b');
+
+    // hide COPY / SHARE buttons from card view
+    dom.lbCopyBtn.style.display  = '';
+    dom.lbShareBtn.style.display = '';
   }
 }
 
@@ -299,7 +311,7 @@ function renderVerse() {
   if (isGita) {
     const info      = BG_CHAPTER_INFO[state.chapter];
     const titlePart = info.chapter_title.split('. ').slice(1).join('. ');
-    dom.lbChapterHeading.textContent = `${titlePart} (${state.chapter}.${ref})`;
+    dom.lbChapterHeading.textContent = `${titlePart} (BG ${state.chapter}.${ref})`;
     if (dom._lbAuthorRef) dom._lbAuthorRef.textContent = ` (${state.chapter}.${ref})`;
   } else {
     const n    = parseInt(String(ref).split('-')[0], 10);
@@ -315,8 +327,9 @@ function renderVerse() {
 
   // ── Translation / Judgment ────────────────────────────────────────────────
   const transl = (verseData['Translation-En'] ?? '').replace(/\s+/g, ' ').trim();
-  dom.lbTranslation.textContent = transl
-    || (isGita ? '𝖭𝗈 𝗍𝗋𝖺𝗇𝗌𝗅𝖺𝗍𝗂𝗈𝗇 𝖿𝗈𝗎𝗇𝖽.' : '𝖭𝗈 𝗃𝗎𝖽𝗀𝗆𝖾𝗇𝗍 𝖿𝗈𝗎𝗇𝖽.');
+  dom.lbTranslation.textContent = isGita
+    ? (transl ? `\u201C${transl}\u201D` : 'No translation found.')
+    : (transl || 'No judgement found.');
 
   // ── Sanskrit / hexagram lines ─────────────────────────────────────────────
   const lines = isGita
@@ -371,6 +384,11 @@ function renderVerse() {
       dom.lbPurport.innerHTML = paras
         .map(p => `<p>${escHtml(p.replace(/\n/g, ' ').trim())}</p>`)
         .join('');
+
+    // Hide Copy/Share in purport view regardless of content
+    dom.lbCopyBtn.style.display  = 'none';
+    dom.lbShareBtn.style.display = 'none';
+    dom.lbTextNum.style.display = '';       // show TEXT in purport view
     } else {
       // Random fallback message
       const pool     = isGita ? NO_PURPORT : NO_COMMENTARY;
@@ -391,7 +409,7 @@ function renderVerse() {
     sigDedicatory.forEach(el => { el.style.display = isGita ? '' : 'none'; });
 
     // Update top purport button to show "close" state
-    dom.lbPurportBtn.textContent = '✕ Close';
+    dom.lbPurportBtn.textContent = '↩ Return ';
     dom.lbPurportBtn.classList.add('active');
 
   } else {
@@ -403,8 +421,15 @@ function renderVerse() {
     dom.lbPurport.innerHTML = '';
 
     // Reset top purport button
-    dom.lbPurportBtn.textContent = isGita ? '🖊 𝙿𝚄𝚁𝙿𝙾𝚁𝚃' : '🔮 𝙲𝙾𝙼𝙼𝙴𝙽𝚃𝙰𝚁𝚈';
+    dom.lbPurportBtn.textContent = isGita ? 'READ PURPORT' : '🔮 COMMENTARY';
     dom.lbPurportBtn.classList.remove('active');
+    dom.lbTextNum.style.display = 'none';  // hide TEXT in verse view
+
+    // Only restore if gita mode (iching never shows COPY / SHARE)
+    if (state.mode === 'gita') {
+      dom.lbCopyBtn.style.display  = '';
+      dom.lbShareBtn.style.display = '';
+    }
   }
 
   // Update bottom buttons for current mode/state
@@ -619,6 +644,68 @@ async function goPrev() {
   }
 }
 
+// ─── Copy / Share helpers ─────────────────────────────────────────────────────
+
+function buildShareText(includeUrl = false) {
+  const heading     = dom.lbChapterHeading.textContent.trim();
+  const translation = dom.lbTranslation.textContent.trim();
+  const text        = `Gītā Wisdom — ${heading}:\n\n${translation}`;
+  return includeUrl ? `${text}\n\n${window.location.href}` : text;
+}
+
+function flashBtn(btn, label) {
+  // Briefly changes button label to give visual feedback, then restores it
+  const original = btn.textContent;
+  btn.textContent = label;
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.disabled = false;
+  }, 1800);
+}
+
+async function handleCopy() {
+  const text = buildShareText(true);  // includes homepage URL
+  try {
+    await navigator.clipboard.writeText(text);
+    flashBtn(dom.lbCopyBtn, '✓ COPIED');
+  } catch {
+    // Fallback for HTTP / older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    flashBtn(dom.lbCopyBtn, '✓ COPIED');
+  }
+}
+
+async function handleShare() {
+  const text = buildShareText(false);  // plain text only, no URL
+  if (navigator.share) {
+    try {
+      await navigator.share({ text });
+    } catch (err) {
+      // User cancelled — do nothing
+      if (err.name !== 'AbortError') flashBtn(dom.lbShareBtn, '✗ ERROR');
+    }
+  } else {
+    // Share API not available — fall back to clipboard copy, signal in button
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    flashBtn(dom.lbShareBtn, '✓ COPIED');
+  }
+}
+
 // ─── Purport / commentary toggle ─────────────────────────────────────────────
 function togglePurport() {
   const verseData = state.mode === 'gita' ? state.verseData : state.hexData;
@@ -631,6 +718,9 @@ function togglePurport() {
     setTimeout(() => {
       dom.lbPurportSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 60);
+    // COPY / SHARE
+    dom.lbCopyBtn.style.display  = 'none';
+    dom.lbShareBtn.style.display = 'none';
   }
 }
 
@@ -693,6 +783,8 @@ dom.lbPurportBtn.addEventListener('click', togglePurport);
 // Bottom buttons
 dom.lbOpenPurportBtn.addEventListener('click', togglePurport);  // "Read Purport/Commentary"
 dom.lbReturnBtn.addEventListener('click', togglePurport);       // "Return to Verse/Hexagram"
+dom.lbCopyBtn.addEventListener('click', handleCopy);
+dom.lbShareBtn.addEventListener('click', handleShare);
 
 // Font-size controls
 dom.lbFontIncrease.addEventListener('click', increaseFontSize);
