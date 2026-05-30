@@ -89,7 +89,7 @@ let _ichingCache = null;
 async function loadIChingData() {
   if (_ichingCache) return _ichingCache;
 
-  const resp = await fetch('iching/iching.json');
+  const resp = await fetch('assets/iching/iching.json');
   if (!resp.ok) throw new Error(`iChing data not found (HTTP ${resp.status})`);
 
   _ichingCache = await resp.json();

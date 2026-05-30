@@ -95,7 +95,7 @@ const dom = {
   lbAuthorRef:     document.getElementById('lb-author-ref'),
 
   // Purport/commentary toggle buttons
-  lbPurportBtn:    document.getElementById('lb-purport-btn'),  // top header button
+  // lbPurportBtn:    document.getElementById('lb-purport-btn'),  // top header button
   lbFontIncrease:  document.getElementById('lb-font-increase'),
   lbFontDecrease:  document.getElementById('lb-font-decrease'),
 
@@ -409,8 +409,8 @@ function renderVerse() {
     sigDedicatory.forEach(el => { el.style.display = isGita ? '' : 'none'; });
 
     // Update top purport button to show "close" state
-    dom.lbPurportBtn.textContent = '↩ Return ';
-    dom.lbPurportBtn.classList.add('active');
+    // --> dom.lbPurportBtn.textContent = '↩ Return ';
+    // --> dom.lbPurportBtn.classList.add('active');
 
   } else {
     // Show verse section; hide purport section
@@ -421,8 +421,8 @@ function renderVerse() {
     dom.lbPurport.innerHTML = '';
 
     // Reset top purport button
-    dom.lbPurportBtn.textContent = isGita ? 'READ PURPORT' : '🔮 COMMENTARY';
-    dom.lbPurportBtn.classList.remove('active');
+    // --> dom.lbPurportBtn.textContent = isGita ? 'READ PURPORT' : '🔮 COMMENTARY';
+    // --> dom.lbPurportBtn.classList.remove('active');
     dom.lbTextNum.style.display = 'none';  // hide TEXT in verse view
 
     // Only restore if gita mode (iching never shows COPY / SHARE)
@@ -523,7 +523,7 @@ async function displayHexagram(hexRef, keepPurport = false) {
 function setNavDisabled(disabled) {
   dom.lbPrev.disabled       = disabled;
   dom.lbNext.disabled       = disabled;
-  dom.lbPurportBtn.disabled = disabled;
+  // READ PURPORT BUTTON --> dom.lbPurportBtn.disabled = disabled;
 }
 
 // ─── Dropdown sync helpers ────────────────────────────────────────────────────
@@ -778,7 +778,7 @@ dom.lbPrev.addEventListener('click', goPrev);
 dom.lbNext.addEventListener('click', goNext);
 
 // Purport toggle — top header button
-dom.lbPurportBtn.addEventListener('click', togglePurport);
+// --> dom.lbPurportBtn.addEventListener('click', togglePurport);
 
 // Bottom buttons
 dom.lbOpenPurportBtn.addEventListener('click', togglePurport);  // "Read Purport/Commentary"

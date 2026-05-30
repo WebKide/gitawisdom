@@ -11,7 +11,221 @@
    Red buttons:   #c8615f
    ═══════════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Waldemar&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+/* kelvinch-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Kelvinch';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/kelvinch-v42-latin-regular.woff2') format('woff2');
+}
+
+/* kelvinch-italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Kelvinch';
+  font-style: italic;
+  font-weight: 400;
+  src: url('../assets/fonts/kelvinch-v42-latin-italic.woff2') format('woff2');
+}
+
+/* kelvinch-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Kelvinch';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../assets/fonts/kelvinch-v42-latin-700.woff2') format('woff2');
+}
+
+/* kelvinch-700italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Kelvinch';
+  font-style: italic;
+  font-weight: 700;
+  src: url('../assets/fonts/kelvinch-v42-latin-700italic.woff2') format('woff2');
+}
+
+/* noto-serif-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/noto-serif-v33-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: italic;
+  font-weight: 400;
+  src: url('../assets/fonts/noto-serif-v33-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-500 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../assets/fonts/noto-serif-v33-latin-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-500italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: italic;
+  font-weight: 500;
+  src: url('../assets/fonts/noto-serif-v33-latin-500italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-600 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../assets/fonts/noto-serif-v33-latin-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-600italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: italic;
+  font-weight: 600;
+  src: url('../assets/fonts/noto-serif-v33-latin-600italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../assets/fonts/noto-serif-v33-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-700italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: italic;
+  font-weight: 700;
+  src: url('../assets/fonts/noto-serif-v33-latin-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-800 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 800;
+  src: url('../assets/fonts/noto-serif-v33-latin-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-800italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: italic;
+  font-weight: 800;
+  src: url('../assets/fonts/noto-serif-v33-latin-800italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-900 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 900;
+  src: url('../assets/fonts/noto-serif-v33-latin-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-serif-900italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Noto Serif';
+  font-style: italic;
+  font-weight: 900;
+  src: url('../assets/fonts/noto-serif-v33-latin-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* sansita-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Sansita';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/sansita-v12-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* sansita-italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Sansita';
+  font-style: italic;
+  font-weight: 400;
+  src: url('../assets/fonts/sansita-v12-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* sansita-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Sansita';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../assets/fonts/sansita-v12-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* sansita-700italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Sansita';
+  font-style: italic;
+  font-weight: 700;
+  src: url('../assets/fonts/sansita-v12-latin-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* sansita-800 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Sansita';
+  font-style: normal;
+  font-weight: 800;
+  src: url('../assets/fonts/sansita-v12-latin-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* sansita-800italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Sansita';
+  font-style: italic;
+  font-weight: 800;
+  src: url('../assets/fonts/sansita-v12-latin-800italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* sansita-900 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Sansita';
+  font-style: normal;
+  font-weight: 900;
+  src: url('../assets/fonts/sansita-v12-latin-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* sansita-900italic - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Sansita';
+  font-style: italic;
+  font-weight: 900;
+  src: url('../assets/fonts/sansita-v12-latin-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
 
 /* ─── Design tokens ──────────────────────────────────────────────────────── */
 :root {
@@ -55,7 +269,7 @@
   --radius-lg:     12px;
 
   /* Typefaces */
-  --font-display:  'Waldemar', sans-serif;
+  --font-display:  'Sansita', sans-serif;
   --font-body:     'Kelvinch', 'Noto Serif', serif;
 
   --transition:     0.22s ease;
@@ -462,7 +676,7 @@ body.lb-active { overflow: hidden; }
   border-color: var(--border-accent);
 }
 
-/* Top purport button — green tint to stand out from other icon buttons */
+/* --> Top purport button — green tint to stand out from other icon buttons
 .lb-purport-top-btn {
   color:        #4caf7d;
   border-color: rgba(76, 175, 125, 0.35);
@@ -472,15 +686,15 @@ body.lb-active { overflow: hidden; }
   background:   rgba(76,175,125,0.12);
   color:        #6fcf97;
   border-color: rgba(76,175,125,0.55);
-}
+} */
 
-/* Active state — when purport is showing */
+/* --> Active state — when purport is showing
 .lb-icon-btn.active {
   background:   var(--accent-glow);
   color:        var(--accent);
   border-color: var(--border-accent);
   font-weight:  700;
-}
+} */
 
 /* Font-size buttons */
 .lb-font-btn {

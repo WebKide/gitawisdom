@@ -90,7 +90,7 @@ async function loadChapterData(chapter) {
   if (_chapterCache[chapter]) return _chapterCache[chapter];
 
   const pad  = String(chapter).padStart(2, '0');
-  const url  = `gita/bg_ch${pad}.json`;
+  const url  = `assets/gita/bg_ch${pad}.json`;
   const resp = await fetch(url);
 
   if (!resp.ok) throw new Error(`Chapter ${chapter} data not found (HTTP ${resp.status})`);
