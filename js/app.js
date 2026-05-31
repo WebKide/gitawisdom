@@ -246,7 +246,7 @@ function applyLightboxBranding() {
 
     // show COPY / SHARE buttons from card view
     dom.lbCopyBtn.style.display  = 'none';
-    dom.lbShareBtn.style.display = 'none';
+    dom.lbShareBtn.style.display = '';
   } else {
     dom.lbAuthorIcon.src = 'assets/images/ACBhaktivedantaSwami.png';
     dom.lbAuthorIcon.alt = 'A.C. Bhaktivedānta Swami';
@@ -255,7 +255,7 @@ function applyLightboxBranding() {
 
     dom._lbAuthorRef = dom.lbAuthorTitle.querySelector('b');
 
-    // hide COPY / SHARE buttons from card view
+    // both COPY and SHARE visible for Gita
     dom.lbCopyBtn.style.display  = '';
     dom.lbShareBtn.style.display = '';
   }
@@ -385,9 +385,9 @@ function renderVerse() {
         .map(p => `<p>${escHtml(p.replace(/\n/g, ' ').trim())}</p>`)
         .join('');
 
-    // Hide Copy/Share in purport view regardless of content
+    // Hide Copy in purport view; hide Share only for Gita purport view
     dom.lbCopyBtn.style.display  = 'none';
-    dom.lbShareBtn.style.display = 'none';
+    dom.lbShareBtn.style.display = state.mode === 'iching' ? '' : 'none';
     dom.lbTextNum.style.display = '';       // show TEXT in purport view
     } else {
       // Random fallback message
@@ -425,11 +425,11 @@ function renderVerse() {
     // --> dom.lbPurportBtn.classList.remove('active');
     dom.lbTextNum.style.display = 'none';  // hide TEXT in verse view
 
-    // Only restore if gita mode (iching never shows COPY / SHARE)
+    // Restore COPY for Gita only; SHARE for both modes
     if (state.mode === 'gita') {
       dom.lbCopyBtn.style.display  = '';
-      dom.lbShareBtn.style.display = '';
     }
+    dom.lbShareBtn.style.display = '';
   }
 
   // Update bottom buttons for current mode/state
