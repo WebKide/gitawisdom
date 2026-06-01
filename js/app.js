@@ -122,6 +122,12 @@ const dom = {
   // Share / Copy
   lbCopyBtn:        document.getElementById('lb-copy-btn'),
   lbShareBtn:       document.getElementById('lb-share-btn'),
+
+  // Share PNG card elements
+  sharePngCard:      document.getElementById('share-png-card'),
+  sharePngTitle:     document.querySelector('.share-png-title'),
+  sharePngVerse:     document.querySelector('.share-png-verse'),
+  sharePngFooter:    document.querySelector('.share-png-footer'),
 };
 
 // ─── Error helpers ────────────────────────────────────────────────────────────
@@ -303,6 +309,12 @@ function updateBottomButtons() {
  *   Bottom "Return to Verse/Hexagram" button
  */
 function renderVerse() {
+  // ── Reset action buttons to their default labels on every render ──────────
+  dom.lbShareBtn.textContent = 'SHARE';
+  dom.lbShareBtn.disabled    = false;
+  dom.lbCopyBtn.textContent  = 'COPY';
+  dom.lbCopyBtn.disabled     = false;
+
   const isGita   = state.mode === 'gita';
   const verseData = isGita ? state.verseData : state.hexData;
   const ref       = isGita ? state.verseRef  : state.hexRef;
@@ -388,7 +400,7 @@ function renderVerse() {
     // Hide Copy in purport view; hide Share only for Gita purport view
     dom.lbCopyBtn.style.display  = 'none';
     dom.lbShareBtn.style.display = state.mode === 'iching' ? '' : 'none';
-    dom.lbTextNum.style.display = '';       // show TEXT in purport view
+    dom.lbTextNum.style.display  = '';       // show TEXT in purport view
     } else {
       // Random fallback message
       const pool     = isGita ? NO_PURPORT : NO_COMMENTARY;
@@ -644,35 +656,124 @@ async function goPrev() {
   }
 }
 
+// ─── Share PNG helpers ────────────────────────────────────────────────────────
+
+/**
+ * Build the PNG download filename based on current mode and verse/hexagram.
+ * Gita single:  wisdom_oracle_gita_17_1.png
+ * Gita grouped: wisdom_oracle_gita_17_26-27.png
+ * iChing:       wisdom_oracle_iching_hexagram_05.png
+ */
+function buildShareFilename() {
+  if (state.mode === 'iching') {
+    const n      = parseInt(String(state.hexRef).split('-')[0], 10);
+    const padded = String(n).padStart(2, '0');
+    return `wisdom_oracle_iching_hexagram_${padded}.png`;
+  }
+  return `wisdom_oracle_gita_${state.chapter}_${state.verseRef}.png`;
+}
+
+/**
+ * Resizes the share card verse text to fill the safe area as generously as
+ * possible without overflowing.
+ *
+ * Strategy:
+ *   1. Start at MAX_SIZE and shrink until scrollHeight ≤ MAX_HEIGHT.
+ *   2. If the text is still very short (< 55% of MAX_HEIGHT), grow back up
+ *      one step at a time, stopping before overflow.
+ *   3. Set line-height after size is finalised — tighter for large text.
+ *
+ * NOTE: the share card sits at left:-9999px but is display:flex, so
+ * scrollHeight reads are valid as long as width is fixed (1080px in CSS).
+ */
+function fitShareText() {
+  const MAX_HEIGHT = 850;   // px — safe content area
+  const MIN_SIZE   = 18;    // px — readable floor
+  const MAX_SIZE   = 100;   // px — ceiling for short verses
+  const STEP       = 2;     // px per iteration
+  const GROW_FLOOR = 0.55;  // grow back if text occupies less than 55% of area
+
+  const textEl  = dom.sharePngVerse;
+  const titleEl = dom.sharePngTitle;
+
+  // ── Derive title’s current font size and set verse ceiling below it ───────
+  // getComputedStyle reads the actual rendered px value, even if set via CSS
+  // class or custom property.  The title must already be in the DOM and
+  // visible (position:fixed off-screen counts) for this to be accurate.
+  const titlePx      = parseFloat(getComputedStyle(titleEl).fontSize) || 68;
+  const TITLE_GAP    = 8;   // px — minimum size difference between title and verse
+  const verseCeiling = Math.min(MAX_SIZE, titlePx - TITLE_GAP);
+  // e.g. title = 68px → verseCeiling = min(100, 60) = 60px
+  // e.g. title = 48px → verseCeiling = min(100, 40) = 40px
+
+  // ── Phase 1: shrink from verseCeiling until it fits ───────────────────────
+  let size = verseCeiling;
+  textEl.style.lineHeight = '1.35';
+  textEl.style.fontSize   = `${size}px`;
+
+  while (textEl.scrollHeight > MAX_HEIGHT && size > MIN_SIZE) {
+    size -= STEP;
+    textEl.style.fontSize = `${size}px`;
+  }
+
+  // ── Phase 2: grow back if the verse is short ──────────────────────────────
+  if (textEl.scrollHeight < MAX_HEIGHT * GROW_FLOOR) {
+    while (size < verseCeiling) {   // ← cap is verseCeiling, not MAX_SIZE
+      size += STEP;
+      textEl.style.fontSize = `${size}px`;
+      if (textEl.scrollHeight > MAX_HEIGHT) {
+        size -= STEP;
+        textEl.style.fontSize = `${size}px`;
+        break;
+      }
+    }
+  }
+
+  // ── Phase 3: finalise line-height based on settled size ───────────────────
+  textEl.style.lineHeight = size > 60 ? '1.35' : '1.55';
+}
+
 // ─── Copy / Share helpers ─────────────────────────────────────────────────────
 
+/**
+ * Builds plain-text copy string.
+ * Uses oracle-appropriate heading ("Gītā Wisdom" vs "I Ching Oracle").
+ */
 function buildShareText(includeUrl = false) {
   const heading     = dom.lbChapterHeading.textContent.trim();
   const translation = dom.lbTranslation.textContent.trim();
-  const text        = `Gītā Wisdom — ${heading}:\n\n${translation}`;
+  const label       = state.mode === 'iching' ? 'I Ching Oracle' : 'Gītā Wisdom';
+  const text        = `${label} — ${heading}:\n\n${translation}`;
   return includeUrl ? `${text}\n\n${window.location.href}` : text;
 }
 
+/**
+ * Briefly swaps a button’s label to give visual feedback, then restores it.
+ * @param {HTMLButtonElement} btn
+ * @param {string} label  — temporary label (e.g. "✓ COPIED")
+ */
 function flashBtn(btn, label) {
-  // Briefly changes button label to give visual feedback, then restores it
-  const original = btn.textContent;
-  btn.textContent = label;
-  btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = original;
-    btn.disabled = false;
-  }, 1800);
+  const original    = btn.textContent;
+  btn.textContent   = label;
+  btn.disabled      = true;
+  return new Promise(resolve => {
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.disabled    = false;
+      resolve();
+    }, 1800);
+  });
 }
 
 async function handleCopy() {
-  const text = buildShareText(true);  // includes homepage URL
+  const text = buildShareText(true); // includes homepage URL
   try {
     await navigator.clipboard.writeText(text);
     flashBtn(dom.lbCopyBtn, '✓ COPIED');
   } catch {
-    // Fallback for HTTP / older browsers
-    const ta = document.createElement('textarea');
-    ta.value = text;
+    // Fallback for HTTP or older browsers that lack clipboard API
+    const ta          = document.createElement('textarea');
+    ta.value          = text;
     ta.style.position = 'fixed';
     ta.style.opacity  = '0';
     document.body.appendChild(ta);
@@ -683,27 +784,111 @@ async function handleCopy() {
   }
 }
 
+/**
+ * Captures the hidden share card as a PNG and either invokes the native
+ * share sheet (mobile) or triggers a direct download (desktop).
+ */
 async function handleShare() {
-  const text = buildShareText(false);  // plain text only, no URL
-  if (navigator.share) {
-    try {
-      await navigator.share({ text });
-    } catch (err) {
-      // User cancelled — do nothing
-      if (err.name !== 'AbortError') flashBtn(dom.lbShareBtn, '✗ ERROR');
-    }
-  } else {
-    // Share API not available — fall back to clipboard copy, signal in button
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity  = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    flashBtn(dom.lbShareBtn, '✓ COPIED');
+  // Guard — html2canvas must be loaded globally by html2canvas.min.js
+  if (typeof html2canvas !== 'function') {
+    flashBtn(dom.lbShareBtn, '✗ ERROR');
+    return;
   }
+
+  // ── Populate share card content ───────────────────────────────────────────
+  // Title: insert line break before "(BG …)" reference for Gita cards
+  dom.sharePngTitle.innerHTML = dom.lbChapterHeading.textContent
+    .replace(' (BG ', '<br/>(BG ');
+
+  // Body: translation / judgment text (curly quotes already added by renderVerse)
+  dom.sharePngVerse.textContent = dom.lbTranslation.textContent;
+
+  // Fit text to card — must happen before html2canvas reads the DOM
+  fitShareText();
+
+  // Footer: anchor to bottom-left of the card (card is position:relative)
+  dom.sharePngFooter.style.position = 'absolute';
+  dom.sharePngFooter.style.bottom   = '52px';
+  dom.sharePngFooter.style.left     = '952px';
+
+  // ── Capture ───────────────────────────────────────────────────────────────
+  // Helper that resets all inline styles — called after every path
+  function resetShareCard() {
+    dom.sharePngVerse.style.fontSize   = '';
+    dom.sharePngVerse.style.lineHeight = '';
+    dom.sharePngFooter.style.position  = '';
+    dom.sharePngFooter.style.bottom    = '';
+    dom.sharePngFooter.style.left      = '';
+  }
+
+  flashBtn(dom.lbShareBtn, '⏳ ...');
+
+  try {
+    const canvas = await html2canvas(dom.sharePngCard, {
+      scale:           2,       // 2× for sharp output on high-DPI screens
+      useCORS:         false,   // all assets are local — no CORS needed
+      allowTaint:      false,
+      backgroundColor: null,    // transparent — lets card_bg.png show through
+      logging:         false,   // silence console noise
+      width:           1080,
+      height:          1350,
+    });
+
+    const filename = buildShareFilename();
+
+    // ── Mobile: native share sheet with PNG file ──────────────────────────
+    if (navigator.canShare && navigator.share) {
+      canvas.toBlob(async (blob) => {
+        // toBlob is a callback — reset styles here, after canvas is captured
+        resetShareCard();
+
+        if (!blob) { triggerDownload(canvas, filename); return; }
+
+        const file = new File([blob], filename, { type: 'image/png' });
+
+        if (navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({ files: [file] });
+            await flashBtn(dom.lbShareBtn, '✓ SHARED');
+          } catch (err) {
+            // AbortError = user dismissed the sheet — not a real error
+            if (err.name !== 'AbortError') triggerDownload(canvas, filename);
+            else await flashBtn(dom.lbShareBtn, 'SHARE');
+          }
+        } else {
+          // Share API present but files not supported — fall back to download
+          triggerDownload(canvas, filename);
+        }
+      }, 'image/png');
+
+    } else {
+      // ── Desktop: direct PNG download ─────────────────────────────────────
+      triggerDownload(canvas, filename);
+      resetShareCard(); // safe to reset immediately on the synchronous path
+    }
+
+  } catch (err) {
+    // html2canvas itself threw — log and surface to user
+    console.error('Share PNG failed:', err);
+    await flashBtn(dom.lbShareBtn, '✗ ERROR');
+    resetShareCard(); // always clean up on error
+  }
+  // NOTE: no finally block — resetShareCard() is called on every individual
+  // path above so that the async toBlob callback path is covered correctly.
+}
+
+/**
+ * Fallback: trigger a direct PNG file download in the browser.
+ * Used on desktop or when the native share API cannot handle files.
+ * @param {HTMLCanvasElement} canvas
+ * @param {string} filename
+ */
+async function triggerDownload(canvas, filename) {
+  const link    = document.createElement('a');
+  link.download = filename;
+  link.href     = canvas.toDataURL('image/png');
+  link.click();
+  await flashBtn(dom.lbShareBtn, '✓ SAVED');
 }
 
 // ─── Purport / commentary toggle ─────────────────────────────────────────────

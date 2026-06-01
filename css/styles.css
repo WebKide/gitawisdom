@@ -155,24 +155,6 @@
   src: url('../assets/fonts/noto-serif-v33-latin-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
-/* sansita-regular - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Sansita';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../assets/fonts/sansita-v12-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* sansita-italic - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Sansita';
-  font-style: italic;
-  font-weight: 400;
-  src: url('../assets/fonts/sansita-v12-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
 /* sansita-700 - latin */
 @font-face {
   font-display: swap;
@@ -270,12 +252,16 @@
 
   /* Typefaces */
   --font-display:  'Sansita', sans-serif;
-  --font-body:     'Kelvinch', 'Noto Serif', serif;
+  --font-body:     'Kelvinch', serif;
+  --font-text:     'Noto Serif', serif;
 
   --transition:     0.22s ease;
 
   /* In-reader font size — controlled by JS font-size buttons */
-  --lb-font-size:  16px;
+  --lb-font-size:   16px;
+
+  /* Share PNG footer font size */
+  --share-footer-font-size: 24px;
 }
 
 /* ─── Reset / base ───────────────────────────────────────────────────────── */
@@ -290,7 +276,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family:            var(--font-body);
+  font-family:            var(--font-text);
   font-size:              16px;
   background-color:       var(--bg-base);
   color:                  var(--text-primary);
@@ -856,7 +842,7 @@ body.lb-active { overflow: hidden; }
 
 /* ─── Purport / commentary section ──────────────────────────────────────── */
 .lb-purport-dedicatory-top {
-  font-family:   var(--font-body);
+  font-family:   var(--font-text);
   font-style:    italic;
   font-size:     calc(var(--lb-font-size) * 0.82);
   color:         var(--text-secondary);
@@ -866,7 +852,7 @@ body.lb-active { overflow: hidden; }
 }
 
 .lb-purport-dedicatory {
-  font-family:   var(--font-body);
+  font-family:   var(--font-text);
   font-style:    normal;
   font-size:     calc(var(--lb-font-size) * 0.82);
   color:         var(--text-secondary);
@@ -1030,12 +1016,63 @@ body.lb-active { overflow: hidden; }
 .page-footer p {
   font-size:   0.8rem;
   color:       var(--text-muted);
-  font-style:  italic;
+  font-style:  normal;
+  font-family: var(--font-text);
   line-height: 1.5;
 }
 
 .page-footer a { color: var(--accent); text-decoration: none; opacity: 0.8; }
 .page-footer a:hover { opacity: 1; }
+
+/* ─── Share image template ───────────────────────────────────────────────── */
+#share-png-card {
+  position:            fixed;
+  left:                -9999px;
+  top:                 0;
+  width:               1080px;
+  height:              1350px;
+  padding:             80px 100px;
+  background-color:    var(--bg-card);
+  background-image:    url('../assets/images/card_bg.png');
+  background-size:     cover;
+  background-position: center;
+  background-repeat:   no-repeat;
+  color:               var(--text-primary);
+  font-family:         var(--font-body);
+  display:             flex;
+  flex-direction:      column;
+  justify-content:     center;
+  align-items:         center;
+  text-align:          center;
+  box-sizing:          border-box;
+  --share-verse-size:  120px;
+}
+
+.share-png-title {
+  font-size:     60px;
+  font-weight:   bold;
+  color:         var(--accent);
+  margin-bottom: 40px;
+  line-height:   1.3;
+  width:         100%;
+}
+
+.share-png-verse {
+  font-size:     var(--share-verse-size);    /* change this line */
+  line-height:   1.5;
+  margin-bottom: 60px;
+  max-height:    950px;      /* safety boundary for JS measurement */
+  overflow:      hidden;     /* hide anything that escapes during measurement */
+  width:         100%;
+}
+
+.share-png-footer {
+  font-size:   var(--share-footer-font-size);
+  font-family: var(--font-text);
+  font-style:  italic;
+  color:       var(--text-secondary);
+  opacity:     0.7;
+}
 
 /* ─── Custom dropdown ────────────────────────────────────────────────────── */
 .custom-select {
@@ -1055,7 +1092,7 @@ body.lb-active { overflow: hidden; }
   border:          1px solid #5a3e1a;
   border-radius:   var(--radius);
   color:           var(--text-primary);
-  font-family:     var(--font-body);
+  font-family:     var(--font-text);
   font-size:       0.95rem;
   cursor:          pointer;
   text-align:      left;
