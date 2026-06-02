@@ -324,6 +324,7 @@ body {
   display:               block;
   margin:                0 auto 16px;
   width:                 100%;      /* responsive width */
+  padding-top: 50px;
   max-width:             360px;     /* optional, caps max size */
   height:                auto;      /* maintain aspect ratio */
   filter:                drop-shadow(0 0 18px rgba(245,166,35,0.4));
@@ -467,10 +468,18 @@ body.lb-active #top-nav { opacity: 0; pointer-events: none; }
 .top-nav-icon {
   width:         209px;
   height:        28.5px;
+  border-radius: 0;
   object-fit:    cover;
   flex-shrink:   0;
   opacity:       0;
   transition:    opacity 0.4s ease;
+}
+
+@media (max-width: 520px) {
+  .top-nav-icon {
+    width:  104px;
+    height: 14px;
+  }
 }
 
 .top-nav-icon.visible { opacity: 0.7; }

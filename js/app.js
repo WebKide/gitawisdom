@@ -1134,11 +1134,13 @@ applyFontSize();
   const navIcon = document.querySelector('.top-nav-icon');
   if (!banner || !navIcon) return;
 
+  // Show nav icon always
+  navIcon.classList.add('visible');
+
   const observer = new IntersectionObserver(
     ([entry]) => {
-      const visible = entry.isIntersecting;
-      banner.style.opacity  = visible ? '1' : '0';
-      navIcon.classList.toggle('visible', !visible);
+      // Only fade the banner, never hide the nav icon
+      banner.style.opacity  = entry.isIntersecting ? '1' : '0';
     },
     { threshold: 0.2 }
   );
