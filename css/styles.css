@@ -446,7 +446,7 @@ body {
   top:          0;
   left:         0;
   right:        0;
-  z-index:      900;
+  z-index:      1999;
   background:   #18191c;
   border-bottom: 1px solid rgba(255,255,255,0.10);
   padding:      10px 20px;
@@ -1205,7 +1205,7 @@ body.lb-active { overflow: hidden; }
 
 .custom-select.open { z-index: 1200; }
 
-.search-panel { position: relative; z-index: 900; }
+.search-panel { position: relative; z-index: 600; }
 .intro        { position: relative; z-index: 1; }
 
 .custom-select-trigger {
@@ -1280,7 +1280,7 @@ body.lb-active { overflow: hidden; }
   box-shadow:    var(--shadow-card);
   list-style:    none;
   padding:       4px 0;
-  z-index:       1100;
+  z-index:       460;
 }
 
 .custom-select.open .custom-select-list {
