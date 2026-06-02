@@ -465,9 +465,8 @@ body.lb-active #top-nav { opacity: 0; pointer-events: none; }
 }
 
 .top-nav-icon {
-  width:         28px;
-  height:        28px;
-  border-radius: 50%;
+  width:         209px;
+  height:        28.5px;
   object-fit:    cover;
   flex-shrink:   0;
   opacity:       0;
@@ -653,7 +652,7 @@ body.lb-active #top-nav { opacity: 0; pointer-events: none; }
   display:         none;
   position:        fixed;
   inset:           0;
-  z-index:         1000;
+  z-index:         1900;
   align-items:     flex-start;
   justify-content: center;
   padding:         24px 16px 40px;
@@ -1204,6 +1203,11 @@ body.lb-active { overflow: hidden; }
   z-index:  300;
 }
 
+.custom-select.open { z-index: 1200; }
+
+.search-panel { position: relative; z-index: 900; }
+.intro        { position: relative; z-index: 1; }
+
 .custom-select-trigger {
   display:         flex;
   align-items:     center;
@@ -1241,7 +1245,7 @@ body.lb-active { overflow: hidden; }
 
 .custom-select.open .custom-select-arrow { transform: rotate(180deg); }
 
-/* Dropdown list — opens upward to avoid overlap with oracle button below */
+/* Dropdown list — opens upward to avoid overlap with oracle button below
 .custom-select-list {
   display:       none;
   position:      absolute;
@@ -1258,6 +1262,25 @@ body.lb-active { overflow: hidden; }
   list-style:    none;
   padding:       4px 0;
   z-index:       400;
+} */
+
+/* Dropdown list — opens centered for ease of use */
+.custom-select-list {
+  display:       none;
+  position:      fixed;
+  top:           50%;
+  left:          50%;
+  transform:     translate(-50%, -50%);
+  width:         min(340px, 90vw);
+  max-height:    60vh;
+  overflow-y:    auto;
+  background:    var(--bg-card);
+  border:        1px solid var(--border-accent);
+  border-radius: var(--radius);
+  box-shadow:    var(--shadow-card);
+  list-style:    none;
+  padding:       4px 0;
+  z-index:       1100;
 }
 
 .custom-select.open .custom-select-list {
@@ -1306,6 +1329,30 @@ body.lb-active { overflow: hidden; }
 
 .custom-select-list::-webkit-scrollbar       { width: 4px; }
 .custom-select-list::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
+
+.custom-select-backdrop {
+  display:  none;
+  position: fixed;
+  inset:    0;
+  z-index:  1099;
+}
+
+.custom-select.open .custom-select-backdrop { display: block; }
+
+/* Scrollbar track (background behind the thumb) */
+::-webkit-scrollbar-track {
+  background: var(--bg-card);
+}
+
+/* Scrollbar itself (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background-color: var(--bg-input);  /* thumb color */
+  border-radius:    10px;              /* rounded corners */
+  border:           2px solid #2b2d31; /* optional border */
+}
+
+/* Scrollbar color for Firefox */
+* { scrollbar-color: var(--bg-card) var(--bg-input); }
 
 /* ─── Verse / hexagram input field ──────────────────────────────────────── */
 .verse-field {
