@@ -1,38 +1,90 @@
-# [gitawisdom](https://webkide.github.io/gitawisdom/)
-Find instant wisdom, clarity, and emotional strength for everyday parenting challenges.
+<div align="center">
+   <img src="https://github.com/WebKide/gitawisdom/blob/main/assets/images/gitawisdom.svg" alt="project logo" width="360" />
+</div>
 
-## About Wisdom Oracle
+------
 
-**Wisdom Oracle** is an inspirational reading web app that brings together two timeless sources of wisdom:
+<div align="center">
+   <img src="https://img.shields.io/badge/Project-By%20WebKide-black.svg?style=popout&logo=github&logoColor=white" alt="Author" />
+   <img src="https://img.shields.io/badge/Made%20with-JavaScript-blue.svg?style=popout&logo=javascript&logoColor=yellow" alt="JavaScript" />
+   <img src="https://img.shields.io/badge/Library-html2canvas-yellow?style=popout" alt="html2canvas" />
+   <img src="https://img.shields.io/badge/Data-LocalJSON-%234ea94b.svg?style=popout&logo=git&logoColor=white" alt="Local JSON" />
+</div>
 
-* **The Bhagavad Gītā As It Is** — 1972 Unabridged Edition (Macmillan)
-* **The I Ching / Book of Changes** — Richard Wilhelm translation
+<div align="center">
+   <img src="http://forthebadge.com/images/badges/built-with-love.svg?style=for-the-badge" alt="built with love" />
+   <img src="http://forthebadge.com/images/badges/made-with-crayons.svg?style=for-the-badge" alt="made with crayons">
+</div>
 
-This app lets you explore both oracles with a **random verse or hexagram**, or look up specific chapters and numbers. Its clean, dark-themed interface emphasizes readability and ease of use, with no ads or distractions.
+<div align="center">
+   <h1>「✦ Wisdom Oracle ✦」</h1>
+</div>
 
-### Key Features
+Find instant wisdom, clarity, and emotional strength for everyday parenting challenges. Explore timeless teachings from the **Bhagavad Gītā** and **I Ching**, rendered in a clean, dark-themed web app that works fully offline.
 
-* **Fully offline after initial load** — once the content is cached, the app works without an internet connection. Perfect for use in airplane mode or areas with poor signal, or when you do not wish the distraction of Push-notifications.
-* **Auto-updates in the background** — the service worker fetches the latest content and improvements automatically to keep you up to date.
-* **Share or copy** any verse or hexagram directly from the app.
-* * **Share Image** of any verse to any social media platform (Gītā support only).
+![Example]()
 
-### Technical Details
+## 🗃️ Features
 
-* **Developer:** [WebKide](https://webkide.github.io/gitawisdom/)
-* **Libraries used:** [`html2canvas.min.js`](https://html2canvas.hertzen.com/) (for generating shareable PNG cards)
-* **Data source:** Text from Bhagavad Gītā and I Ching JSON files stored locally in the app
-* **Repository:** [GitHub: WebKide/gitawisdom](https://github.com/WebKide/gitawisdom/tree/main)
-* **Live URL:** [https://webkide.github.io/gitawisdom](https://webkide.github.io/gitawisdom)
+- **Random Oracle Readings** - Get a verse from the Bhagavad Gītā or a hexagram from the I Ching at random.
+- **Lookup by Chapter or Number** - Search specific chapters and verse numbers or hexagram numbers.
+- **Share Text or Image** - Share verses as plain text or as a ready-made social media-friendly PNG.
+- **Fully Offline** - Works completely offline after the initial load.
+- **Auto-Updates** - Service worker fetches new content and improvements automatically.
+- **Ad-Free** - No data collection, no accounts required, free to use.
 
-### Notes
+## 📦 Installation
 
-* The app runs entirely in your browser; **no accounts or personal data are required**.
-* Ads-free: The app doesn’t collect any data, it doesn’t share data with third parties, and is free to use.
-* **Responsive design** ensures a smooth experience on desktop and mobile devices.
-* Each Gītā Wisdom verse is rendered in a **shareable image format**, suitable for social media.
-* Gītā Wisdom and iChing Oracle support sharing text to send as message.
-* The app uses modern PWA features to behave like a native app on your device, including **home screen installation** and offline caching.
-* Submit bugs and request by opening an issue here, or contact the developer.
+### Android (Chrome):
 
+1. Open [WisdomOracle](https://webkide.github.io/gitawisdom) in **Chrome Browser**.
+2. Tap the three-dot menu (⋮) top right.
+3. Tap **"Add to Home screen"**.
+4. Confirm the name and tap **Add**.
+5. The app icon appears on your home screen and works offline.
 
+### iPhone (Safari):
+
+1. Open [WisdomOracle](https://webkide.github.io/gitawisdom) in **Safari**.
+2. Tap the **Share button** (the box with an arrow pointing up).
+3. Scroll down and tap **"Add to Home Screen"**.
+4. Confirm the name and tap **Add**.
+5. The app icon appears on your home screen and works offline.
+
+---
+
+## 📖 Usage
+
+- Explore random verses or hexagrams.
+- Lookup specific chapters/hexagrams.
+- Tap **Share** to copy text or generate a social media-ready PNG.
+- Works offline after initial load, even in airplane mode.
+
+### 🔰 Behavior
+
+- All content is rendered locally from JSON files.
+- Gītā verses are displayed with proper formatting for easy readability.
+- PNG share cards are generated with the verse text, title, and background image.
+- Service worker ensures offline functionality and background updates.
+
+## 🌟 FOSS and Privacy
+
+**Wisdom Oracle** is a free and open-source project (FOSS). This means all the code and content are publicly available, so anyone can inspect, modify, or contribute. No accounts or subscriptions are required to use the app, and it does not collect, track, or share any personal data.
+
+Your privacy matters. The idea that **“if you have nothing to hide, you have nothing to fear”** is often used as a slogan to justify surveillance. In reality, it is a form of propaganda designed to strip people of their personal liberties and freedoms. True privacy and autonomy are fundamental rights, not privileges.
+
+By keeping **Wisdom Oracle** offline-capable and free from tracking, the app gives you the freedom to explore wisdom without surrendering your personal information.
+
+## 🛠️ Support
+
+For issues or feature requests, please open an issue on [GitHub](https://github.com/WebKide/gitawisdom/tree/main).
+
+---
+
+### ✨ Technical Details
+
+- **Developer:** [WebKide](https://webkide.github.io/gitawisdom/)
+- **Libraries used:** [`html2canvas.min.js`](https://html2canvas.hertzen.com/)
+- **Data source:** Bhagavad Gītā As It Is (1972 Unabridged Edition, Macmillan) and I Ching JSON files
+- **Repository:** [GitHub: WebKide/gitawisdom](https://github.com/WebKide/gitawisdom/tree/main)
+- **Live URL:** [https://webkide.github.io/gitawisdom](https://webkide.github.io/gitawisdom)
