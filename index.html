@@ -22,8 +22,26 @@
 
 <body>
 
+<!-- ═══════════════════════════════════ NAVIGATION ════════════════════════════ -->
+<nav id="top-nav" aria-label="Main navigation">
+  <div class="top-nav-inner">
+    <img
+      src="assets/images/ACBhaktivedantaSwami.png"
+      alt="Wisdom Oracle"
+      class="top-nav-icon"
+      width="28" height="28"
+      aria-hidden="true"
+    />
+    <div class="top-nav-links">
+      <a href="#gita-section" class="top-nav-btn top-nav-btn--oracle">Oracle</a>
+      <a href="#usage-section" class="top-nav-btn">Usage</a>
+      <a href="#about-section" class="top-nav-btn">About</a>
+    </div>
+  </div>
+</nav>
+
 <!-- ═══════════════════════════════════ LANDING PAGE ════════════════════════════ -->
-<main class="page-wrap">
+<main class="page-wrap" id="gita-section">
 
   <!-- ── Banner ── -->
   <header class="banner fade-in">
@@ -37,37 +55,21 @@
     <p class="banner-subtitle">Find wisdom, clarity, and emotional strength for everyday challenges.</p>
   </header>
 
-  <div class="divider fade-in"></div>
-
   <!-- ══════════════════════════════════════════════════════════════════════════
        GITA ORACLE SECTION
   ══════════════════════════════════════════════════════════════════════════ -->
 
   <!-- ── Gita intro ── -->
-  <section class="intro fade-in" aria-label="About the Gita Oracle">
-    <p>॥&nbsp;oṁ namo nārāyaṇāya&nbsp;॥</p>
-    <ul>
-      <li>Connect with ancient tradition through the Gītā Wisdom. Every verse offers deep insights from the Bhagavad Gītā. Let this timeless guideline enlighten your path today. Use it to build self-awareness and spiritual harmony.</li>
-      <li>Click <strong>&nbsp;✦ Wisdom Oracle ✦&nbsp;</strong> to receive instant inspiration from the Bhagavad-gītā As It Is <code>1972 Unabridged Edition (Macmillan)</code></li>
-    </ul>
-  </section>
-
   <!-- ── Gita random button — SILENT: does NOT populate dropdown or input ── -->
   <!-- Clicking this button runs randomVerse() in the background only.        -->
-  <button id="gita-random-btn" class="btn btn-oracle" aria-label="Random verse — GitaWisdom">
-    ✦ &nbsp;Wisdom Oracle &nbsp;✦
-  </button>
-
-  <div class="divider fade-in"></div>
-
-  <!-- ── Gita author credit ── -->
-  <section class="intro fade-in" aria-label="About the author">
-    <p>॥ oṁ viṣṇave namaḥ ॥</p>
-    <ul>
-      <li>Bhagavad-gītā As It Is <code>1972 Unabridged Edition (Macmillan)</code></li>
-    </ul>
-    <strong>His Divine Grace A.C. Bhaktivedānta Swami Prabhupāda</strong><br />
-    the Founder-Ācārya of ISKCON and greatest exponent of<br />Kṛṣṇa consciousness in the western world.
+  <section class="intro fade-in" aria-label="About the Gita Oracle">
+    <div class="intro-inner">
+      <ul>
+        <li>Connect with ancient tradition through the Gītā Wisdom.</li>
+        <li>Click <code>&nbsp;✦ Wisdom ✦&nbsp;</code> to receive instant inspiration.</li>
+      </ul>
+      <button id="gita-random-btn" class="btn btn-oracle btn-oracle--inline" aria-label="Random verse — GitaWisdom">✦ Wisdom ✦</button>
+    </div>
   </section>
 
   <!-- ── Gita search panel ──
@@ -199,29 +201,16 @@
   ══════════════════════════════════════════════════════════════════════════ -->
 
   <!-- ── iChing intro ── -->
-  <section class="intro intro--iching fade-in" aria-label="About the iChing Oracle">
-    <p>॥&nbsp;oṁ namo bhagavate vāsudevāya&nbsp;॥</p>
-    <ul>
-      <li>Connect with ancient tradition through the iChing Oracle. Every hexagram offers deep insights from the Book of Changes. Let this timeless wisdom enlighten your path today. It is perfect for daily meditation and peaceful reflection.</li>
-      <li>Click <strong>&nbsp;✦ iChing Oracle ✦&nbsp;</strong> to receive instant inspiration from the Book of Changes — <code>Richard Wilhelm's translation of the I Ching</code></li>
-    </ul>
-  </section>
-
   <!-- ── iChing random button — SILENT: does NOT populate input ── -->
   <!-- Clicking this button runs randomHexagram() in the background only.     -->
-  <button id="iching-random-btn" class="btn btn-oracle btn-oracle--iching" aria-label="Random hexagram — iChing Oracle">
-    ✦ &nbsp;iChing Oracle &nbsp;✦
-  </button>
-
-  <div class="divider fade-in"></div>
-
-  <!-- ── iChing author credit ── -->
-  <section class="intro intro--iching fade-in" aria-label="About Richard Wilhelm">
-    <p>॥ oṁ śāntiḥ śāntiḥ śāntiḥ ॥</p>
-    <ul>
-      <li>The Book of Changes <code>Richard Wilhelm's translation of the I Ching</code></li>
-    </ul>
-    <strong>Richard Wilhelm</strong> was a German missionary and scholar who lived in China for decades. He learned from master Chinese sages to truly grasp the book's deep spiritual meaning.
+  <section class="intro fade-in" aria-label="About the Gita Oracle">
+    <div class="intro-inner">
+      <ul>
+        <li>Connect with ancient tradition through the iChing Oracle.</li>
+        <li>Click <code>&nbsp;✦ iChing Oracle ✦&nbsp;</code> to receive inspiration from the Book of Changes.</li>
+      </ul>
+      <button id="iching-random-btn" class="btn btn-oracle btn-oracle--iching" aria-label="Random hexagram — iChing Oracle">✦ iChing ✦</button>
+    </div>
   </section>
 
   <!-- ── iChing lookup panel ──
@@ -504,11 +493,126 @@
 
 </div><!-- /#lightbox -->
 
+<!-- ══════════════════════════════ USAGE OVERLAY ══════════════════════════════ -->
+<div id="usage-modal" class="lightbox" role="dialog" aria-modal="true" aria-label="How to use">
+  <div class="lb-overlay" id="usage-overlay"></div>
+  <article class="lb-card">
+    <header class="lb-header">
+      <div class="lb-author">
+        <img src="assets/images/ACBhaktivedantaSwami.png" alt="" class="lb-author-icon" width="28" height="28" />
+        <span class="lb-author-name"><strong>How to use Wisdom Oracle</strong></span>
+      </div>
+      <div class="lb-header-actions">
+        <button class="lb-close-btn" id="usage-close" title="Close" aria-label="Close">&times;</button>
+      </div>
+    </header>
+    <div class="lb-body">
+      <h3 class="lb-chapter-heading">॥ oṁ namo nārāyaṇāya ॥</h3>
+      <section aria-label="Gita Oracle usage">
+        <p class="section-label">✦ WISDOM ORACLE</p>
+        <p style="font-size:0.93rem; line-height:1.7; color:var(--text-primary); margin-bottom:12px;">
+          Connect with ancient tradition through the Gītā Wisdom. Every verse offers deep insights
+          from the Bhagavad Gītā. Let this timeless guideline enlighten your path today.
+          Use it to build self-awareness and spiritual harmony.
+        </p>
+        <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px;">
+          <li>Press <strong style="color:var(--accent);">✦ Wisdom ✦</strong> for a random verse</li>
+          <li>Or select a chapter + verse number and press <strong>Look up</strong></li>
+          <li>Inside the card: press <strong>📖 Read Purport</strong> for commentary</li>
+          <li>Navigate with <strong>← →</strong> arrows, swipe, or keyboard arrow keys</li>
+          <li>Keyboard: <kbd>P</kbd> toggle purport · <kbd>G</kbd> random Gita · <kbd>Esc</kbd> close</li>
+        </ul>
+      </section>
+      <div class="separator fade-in"></div>
+      <section aria-label="iChing Oracle usage">
+        <p class="section-label">✦ ICHING ORACLE</p>
+        <p style="font-size:0.93rem; line-height:1.7; color:var(--text-primary); margin-bottom:12px;">
+          Connect with ancient tradition through the iChing Oracle. Every hexagram offers deep
+          insights from the Book of Changes. Perfect for daily meditation and peaceful reflection.
+        </p>
+        <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px;">
+          <li>Press <strong style="color:var(--iching-border);">✦ iChing ✦</strong> or <strong>☯ Toss Coins</strong> for a random hexagram</li>
+          <li>Or enter a hexagram number (1–64) and press <strong>☯ Toss Coins</strong></li>
+          <li>Inside the card: press <strong>📖 Read Commentary</strong> for interpretation</li>
+          <li>Navigate with <strong>← →</strong> arrows, swipe, or keyboard arrow keys</li>
+          <li>Keyboard: <kbd>P</kbd> toggle commentary · <kbd>H</kbd> random iChing · <kbd>Esc</kbd> close</li>
+        </ul>
+      </section>
+      <div class="separator fade-in"></div>
+      <section aria-label="About the author">
+        <p class="section-label">📖 BHAGAVAD GĪTĀ</p>
+        <p style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary);">
+          <em>Bhagavad-gītā As It Is</em> <code style="background:rgba(255,255,255,0.08);border-radius:3px;padding:1px 5px;font-size:0.88em;color:var(--accent);">1972 Unabridged Edition (Macmillan)</code><br/><br/>
+          <strong style="color:var(--text-primary);">His Divine Grace A.C. Bhaktivedānta Swami Prabhupāda</strong><br/>
+          the Founder-Ācārya of ISKCON and greatest exponent of Kṛṣṇa consciousness in the western world.
+        </p>
+      </section>
+    </div>
+  </article>
+</div>
+
+<!-- ══════════════════════════════ ABOUT OVERLAY ══════════════════════════════ -->
+<div id="about-modal" class="lightbox" role="dialog" aria-modal="true" aria-label="About Wisdom Oracle">
+  <div class="lb-overlay" id="about-overlay"></div>
+  <article class="lb-card">
+    <header class="lb-header">
+      <div class="lb-author">
+        <img src="assets/images/ACBhaktivedantaSwami.png" alt="" class="lb-author-icon" width="28" height="28" />
+        <span class="lb-author-name"><strong>About Wisdom Oracle</strong></span>
+      </div>
+      <div class="lb-header-actions">
+        <button class="lb-close-btn" id="about-close" title="Close" aria-label="Close">&times;</button>
+      </div>
+    </header>
+    <div class="lb-body">
+      <h3 class="lb-chapter-heading">Wisdom Oracle — v1.0.3</h3>
+
+      <p class="section-label">📖 ABOUT</p>
+      <p style="font-size:0.93rem; line-height:1.7; color:var(--text-primary); margin-bottom:12px;">
+        Wisdom Oracle is a spiritual reading web app that brings together two timeless sources of wisdom:
+      </p>
+      <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px; margin-bottom:12px;">
+        <li><em>Bhagavad Gītā As It Is</em> — <code style="background:rgba(255,255,255,0.08);border-radius:3px;padding:1px 5px;font-size:0.88em;color:var(--accent);">1972 Unabridged Edition (Macmillan)</code></li>
+        <li><em>I Ching / Book of Changes</em> — <code style="background:rgba(255,255,255,0.08);border-radius:3px;padding:1px 5px;font-size:0.88em;color:var(--iching-border);">Richard Wilhelm translation</code></li>
+      </ul>
+      <p style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary);">
+        Explore both oracles with a random verse or hexagram, or look up specific chapters and numbers.
+        Clean, dark-themed interface — no ads, no distractions.
+      </p>
+
+      <div class="separator"></div>
+      <p class="section-label">✦ KEY FEATURES</p>
+      <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px;">
+        <li><strong style="color:var(--text-primary);">Fully offline</strong> — once cached, works without internet. Perfect for airplane mode.</li>
+        <li><strong style="color:var(--text-primary);">Auto-updates</strong> — service worker fetches improvements in the background.</li>
+        <li><strong style="color:var(--text-primary);">Share or copy</strong> any verse or hexagram directly from the app.</li>
+        <li><strong style="color:var(--text-primary);">Installable</strong> — add to home screen and use like a native app.</li>
+      </ul>
+
+      <div class="separator"></div>
+      <p class="section-label">⚙ TECHNICAL</p>
+      <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px;">
+        <li><strong style="color:var(--text-primary);">Developer:</strong> WebKide</li>
+        <li><strong style="color:var(--text-primary);">Library:</strong> <code style="background:rgba(255,255,255,0.08);border-radius:3px;padding:1px 5px;font-size:0.88em;color:var(--text-primary);">html2canvas.min.js</code> — shareable PNG cards</li>
+        <li><strong style="color:var(--text-primary);">Data:</strong> JSON files stored locally in the app</li>
+        <li><strong style="color:var(--text-primary);">Repository:</strong> <a href="https://github.com/WebKide/gitawisdom/tree/main" target="_blank" rel="noopener" style="color:var(--accent);">GitHub: WebKide/gitawisdom</a></li>
+        <li><strong style="color:var(--text-primary);">Live URL:</strong> <a href="https://webkide.github.io/gitawisdom" target="_blank" rel="noopener" style="color:var(--accent);">webkide.github.io/gitawisdom</a></li>
+      </ul>
+
+      <div class="separator"></div>
+      <p style="font-size:0.8rem; line-height:1.6; color:var(--text-muted); font-style:italic; text-align:center;">
+        No accounts or personal data required. Runs entirely in your browser.<br/>
+        Responsive design for desktop and mobile.
+      </p>
+    </div>
+  </article>
+</div>
+
 <!-- #share-png-card hidden from view, used for template to share PNG -->
 <div id="share-png-card">
   <h2 class="share-png-title"></h2>
   <p class="share-png-verse"></p>
-  <footer class="share-png-footer">v1.0.3</footer>
+  <footer class="share-png-footer"><p>v1.0.3</p></footer>
 </div>
 
 </body>

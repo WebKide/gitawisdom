@@ -247,9 +247,6 @@ function applyLightboxBranding() {
     dom.lbAuthorTitle.innerHTML =
       `<strong><i>I Ching</i> — Book of Changes</strong> <b id="lb-author-ref"></b>`;
 
-    // Re-cache the ref span (innerHTML replaced it)
-    dom._lbAuthorRef = dom.lbAuthorTitle.querySelector('b');
-
     // show COPY / SHARE buttons from card view
     dom.lbCopyBtn.style.display  = 'none';
     dom.lbShareBtn.style.display = '';
@@ -258,8 +255,6 @@ function applyLightboxBranding() {
     dom.lbAuthorIcon.alt = 'A.C. Bhaktivedānta Swami';
     dom.lbAuthorTitle.innerHTML =
       `<strong><i>Bhagavad Gītā</i> As It Is</strong> <b id="lb-author-ref"></b>`;
-
-    dom._lbAuthorRef = dom.lbAuthorTitle.querySelector('b');
 
     // both COPY and SHARE visible for Gita
     dom.lbCopyBtn.style.display  = '';
@@ -315,7 +310,11 @@ function renderVerse() {
   dom.lbCopyBtn.textContent  = 'COPY';
   dom.lbCopyBtn.disabled     = false;
 
-  const isGita   = state.mode === 'gita';
+  // Remove any leftover no-purport message from previous verse
+  const oldMsg = document.getElementById('lb-no-purport-msg');
+  if (oldMsg) oldMsg.remove();
+
+  const isGita    = state.mode === 'gita';
   const verseData = isGita ? state.verseData : state.hexData;
   const ref       = isGita ? state.verseRef  : state.hexRef;
 
@@ -324,12 +323,14 @@ function renderVerse() {
     const info      = BG_CHAPTER_INFO[state.chapter];
     const titlePart = info.chapter_title.split('. ').slice(1).join('. ');
     dom.lbChapterHeading.textContent = `${titlePart} (BG ${state.chapter}.${ref})`;
-    if (dom._lbAuthorRef) dom._lbAuthorRef.textContent = ` (${state.chapter}.${ref})`;
+    const authorRef = document.getElementById('lb-author-ref');
+    if (authorRef) authorRef.textContent = ` (${state.chapter}.${ref})`;
   } else {
     const n    = parseInt(String(ref).split('-')[0], 10);
     const name = HEXAGRAM_NAMES[n] ?? `Hexagram ${n}`;
     dom.lbChapterHeading.textContent = `${name} · Hexagram ${n}`;
-    if (dom._lbAuthorRef) dom._lbAuthorRef.textContent = ` · ${n}`;
+    const authorRef = document.getElementById('lb-author-ref');
+    if (authorRef) authorRef.textContent = ` · ${n}`;
   }
 
   // ── TEXT / Hexagram label ──────────────────────────────────────────────────
@@ -350,7 +351,7 @@ function renderVerse() {
   dom.lbSanskrit.innerHTML = lines.map(escHtml).join('<br />');
 
   // ── Synonyms / judgment lines ─────────────────────────────────────────────
-  const synRaw  = verseData['Word-for-Word'] ?? '';
+  const synRaw   = verseData['Word-for-Word'] ?? '';
   const synItems = isGita
     ? formatSynonyms(synRaw)
     : formatHexagramSynonyms(synRaw);
@@ -361,7 +362,7 @@ function renderVerse() {
         + `<span class="syn-dash"> — </span>`
         + `<span class="syn-meaning">${escHtml(meaning)}</span></span>`
       : `<span class="syn-item syn-plain">${escHtml(meaning)}</span>`
-  ).join('<span class="syn-sep">; </span>');
+  ).join('<span class="syn-sep">; </span>') + '<span class="syn-sep">.</span>';
 
   // ── Footer text ───────────────────────────────────────────────────────────
   dom.lbFooter.textContent = isGita
@@ -405,13 +406,14 @@ function renderVerse() {
       // Random fallback message
       const pool     = isGita ? NO_PURPORT : NO_COMMENTARY;
       const fallback = pool[Math.floor(Math.random() * pool.length)];
-      dom.lbPurport.innerHTML = `<p class="no-purport">${escHtml(fallback)}</p>`;
+      dom.lbPurport.innerHTML = '';
+      dom.lbPurport.insertAdjacentHTML('afterend', `<p id="lb-no-purport-msg" class="lb-no-purport">${escHtml(fallback)}</p>`);
     }
 
     // ← INSERT DEDICATORY .random(CLOSING) HERE
     const closing = DEDICATORY_CLOSINGS[Math.floor(Math.random() * DEDICATORY_CLOSINGS.length)];
     const dedicatoryTop = dom.lbPurportSection.querySelector('.lb-purport-dedicatory-top');
-    if (dedicatoryTop) dedicatoryTop.innerHTML = closing;
+    if (dedicatoryTop) dedicatoryTop.innerHTML = isGita ? closing : '';
 
     // Signature: show for Gita, hide for iChing
     const sig = dom.lbCard.querySelector('.lb-signature');
@@ -937,6 +939,8 @@ document.addEventListener('keydown', e => {
     case 'ArrowLeft':  e.preventDefault(); goPrev();         break;
     case 'Escape':     e.preventDefault(); closeLightbox();  break;
     case 'p': case 'P': togglePurport(); break;
+    case 'g': case 'G': closeLightbox(); setTimeout(handleGitaRandom, 80); break;
+    case 'h': case 'H': closeLightbox(); setTimeout(handleIChingRandom, 80); break;
     case '+': case '=': increaseFontSize(); break;
     case '-': decreaseFontSize(); break;
   }
@@ -1065,5 +1069,76 @@ dom.lbFontDecrease.addEventListener('click', decreaseFontSize);
   });
 })();
 
+// ─── Usage modal ──────────────────────────────────────────────────────────────
+(function initUsageModal() {
+  const modal   = document.getElementById('usage-modal');
+  const overlay = document.getElementById('usage-overlay');
+  const closeBtn = document.getElementById('usage-close');
+  const openBtn  = document.querySelector('a[href="#usage-section"]');
+
+  if (!modal || !openBtn) return;
+
+  openBtn.addEventListener('click', e => {
+    e.preventDefault();
+    modal.classList.add('open');
+    document.body.classList.add('lb-active');
+  });
+
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.classList.remove('lb-active');
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+})();
+
+// ─── About modal ──────────────────────────────────────────────────────────────
+(function initAboutModal() {
+  const modal    = document.getElementById('about-modal');
+  const overlay  = document.getElementById('about-overlay');
+  const closeBtn = document.getElementById('about-close');
+  const openBtn  = document.querySelector('a[href="#about-section"]');
+  if (!modal || !openBtn) return;
+
+  openBtn.addEventListener('click', e => {
+    e.preventDefault();
+    modal.classList.add('open');
+    document.body.classList.add('lb-active');
+  });
+
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.classList.remove('lb-active');
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+})();
+
 // Apply initial font size to card
 applyFontSize();
+
+// ─── Top nav: banner fade / icon fade on scroll ───────────────────────────
+(function initTopNav() {
+  const banner  = document.querySelector('.banner-lotus');
+  const navIcon = document.querySelector('.top-nav-icon');
+  if (!banner || !navIcon) return;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      const visible = entry.isIntersecting;
+      banner.style.opacity  = visible ? '1' : '0';
+      navIcon.classList.toggle('visible', !visible);
+    },
+    { threshold: 0.2 }
+  );
+
+  observer.observe(banner);
+})();
