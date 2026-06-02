@@ -1048,6 +1048,9 @@ dom.lbFontDecrease.addEventListener('click', decreaseFontSize);
     if (!wrap.contains(e.target)) closeList();
   });
 
+  document.getElementById('chapter-backdrop')
+      .addEventListener('click', closeList);
+
   trigger.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openList(); }
   });
