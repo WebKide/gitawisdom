@@ -1,14 +1,15 @@
 /**
  * sw.js — Wisdom Oracle Service Worker
- * Cache-first strategy for full offline support.
+ * Cache-first for static assets; stale-while-revalidate for navigation.
  * Update CACHE_VERSION to bust the cache on new deployments.
  */
 
-const CACHE_VERSION = 'wisdom-oracle-v1.0.6';
+const CACHE_VERSION = 'wisdom-oracle-v1.0.7';
 
 const ASSETS = [
   '/gitawisdom/',
-  '/gitawisdom/index.html',
+  '/gitawisdom/index.html',        // splash entry point
+  '/gitawisdom/oracle.html',       // main app (was index.html in v1.0.6)
   '/gitawisdom/site.webmanifest',
 
   // Scripts
@@ -16,9 +17,11 @@ const ASSETS = [
   '/gitawisdom/js/gitacore.js',
   '/gitawisdom/js/ichingcore.js',
   '/gitawisdom/js/html2canvas.min.js',
+  '/gitawisdom/js/splash.js',      // boot sequencer
 
   // Styles
   '/gitawisdom/css/styles.css',
+  '/gitawisdom/css/splash.css',    // splash styles
 
   // Images
   '/gitawisdom/assets/images/wisdomoracle.svg',
@@ -81,16 +84,25 @@ const ASSETS = [
   '/gitawisdom/assets/iching/iching.json',
 ];
 
-// ─── Install: cache all assets ────────────────────────────────────────────────
+// ─── Install: cache all assets, tolerate 404s ───────────────────────────────
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_VERSION)
-      .then(cache => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_VERSION).then(cache => {
+      return Promise.all(
+        ASSETS.map(url =>
+          fetch(url).then(response => {
+            if (response.ok) return cache.put(url, response);
+            console.warn('[SW] Skip caching (not ok):', url);
+          }).catch(err => {
+            console.warn('[SW] Skip caching (error):', url, err);
+          })
+        )
+      );
+    }).then(() => self.skipWaiting())
   );
 });
 
-// ─── Activate: delete old caches ─────────────────────────────────────────────
+// ─── Activate: delete old caches ────────────────────────────────────────────
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -103,13 +115,30 @@ self.addEventListener('activate', event => {
   );
 });
 
-// ─── Fetch: cache-first, network fallback ────────────────────────────────────
+// ─── Fetch: stale-while-revalidate for navigation, cache-first for rest ─────
 self.addEventListener('fetch', event => {
-  // Only handle GET requests
   if (event.request.method !== 'GET') return;
 
+  // Navigation requests (HTML pages): serve cached fast, refresh in background
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        const networkFetch = fetch(event.request).then(response => {
+          if (response && response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_VERSION).then(cache => cache.put(event.request, clone));
+          }
+          return response;
+        }).catch(() => cached);
+
+        return cached || networkFetch;
+      })
+    );
+    return;
+  }
+
+  // Everything else (images, fonts, JSON, CSS, JS): cache-first
   event.respondWith(
-    caches.match(event.request)
-      .then(cached => cached ?? fetch(event.request))
+    caches.match(event.request).then(cached => cached ?? fetch(event.request))
   );
 });

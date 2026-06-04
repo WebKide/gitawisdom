@@ -7,7 +7,7 @@
  *   2. Progress bar fills in sync with the lines.
  *   3. After the last line, logo flickers in (CRT effect via CSS class).
  *   4. Short hold, then fade-to-black overlay activates.
- *   5. Redirect to index.html once the fade is complete.
+ *   5. Redirect to oracle.html once the fade is complete.
  *
  * No dependencies. Vanilla ES5-compatible (safe for all PWA contexts).
  */
@@ -41,7 +41,7 @@
   var FADE_DURATION = 560;
 
   /* Destination after splash */
-  var DEST = 'index.html';
+  var DEST = 'oracle.html' + window.location.search + window.location.hash;
 
   /* ── DOM refs ─────────────────────────────────────────────────────────── */
   var linesContainer = document.getElementById('boot-lines');
@@ -49,7 +49,7 @@
   var logoWrap       = document.getElementById('splash-logo-wrap');
   var fadeOverlay    = document.getElementById('fade-out-cover');
 
-  /* ── Helpers ──────────────────────────────────────────────────────────── */
+  /* ── Helpers ────────────────────────────────────────────────────────────── */
   function jitter(base) {
     return base + Math.round((Math.random() * 2 - 1) * JITTER);
   }
@@ -87,7 +87,7 @@
   var cursorEl = document.createElement('span');
   cursorEl.className = 'cursor';
 
-  /* ── Sequencer ────────────────────────────────────────────────────────── */
+  /* ── Sequencer ─────────────────────────────────────────────────────────── */
   var currentIndex = 0;
   var accumulated  = 0;   /* total ms from t=0 */
 
@@ -138,7 +138,7 @@
     }, logoTime);
   }
 
-  /* ── Kick off when DOM is ready ──────────────────────────────────────── */
+  /* ── Kick off when DOM is ready ────────────────────────────────────────── */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', scheduleLines);
   } else {

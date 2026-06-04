@@ -259,8 +259,8 @@
 
   /* Typefaces */
   --font-display:  'Sansita', sans-serif;
-  --font-body:     'Kelvinch', serif;
-  --font-text:     'Noto Serif', serif;
+  --font-body:     'Noto Serif', serif;
+  --font-text:     'Kelvinch', serif;
 
   --transition:     0.22s ease;
 
@@ -1240,8 +1240,8 @@ body.lb-active { overflow: hidden; }
   justify-content: space-between;
   width:           100%;
   padding:         11px 14px;
-  background:      #2a2218;
-  border:          1px solid #5a3e1a;
+  background:      #1a1f2a;
+  border:          1px solid #1e3a5a;
   border-radius:   var(--radius);
   color:           var(--text-primary);
   font-family:     var(--font-text);
@@ -1431,4 +1431,4 @@ body.lb-active { overflow: hidden; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
 
 /* Selection highlight */
-::selection { background: var(--accent-glow); color: var(--text-heading); }
+::selection { background: rgba(245,166,35,0.25); color: var(--text-heading); }

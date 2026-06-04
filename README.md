@@ -27,7 +27,7 @@ Find instant wisdom, clarity, and emotional strength for everyday parenting chal
 
 ![Example]()
 
-## 🗃️ Features v1.0.6
+## 🗃️ Features v1.0.7
 
 - **Random Oracle Readings** - Get a verse from the Bhagavad Gītā or a hexagram from the I Ching at random.
 - **Lookup by Chapter or Number** - Search specific chapters and verse numbers or hexagram numbers.
@@ -99,6 +99,7 @@ For issues or feature requests, please open an issue on [GitHub](https://github.
 - [x] Convert iChing hexagrams to JSON
 - [x] Port code from Python (discord.py) to JavaScript
 - [x] Dark mode, responsive design for Web and Mobile
+- [x] PWA splash screen, next loads app screen
 - [x] PWA support, app can be installed and runs totally offline on iOS/Android
 - [ ] Bookmark verse/hexagram, browse bookmarks from main screen
 - [x] Share verse, generates PNG 1080px * 1350 px (4:5 ratio) compatible with socail media

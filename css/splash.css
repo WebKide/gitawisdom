@@ -14,13 +14,19 @@
 
 /* ─── Root vars (keep in sync with styles.css palette) ───────────────────── */
 :root {
-  --bg:          #0d0e10;          /* slightly deeper than app --bg-base for drama */
-  --accent:      #f5a623;          /* saffron — Gita */
+  /* Blend splash with app palette */
+  --bg:          #1e1f22;               /* match PWA --bg-base */
+  --accent:      #f5a623;               /* saffron (Gita) */
   --accent-dim:  #c07d10;
   --accent-glow: rgba(245, 166, 35, 0.22);
-  --green:       #39ff6e;          /* terminal-green for boot text */
+
+  --lilac:       #512f86;               /* from app lilac buttons */
+  --lilac-dim:   #7334d3;
+
+  --green:       #39ff6e;               /* keep for terminal flavor */
   --green-dim:   rgba(57, 255, 110, 0.55);
-  --text-muted:  #4a4d52;
+
+  --text-muted:  #5c6068;               /* match app text-muted */
   --crt-line:    rgba(255, 255, 255, 0.03);
 }
 
@@ -144,7 +150,10 @@ body::before {
   white-space: nowrap;
   overflow:   hidden;
   font-size:  0.9rem;
-  color:      var(--green-dim);
+  color:      var(--lilac-dim);
+  background: linear-gradient(90deg, var(--green-dim), var(--lilac-dim));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .boot-line.visible {
@@ -175,7 +184,7 @@ body::before {
   display:          inline-block;
   width:            9px;
   height:           1.1em;
-  background:       var(--green);
+  background:       var(--lilac);
   margin-left:      3px;
   vertical-align:   text-bottom;
   animation:        cursor-blink 0.78s step-end infinite;
@@ -215,10 +224,10 @@ body::before {
 .progress-fill {
   height:           100%;
   width:            0%;
-  background:       linear-gradient(90deg, var(--green-dim), var(--green));
+  background:       linear-gradient(90deg, var(--green-dim), var(--lilac));
   border-radius:    2px;
-  box-shadow:       0 0 10px var(--green),
-                    0 0 20px rgba(57, 255, 110, 0.4);
+  box-shadow:       0 0 10px var(--lilac),
+                    0 0 20px rgba(115, 52, 211, 0.4);
   transition:       width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -235,7 +244,7 @@ body::before {
   width:      clamp(180px, 55vw, 280px);
   height:     auto;
   filter:     drop-shadow(0 0 18px var(--accent-glow))
-              drop-shadow(0 0 6px rgba(245, 166, 35, 0.6));
+              drop-shadow(0 0 6px var(--lilac-dim));
 }
 
 .splash-tagline {

@@ -2,7 +2,7 @@
   "name": "Wisdom Oracle App",
   "short_name": "Wisdom Oracle",
   "description": "Find wisdom, clarity, and emotional strength for everyday challenges.",
-  "start_url": "/gitawisdom/splash.html",
+  "start_url": "/gitawisdom/",
   "scope": "/gitawisdom/",
   "display": "standalone",
   "orientation": "portrait",
