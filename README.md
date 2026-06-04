@@ -1,30 +1,33 @@
 <div align="center">
-   <img src="https://github.com/WebKide/gitawisdom/blob/main/assets/images/gitawisdom.svg" alt="project logo" width="360" />
+   <img src="https://github.com/WebKide/gitawisdom/blob/main/assets/images/gitawisdom.svg" alt="project logo" width="40%" />
 </div>
 
 ------
 
 <div align="center">
-   <img src="https://img.shields.io/badge/Project-By%20WebKide-black.svg?style=popout&logo=github&logoColor=white" alt="Author" />
+   <img src="https://img.shields.io/badge/Project%20by-WebKide-black.svg?style=popout&logo=github&logoColor=white" alt="Author" />
+   <img src="https://img.shields.io/github/commit-activity/t/WebKide/gitawisdom?color=%23f5a623" alt="Version" /> 
+</div>
+
+<div align="center">
    <img src="https://img.shields.io/badge/Made%20with-JavaScript-blue.svg?style=popout&logo=javascript&logoColor=yellow" alt="JavaScript" />
    <img src="https://img.shields.io/badge/Library-html2canvas-yellow?style=popout" alt="html2canvas" />
-   <img src="https://img.shields.io/badge/Data-LocalJSON-%234ea94b.svg?style=popout&logo=git&logoColor=white" alt="Local JSON" />
+   <img src="https://img.shields.io/badge/Data-LocalJSON-%234ea94b.svg?style=popout&logo=git&logoColor=white" alt="Local JSON" />  
 </div>
 
 <div align="center">
    <img src="http://forthebadge.com/images/badges/built-with-love.svg?style=for-the-badge" alt="built with love" />
-   <img src="http://forthebadge.com/images/badges/made-with-crayons.svg?style=for-the-badge" alt="made with crayons">
 </div>
 
 <div align="center">
-   <h1>「✦ Wisdom Oracle ✦」</h1>
+   <h2>「✦ Wisdom Oracle ✦」</h2>
 </div>
 
 Find instant wisdom, clarity, and emotional strength for everyday parenting challenges. Explore timeless teachings from the **Bhagavad Gītā** and **I Ching**, rendered in a clean, dark-themed web app that works fully offline.
 
 ![Example]()
 
-## 🗃️ Features
+## 🗃️ Features v1.0.6
 
 - **Random Oracle Readings** - Get a verse from the Bhagavad Gītā or a hexagram from the I Ching at random.
 - **Lookup by Chapter or Number** - Search specific chapters and verse numbers or hexagram numbers.
@@ -88,3 +91,15 @@ For issues or feature requests, please open an issue on [GitHub](https://github.
 - **Data source:** Bhagavad Gītā As It Is (1972 Unabridged Edition, Macmillan) and I Ching JSON files
 - **Repository:** [GitHub: WebKide/gitawisdom](https://github.com/WebKide/gitawisdom/tree/main)
 - **Live URL:** [https://webkide.github.io/gitawisdom](https://webkide.github.io/gitawisdom)
+
+
+### 🤔 TODOs
+
+- [x] Convert all 18 chapters of Bhagavad Gītā to JSON
+- [x] Convert iChing hexagrams to JSON
+- [x] Port code from Python (discord.py) to JavaScript
+- [x] Dark mode, responsive design for Web and Mobile
+- [x] PWA support, app can be installed and runs totally offline on iOS/Android
+- [ ] Bookmark verse/hexagram, browse bookmarks from main screen
+- [x] Share verse, generates PNG 1080px * 1350 px (4:5 ratio) compatible with socail media
+- [ ] Verse Search function to search keyword and get clickable link to verse

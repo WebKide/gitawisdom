@@ -466,13 +466,17 @@ body.lb-active #top-nav { opacity: 0; pointer-events: none; }
 }
 
 .top-nav-icon {
-  width:         209px;
-  height:        28.5px;
+  width:         202.85px;
+  height:        25px;
   border-radius: 0;
   object-fit:    cover;
   flex-shrink:   0;
   opacity:       0;
   transition:    opacity 0.4s ease;
+  -webkit-user-drag:     none;
+  -webkit-touch-callout: none;
+  user-select:           none;
+  pointer-events:        none;
 }
 
 @media (max-width: 520px) {
@@ -1161,7 +1165,7 @@ body.lb-active { overflow: hidden; }
   top:                 0;
   width:               1080px;
   height:              1350px;
-  padding:             80px 140px;
+  padding:             170px 140px 150px;
   background-color:    var(--bg-card);
   background-image:    url('../assets/images/card_bg.png');
   background-size:     cover;
@@ -1171,7 +1175,7 @@ body.lb-active { overflow: hidden; }
   font-family:         var(--font-body);
   display:             flex;
   flex-direction:      column;
-  justify-content:     center;
+  justify-content:     flex-start;
   align-items:         center;
   text-align:          center;
   box-sizing:          border-box;
@@ -1179,21 +1183,34 @@ body.lb-active { overflow: hidden; }
 }
 
 .share-png-title {
-  font-size:     60px;
-  font-weight:   bold;
-  color:         var(--accent);
-  margin-bottom: 30px;
-  line-height:   1.3;
-  width:         100%;
+  width:           800px;
+  height:          225px;
+  flex-shrink:     0;
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  font-size:       58px;
+  font-weight:     bold;
+  color:           var(--accent);
+  line-height:     1.25;
+  overflow:        visible;
+  text-align:      center;
+  margin:          0;
 }
 
 .share-png-verse {
-  font-size:     var(--share-verse-size);    /* change this line */
-  line-height:   1.5;
-  margin-bottom: 60px;
-  max-height:    850px;      /* safety boundary for JS measurement */
-  overflow:      hidden;     /* hide anything that escapes during measurement */
-  width:         100%;
+  width:           800px;
+  height:          800px;
+  flex-shrink:     0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  font-size:       var(--share-verse-size);  /* change this line */
+  line-height:     1.5;
+  overflow:        hidden;  /* hide anything that escapes during measurement */
+  text-align:      center;
+  margin:          0;
 }
 
 .share-png-footer {

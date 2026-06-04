@@ -689,50 +689,31 @@ function buildShareFilename() {
  * scrollHeight reads are valid as long as width is fixed (1080px in CSS).
  */
 function fitShareText() {
-  const MAX_HEIGHT = 850;   // px — safe content area
-  const MIN_SIZE   = 18;    // px — readable floor
-  const MAX_SIZE   = 100;   // px — ceiling for short verses
-  const STEP       = 2;     // px per iteration
-  const GROW_FLOOR = 0.55;  // grow back if text occupies less than 55% of area
+  const MAX_HEIGHT = 800;
+  const MIN_SIZE   = 14;
+  const START_SIZE = 64;
+  const STEP       = 2;
 
-  const textEl  = dom.sharePngVerse;
-  const titleEl = dom.sharePngTitle;
+  const textEl = dom.sharePngVerse;
 
-  // ── Derive title’s current font size and set verse ceiling below it ───────
-  // getComputedStyle reads the actual rendered px value, even if set via CSS
-  // class or custom property.  The title must already be in the DOM and
-  // visible (position:fixed off-screen counts) for this to be accurate.
-  const titlePx      = parseFloat(getComputedStyle(titleEl).fontSize) || 68;
-  const TITLE_GAP    = 8;   // px — minimum size difference between title and verse
-  const verseCeiling = Math.min(MAX_SIZE, titlePx - TITLE_GAP);
-  // e.g. title = 68px → verseCeiling = min(100, 60) = 60px
-  // e.g. title = 48px → verseCeiling = min(100, 40) = 40px
+  // Temporarily set height to auto so scrollHeight reads true content height.
+  // With height:800px + overflow:hidden, scrollHeight is always clamped to 800
+  // and the shrink loop never fires.
+  textEl.style.height = 'auto';
 
-  // ── Phase 1: shrink from verseCeiling until it fits ───────────────────────
-  let size = verseCeiling;
-  textEl.style.lineHeight = '1.35';
+  let size = START_SIZE;
   textEl.style.fontSize   = `${size}px`;
+  textEl.style.lineHeight = '1.4';
 
   while (textEl.scrollHeight > MAX_HEIGHT && size > MIN_SIZE) {
     size -= STEP;
     textEl.style.fontSize = `${size}px`;
   }
 
-  // ── Phase 2: grow back if the verse is short ──────────────────────────────
-  if (textEl.scrollHeight < MAX_HEIGHT * GROW_FLOOR) {
-    while (size < verseCeiling) {   // ← cap is verseCeiling, not MAX_SIZE
-      size += STEP;
-      textEl.style.fontSize = `${size}px`;
-      if (textEl.scrollHeight > MAX_HEIGHT) {
-        size -= STEP;
-        textEl.style.fontSize = `${size}px`;
-        break;
-      }
-    }
-  }
+  textEl.style.lineHeight = size > 48 ? '1.3' : size > 32 ? '1.45' : '1.6';
 
-  // ── Phase 3: finalise line-height based on settled size ───────────────────
-  textEl.style.lineHeight = size > 60 ? '1.35' : '1.55';
+  // Restore the fixed height for html2canvas capture
+  textEl.style.height = '800px';
 }
 
 // ─── Copy / Share helpers ─────────────────────────────────────────────────────
@@ -798,9 +779,12 @@ async function handleShare() {
   }
 
   // ── Populate share card content ───────────────────────────────────────────
-  // Title: insert line break before "(BG …)" reference for Gita cards
+  // Title: grey title reference, color grey and reduced font-size 32px
   dom.sharePngTitle.innerHTML = dom.lbChapterHeading.textContent
-    .replace(' (BG ', '<br/>(BG ');
+    .replace(
+      / (\(BG [^)]+\))/,   // ← insert line break before reference
+      '<br/><span style="font-size:32px;color:#949ba4;">$1</span>'
+    );
 
   // Body: translation / judgment text (curly quotes already added by renderVerse)
   dom.sharePngVerse.textContent = dom.lbTranslation.textContent;
@@ -810,14 +794,15 @@ async function handleShare() {
 
   // Footer: anchor to bottom-left of the card (card is position:relative)
   dom.sharePngFooter.style.position = 'absolute';
-  dom.sharePngFooter.style.bottom   = '52px';
-  dom.sharePngFooter.style.left     = '952px';
+  dom.sharePngFooter.style.bottom   = '100px';
+  dom.sharePngFooter.style.left     = '830px';
 
   // ── Capture ───────────────────────────────────────────────────────────────
   // Helper that resets all inline styles — called after every path
   function resetShareCard() {
     dom.sharePngVerse.style.fontSize   = '';
     dom.sharePngVerse.style.lineHeight = '';
+    dom.sharePngVerse.style.height     = '';   // ← restore to CSS value
     dom.sharePngFooter.style.position  = '';
     dom.sharePngFooter.style.bottom    = '';
     dom.sharePngFooter.style.left      = '';

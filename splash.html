@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d0e10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
+  <meta name="description" content="Wisdom Oracle — loading…" />
+  <title>Wisdom Oracle v1.0.6</title>
+
+  <!-- Favicons — same as index.html -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
+  <link rel="manifest" href="/gitawisdom/site.webmanifest" />
+
+  <!--
+    IMPORTANT — site.webmanifest:
+    Change "start_url" to "/gitawisdom/splash.html" (or "/" if splash.html is at root)
+    so that installed PWA always opens the splash first.
+  -->
+
+  <link rel="stylesheet" href="css/splash.css" />
+
+  <!--
+    Preload the app logo so the CRT flicker reveal has no image-load stutter.
+    Adjust the href if your logo lives at a different path.
+  -->
+  <link rel="preload" as="image" href="assets/images/wisdomoracle.svg" />
+
+  <!--
+    Optional: also preload the heavy share card background so the first Share
+    in app.js is instant (mirrors the hint in your implementation notes).
+  -->
+  <link rel="preload" as="image" href="assets/images/card_bg.png" />
+</head>
+
+<body>
+
+  <!-- ── Splash stage ───────────────────────────────────────────────────── -->
+  <main class="splash-wrap">
+
+    <!-- Terminal window — boot text lives here -->
+    <div class="terminal" role="status" aria-live="polite" aria-label="Loading Wisdom Oracle">
+
+      <!-- macOS-style window chrome -->
+      <div class="terminal-bar" aria-hidden="true">
+        <span class="terminal-dot"></span>
+        <span class="terminal-dot"></span>
+        <span class="terminal-dot"></span>
+        <span class="terminal-bar-title">wisdom-oracle — boot</span>
+      </div>
+
+      <!-- Boot lines injected here by splash.js -->
+      <div class="terminal-body">
+        <span id="boot-lines"></span>
+      </div>
+
+    </div><!-- /.terminal -->
+
+    <!-- Progress bar beneath terminal -->
+    <div class="progress-wrap" aria-hidden="true">
+      <span class="progress-label">initialising</span>
+      <div class="progress-track">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Logo — hidden until CRT flicker reveal -->
+    <div id="splash-logo-wrap" class="splash-logo-wrap" aria-hidden="true">
+      <img
+        src="assets/images/wisdomoracle.svg"
+        alt="Wisdom Oracle"
+        class="splash-logo"
+        draggable="false"
+        width="280"
+        height="38"
+      />
+      <span class="splash-tagline">Bhagavad Gītā &nbsp;·&nbsp; I Ching</span>
+    </div>
+
+  </main><!-- /.splash-wrap -->
+
+  <!-- Fade-to-black overlay — activated by splash.js before redirect -->
+  <div id="fade-out-cover" class="fade-out-cover" aria-hidden="true"></div>
+
+  <!-- Boot sequencer — deferred so DOM is ready -->
+  <script src="js/splash.js" defer></script>
+
+  <!-- Register service worker (same scope as index.html) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/gitawisdom/sw.js')
+        .catch(function (err) { console.warn('SW registration failed:', err); });
+    }
+  </script>
+
+</body>
+</html>
