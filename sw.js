@@ -4,7 +4,7 @@
  * Update CACHE_VERSION to bust the cache on new deployments.
  */
 
-const CACHE_VERSION = 'wisdom-oracle-v1.0.7';
+const CACHE_VERSION = 'wisdom-oracle-v1.0.8';
 
 const ASSETS = [
   '/gitawisdom/',

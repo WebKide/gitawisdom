@@ -43,17 +43,6 @@ import {
   buildIChingFooter,
 } from './ichingcore.js';
 
-import { GitaSearch } from './search.js';
-import { initSearchController } from './searchController.js';
-
-window.addEventListener('DOMContentLoaded', async () => {
-  const res = await fetch('./data/gita.json');
-  const gitaJSON = await res.json();
-
-  const searchEngine = new GitaSearch(gitaJSON);
-  initSearchController(searchEngine);
-});
-
 // ─── Application state ────────────────────────────────────────────────────────
 const state = {
   // Shared
