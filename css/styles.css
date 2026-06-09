@@ -252,6 +252,7 @@
   --border-accent: rgba(245,166,35,0.35);
   --shadow-card:   0 8px 40px rgba(0,0,0,0.55);
   --shadow-glow:   0 0 28px rgba(245,166,35,0.14);
+  --crt-line:      rgba(255,255,255,0.03);
 
   /* Radii */
   --radius:        8px;
@@ -295,6 +296,37 @@ body {
   overscroll-behavior-x: none;
   position: relative;
   width: 100%;
+}
+
+/* ─── CRT vignette — subtle edge darkening ───────────────────────────────── */
+body::before {
+  content:        '';
+  position:       fixed;
+  inset:          0;
+  z-index:        2;
+  pointer-events: none;
+  background:     radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.38) 100%
+  );
+}
+
+/* ─── CRT scanline overlay — barely-there texture ───────────────────────── */
+body::after {
+  content:        '';
+  position:       fixed;
+  inset:          0;
+  z-index:        3;
+  pointer-events: none;
+  background:     repeating-linear-gradient(
+    to bottom,
+    var(--crt-line) 0px,
+    var(--crt-line) 1px,
+    transparent    1px,
+    transparent    3px
+  );
+  opacity:        0.18;
 }
 
 /* ─── Utility ────────────────────────────────────────────────────────────── */
@@ -352,6 +384,25 @@ body {
   margin-top:     6px;
   font-style:     italic;
   letter-spacing: 0.01em;
+}
+
+/* ─── Brand icon — floats above banner-lotus ─────────────────────────────── */
+.banner-lotus-icon {
+  position:              absolute;
+  top:                   10px;
+  left:                  50%;
+  transform:             translateX(-50%);
+  width:                 65px;
+  height:                65px;
+  border-radius:         50%;
+  object-fit:            cover;
+  border:                1.5px solid rgba(245, 166, 35, 0.35);
+  box-shadow:            0 0 14px rgba(245, 166, 35, 0.18);
+  opacity:               0.82;
+  pointer-events:        none;
+  -webkit-user-drag:     none;
+  -webkit-touch-callout: none;
+  user-select:           none;
 }
 
 /* ─── Divider ────────────────────────────────────────────────────────────── */
@@ -447,15 +498,21 @@ body {
   top:          0;
   left:         0;
   right:        0;
-  z-index:      1999;
+  z-index:      1000;  /* Strictly below .lightbox (1900) so lightbox touches are never intercepted */
   background:   #18191c;
   border-bottom: 1px solid rgba(255,255,255,0.10);
   padding:      10px 20px;
   transition:   opacity var(--transition);
 }
 
-/* Hide when lightbox is open */
-body.lb-active #top-nav { opacity: 0; pointer-events: none; }
+/* When a lightbox is open, remove the nav from the stacking context entirely
+   so it cannot intercept pointer events even if it has a higher z-index in
+   some browser compositing edge cases. */
+body.lb-active #top-nav {
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
 
 .top-nav-inner {
   max-width:   640px;
@@ -466,10 +523,9 @@ body.lb-active #top-nav { opacity: 0; pointer-events: none; }
 }
 
 .top-nav-icon {
-  width:         202.85px;
+  width:         119px;
   height:        25px;
   border-radius: 0;
-  object-fit:    cover;
   flex-shrink:   0;
   opacity:       0;
   transition:    opacity 0.4s ease;
@@ -477,12 +533,16 @@ body.lb-active #top-nav { opacity: 0; pointer-events: none; }
   -webkit-touch-callout: none;
   user-select:           none;
   pointer-events:        none;
+  object-fit: contain;       /* ensures no cropping */
+  object-position: center;   /* optional, center the logo */
 }
 
+/* Mobile */
 @media (max-width: 520px) {
   .top-nav-icon {
-    width:  104px;
+    width:  111px;
     height: 14px;
+    object-fit: contain;      /* maintain aspect ratio */
   }
 }
 
@@ -700,12 +760,17 @@ body.lb-active { overflow: hidden; }
   background:    var(--bg-card);
   border-radius: var(--radius-lg);
   border:        1px solid var(--border);
-  border-top:    3px solid var(--accent);
+  border-top:    3px solid var(--accent);   /* Gita default: saffron top border */
   box-shadow:    var(--shadow-card), var(--shadow-glow);
   overflow:      hidden;
   position:      relative;
   animation:     card-enter 0.38s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
-  font-size:     var(--lb-font-size);
+}
+
+/* I Ching mode override — indigo-blue top border when the card carries this class */
+.lb-card.lb-card--iching {
+  border-top-color: var(--iching-accent);
+  box-shadow:       var(--shadow-card), 0 0 28px rgba(98,118,187,0.14);
 }
 
 @keyframes card-enter {
@@ -781,25 +846,16 @@ body.lb-active { overflow: hidden; }
   border-color: var(--border-accent);
 }
 
-/* --> Top purport button — green tint to stand out from other icon buttons
+/* Top return button — saffron accent, only visible in purport/commentary view */
 .lb-purport-top-btn {
-  color:        #4caf7d;
-  border-color: rgba(76, 175, 125, 0.35);
+  color:        var(--accent);
+  border-color: var(--border-accent);
 }
 
 .lb-purport-top-btn:hover {
-  background:   rgba(76,175,125,0.12);
-  color:        #6fcf97;
-  border-color: rgba(76,175,125,0.55);
-} */
-
-/* --> Active state — when purport is showing
-.lb-icon-btn.active {
   background:   var(--accent-glow);
-  color:        var(--accent);
   border-color: var(--border-accent);
-  font-weight:  700;
-} */
+}
 
 /* Font-size buttons */
 .lb-font-btn {
@@ -836,7 +892,8 @@ body.lb-active { overflow: hidden; }
 /* Chapter / hexagram heading */
 .lb-chapter-heading {
   font-family:    var(--font-display);
-  font-size:      clamp(0.78rem, 2vw, 0.92rem);
+  font-size:      calc(var(--lb-font-size) * 0.9);
+  /* font-size:      clamp(0.78rem, 2vw, 0.92rem); */
   font-weight:    700;
   color:          var(--text-heading);
   letter-spacing: 0.03em;
@@ -988,6 +1045,10 @@ body.lb-active { overflow: hidden; }
   color:       var(--text-primary);
   line-height: 1.85;
   margin-top:  4px;
+  /* Added very dim BG to PURPORT */
+  background:    rgba(13, 14, 16, 0.08);
+  border-radius: var(--radius);
+  padding:       10px 12px;
 }
 
 .lb-purport p            { margin-bottom: 12px; }
@@ -1018,7 +1079,7 @@ body.lb-active { overflow: hidden; }
   background:    rgba(245,166,35,0.06);
   border:        1px solid var(--border-accent);
   border-radius: var(--radius);
-  font-size:     0.83rem;
+  font-size:     calc(var(--lb-font-size) * 0.83);
   font-style:    italic;
   color:         var(--text-secondary);
   text-align:    center;
@@ -1036,11 +1097,70 @@ body.lb-active { overflow: hidden; }
   background:    rgba(245,166,35,0.06);
   border:        1px solid var(--border-accent);
   border-radius: var(--radius);
-  font-size:     0.83rem;
+  font-size:     calc(var(--lb-font-size) * 0.83);
   font-style:    italic;
   color:         var(--text-primary);
   text-align:    center;
   animation:     purport-in 0.3s ease;
+}
+
+/* ─── Info card content (about / usage / future cards) ──────────────────── */
+.lb-info-text {
+  font-size:     calc(var(--lb-font-size) * 0.93);
+  color:         var(--text-primary);
+  line-height:   1.75;
+  margin-bottom: 12px;
+}
+
+.lb-info-text code,
+.lb-info-list code {
+  background:    rgba(255,255,255,0.08);
+  border-radius: 3px;
+  padding:       1px 5px;
+  font-size:     0.88em;
+  color:         var(--accent);
+}
+
+.lb-info-text a,
+.lb-info-list a {
+  color:           var(--accent);
+  text-decoration: none;
+}
+
+.lb-info-text a:hover,
+.lb-info-list a:hover { text-decoration: underline; }
+
+.lb-info-list {
+  margin:      8px 0 12px 18px;
+  font-size:   calc(var(--lb-font-size) * 0.88);
+  color:       var(--text-secondary);
+  line-height: 1.75;
+  list-style:  disc;
+}
+
+.lb-info-list li { margin-top: 4px; }
+
+.lb-info-img {
+  display:               block;
+  width:                 86%;
+  margin:                14px auto;
+  border-radius:         var(--radius);
+  border:                1px solid var(--border);
+  cursor:                pointer;
+  -webkit-user-drag:     none;
+  -webkit-touch-callout: none;
+  user-select:           none;
+}
+
+.lb-info-footer {
+  font-size:   calc(var(--lb-font-size) * 0.8);
+  color:       var(--text-muted);
+  font-style:  italic;
+  text-align:  center;
+  margin-top:  16px;
+  padding-top: 12px;
+  border-top:  1px solid var(--border);
+  line-height: 1.6;
 }
 
 /* ─── Card footer / navigation bar ──────────────────────────────────────── */
@@ -1115,7 +1235,7 @@ body.lb-active { overflow: hidden; }
 /* ─── Page footer ────────────────────────────────────────────────────────── */
 /*
  * Full-width darker block, lighter grey top border, Discord embed style.
- * Contains a circular 28×28 image (imgfooter.png — see TODO in index.html).
+ * Contains a circular 28×28 image (imgfooter.png).
  * The page-wrap's padding-bottom is removed; footer provides its own spacing.
  */
 .page-footer {
@@ -1144,7 +1264,6 @@ body.lb-active { overflow: hidden; }
   object-fit:    cover;
   flex-shrink:   0;
   opacity:       0.7;
-  /* TODO: update src in index.html to "assets/images/imgfooter.png" */
 }
 
 .page-footer p {
@@ -1271,26 +1390,7 @@ body.lb-active { overflow: hidden; }
 
 .custom-select.open .custom-select-arrow { transform: rotate(180deg); }
 
-/* Dropdown list — opens upward to avoid overlap with oracle button below
-.custom-select-list {
-  display:       none;
-  position:      absolute;
-  bottom:        calc(100% + 4px);
-  top:           auto;
-  left:          0;
-  width:         300px;
-  max-height:    340px;
-  overflow-y:    auto;
-  background:    var(--bg-card);
-  border:        1px solid var(--border-accent);
-  border-radius: var(--radius);
-  box-shadow:    var(--shadow-card);
-  list-style:    none;
-  padding:       4px 0;
-  z-index:       400;
-} */
-
-/* Dropdown list — opens centered for ease of use */
+/* Dropdown list — centered modal style with z-index above backdrop */
 .custom-select-list {
   display:       none;
   position:      fixed;
@@ -1306,7 +1406,7 @@ body.lb-active { overflow: hidden; }
   box-shadow:    var(--shadow-card);
   list-style:    none;
   padding:       4px 0;
-  z-index:       460;
+  z-index:       1201;  /* Must be above .custom-select-backdrop (1099) so options are clickable */
 }
 
 .custom-select.open .custom-select-list {
@@ -1360,7 +1460,7 @@ body.lb-active { overflow: hidden; }
   display:  none;
   position: fixed;
   inset:    0;
-  z-index:  1099;
+  z-index:  1099;  /* Below .custom-select-list (1201) so clicks pass through to options */
 }
 
 .custom-select.open .custom-select-backdrop { display: block; }
@@ -1418,6 +1518,8 @@ body.lb-active { overflow: hidden; }
   .lb-nav-row      { width: 100%; justify-content: space-between; }
   .lb-footer-text  { width: 100%; }
   .lb-font-btn     { padding: 6px 6px; }
+  /* Return button replaces close on narrow screens */
+  .lb-header--purport .lb-close-btn    { display: none; }
   /* Bottom buttons full-width on mobile */
   .lb-bottom-btn   { width: 100%; }
   /* Footer bleeds correctly on narrow screens */
@@ -1432,3 +1534,182 @@ body.lb-active { overflow: hidden; }
 
 /* Selection highlight */
 ::selection { background: rgba(245,166,35,0.25); color: var(--text-heading); }
+
+/* ─── Image protection — no drag, no iOS callout ────────────────────────── */
+img {
+  -webkit-user-drag:     none;
+  -webkit-touch-callout: none;
+  user-select:           none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Search card
+   Reuses .lightbox, .lb-card, .lb-header, .lb-footer-bar from the shared
+   card system. Only search-specific rules are declared here.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Search input ───────────────────────────────────────────────────────── */
+.search-input-row {
+  margin-bottom: 12px;
+}
+
+.search-field {
+  width:         100%;
+  background:    var(--bg-input);
+  border:        1px solid var(--border);
+  border-radius: var(--radius);
+  color:         var(--text-primary);
+  font-family:   var(--font-body);
+  font-size:     1rem;
+  padding:       11px 16px;
+  outline:       none;
+  transition:    border-color var(--transition), box-shadow var(--transition),
+                 background var(--transition);
+  /* Remove native browser × clear button */
+  -webkit-appearance: none;
+}
+
+.search-field::-webkit-search-cancel-button,
+.search-field::-webkit-search-decoration { display: none; }
+
+.search-field:focus {
+  border-color: var(--accent);
+  box-shadow:   0 0 0 3px var(--accent-glow);
+  background:   #1a2235;
+}
+
+.search-field::placeholder { color: var(--text-muted); }
+
+/* ─── Mode buttons ───────────────────────────────────────────────────────── */
+.search-mode-row {
+  display:       flex;
+  gap:           8px;
+  margin-bottom: 14px;
+}
+
+.search-mode-btn {
+  flex:        1;
+  font-size:   0.78rem;
+  padding:     9px 0;
+  background:  var(--bg-mid);
+  color:       var(--text-secondary);
+  border:      1px solid var(--border);
+  transition:  background var(--transition), color var(--transition),
+               border-color var(--transition), opacity var(--transition);
+}
+
+.search-mode-btn--active {
+  background:   var(--bg-card-alt);
+  color:        var(--accent);
+  border-color: var(--border-accent);
+}
+
+/* Pending = index not ready yet */
+.search-mode-btn--pending {
+  opacity: 0.42;
+  cursor:  not-allowed;
+}
+
+.search-mode-btn:hover:not(.search-mode-btn--pending):not(.search-mode-btn--active) {
+  background:   var(--bg-card-alt);
+  color:        var(--text-primary);
+  border-color: rgba(255,255,255,0.14);
+}
+
+/* ─── Status line (indexing / no results) ────────────────────────────────── */
+.search-status {
+  font-size:     0.88rem;
+  font-style:    italic;
+  color:         var(--text-secondary);
+  padding:       9px 13px;
+  margin-bottom: 12px;
+  background:    rgba(245,166,35,0.06);
+  border-left:   3px solid var(--accent-dim);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  animation:     purport-in 0.22s ease;
+}
+
+/* ─── Results list ───────────────────────────────────────────────────────── */
+.search-results {
+  display:        flex;
+  flex-direction: column;
+  gap:            2px;
+  max-height:     360px;
+  overflow-y:     auto;
+  /* Subtle inner scroll shadow to hint there's more content */
+  mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+}
+
+/* ─── Result item ────────────────────────────────────────────────────────── */
+.search-result-item {
+  display:        flex;
+  flex-direction: column;
+  gap:            3px;
+  padding:        10px 13px;
+  border-radius:  var(--radius);
+  border:         1px solid transparent;
+  cursor:         pointer;
+  transition:     background var(--transition), border-color var(--transition);
+}
+
+.search-result-item:hover,
+.search-result-item:focus {
+  background:   var(--bg-mid);
+  border-color: var(--border);
+  outline:      none;
+}
+
+.search-result-ref {
+  font-family:    var(--font-display);
+  font-size:      0.72rem;
+  font-weight:    700;
+  color:          var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.search-result-chapter {
+  font-size:   0.76rem;
+  color:       var(--text-muted);
+  font-style:  italic;
+  margin-bottom: 2px;
+}
+
+.search-result-snippet {
+  font-size:   calc(var(--lb-font-size, 16px) * 0.87);
+  color:       var(--text-secondary);
+  line-height: 1.65;
+  margin:      0;
+}
+
+.search-result-snippet mark {
+  background:    rgba(245,166,35,0.22);
+  color:         var(--accent);
+  border-radius: 2px;
+  padding:       0 2px;
+  font-style:    normal;
+}
+
+/* ─── Pagination page-info ───────────────────────────────────────────────── */
+.search-page-info {
+  font-size:   0.78rem;
+  color:       var(--text-muted);
+  min-width:   44px;
+  text-align:  center;
+  line-height: 1;
+  align-self:  center;
+}
+
+/* ─── Nav button active state (Oracle → Search toggle) ──────────────────── */
+.top-nav-btn--active {
+  color:        var(--accent) !important;
+  border-color: var(--border-accent) !important;
+  background:   var(--accent-glow) !important;
+}
+
+/* ─── Mobile ─────────────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .search-results    { max-height: 260px; }
+  .search-mode-row   { gap: 6px; }
+  .search-mode-btn   { font-size: 0.72rem; padding: 8px 0; }
+}

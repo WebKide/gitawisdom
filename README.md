@@ -27,7 +27,7 @@ Find instant wisdom, clarity, and emotional strength for everyday parenting chal
 
 ![Example]()
 
-## 🗃️ Features v1.0.8
+## 🗃️ Features v1.0.10
 
 - **Random Oracle Readings** - Get a verse from the Bhagavad Gītā or a hexagram from the I Ching at random.
 - **Lookup by Chapter or Number** - Search specific chapters and verse numbers or hexagram numbers.

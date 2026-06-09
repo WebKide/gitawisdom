@@ -2,25 +2,25 @@
   "name": "Wisdom Oracle App",
   "short_name": "Wisdom Oracle",
   "description": "Find wisdom, clarity, and emotional strength for everyday challenges.",
-  "start_url": "/gitawisdom/",
-  "scope": "/gitawisdom/",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#1e1f22",
   "background_color": "#1e1f22",
   "icons": [
     {
-      "src": "/gitawisdom/assets/icons/apple-touch-icon.png",
+      "src": "assets/icons/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
     },
     {
-      "src": "/gitawisdom/assets/icons/android-chrome-192x192.png",
+      "src": "assets/icons/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/gitawisdom/assets/icons/android-chrome-512x512.png",
+      "src": "assets/icons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

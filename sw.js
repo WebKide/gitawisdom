@@ -4,87 +4,112 @@
  * Update CACHE_VERSION to bust the cache on new deployments.
  */
 
-const CACHE_VERSION = 'wisdom-oracle-v1.0.8';
+const CACHE_VERSION = 'wisdom-oracle-v1.0.10';
+
+/**
+ * Derive the deployment base path once at the top of the file.
+ * This ensures all cached asset URLs are absolute and resolve correctly
+ * regardless of whether the app is served from a sub-directory (e.g.
+ * /gitawisdom/) or the domain root (e.g. localhost:8000/).
+ */
+const BASE = new URL('./', self.location.href).href.replace(/\/$/, '');
 
 const ASSETS = [
-  '/gitawisdom/',
-  '/gitawisdom/index.html',        // splash entry point
-  '/gitawisdom/oracle.html',       // main app (was index.html in v1.0.6)
-  '/gitawisdom/site.webmanifest',
+  BASE + '/index.html',        // splash entry point
+  BASE + '/oracle.html',       // main app
+  BASE + '/site.webmanifest',
 
   // Scripts
-  '/gitawisdom/js/app.js',
-  '/gitawisdom/js/gitacore.js',
-  '/gitawisdom/js/ichingcore.js',
-  '/gitawisdom/js/html2canvas.min.js',
-  '/gitawisdom/js/splash.js',      // boot sequencer
+  BASE + '/js/app.js',
+  BASE + '/js/lightbox.js',
+  BASE + '/js/oracle-forms.js',
+  BASE + '/js/share-utils.js',
+  BASE + '/js/gitacore.js',
+  BASE + '/js/ichingcore.js',
+  BASE + '/js/html2canvas.min.js',
+  BASE + '/js/splash.js',
+  BASE + '/js/search-ui.js',
+  BASE + '/js/fuse-search.js',
 
   // Styles
-  '/gitawisdom/css/styles.css',
-  '/gitawisdom/css/splash.css',    // splash styles
+  BASE + '/css/styles.css',
+  BASE + '/css/splash.css',    // splash styles
 
   // Images
-  '/gitawisdom/assets/images/wisdomoracle.svg',
-  '/gitawisdom/assets/images/ACBhaktivedantaSwami.png',
-  '/gitawisdom/assets/images/ichingcoin.png',
-  '/gitawisdom/assets/images/card_bg.png',
-  '/gitawisdom/assets/images/signature.svg',
-  '/gitawisdom/assets/images/imgfooter.png',
+  BASE + '/assets/images/wisdomoracle.svg',
+  BASE + '/assets/images/ACBhaktivedantaSwami.png',
+  BASE + '/assets/images/ichingcoin.png',
+  BASE + '/assets/images/card_bg.png',
+  BASE + '/assets/images/signature.svg',
+  BASE + '/assets/images/imgfooter.png',
 
   // Icons
-  '/gitawisdom/assets/icons/apple-touch-icon.png',
-  '/gitawisdom/assets/icons/favicon-32x32.png',
-  '/gitawisdom/assets/icons/favicon-16x16.png',
+  BASE + '/assets/icons/apple-touch-icon.png',
+  BASE + '/assets/icons/favicon-32x32.png',
+  BASE + '/assets/icons/favicon-16x16.png',
 
   // Fonts
-  '/gitawisdom/assets/fonts/kelvinch-v42-latin-regular.woff2',
-  '/gitawisdom/assets/fonts/kelvinch-v42-latin-italic.woff2',
-  '/gitawisdom/assets/fonts/kelvinch-v42-latin-700.woff2',
-  '/gitawisdom/assets/fonts/kelvinch-v42-latin-700italic.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-regular.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-italic.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-500.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-500italic.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-600.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-600italic.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-700.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-700italic.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-800.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-800italic.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-900.woff2',
-  '/gitawisdom/assets/fonts/noto-serif-v33-latin-900italic.woff2',
-  '/gitawisdom/assets/fonts/sansita-v12-latin-700.woff2',
-  '/gitawisdom/assets/fonts/sansita-v12-latin-700italic.woff2',
-  '/gitawisdom/assets/fonts/sansita-v12-latin-800.woff2',
-  '/gitawisdom/assets/fonts/sansita-v12-latin-800italic.woff2',
-  '/gitawisdom/assets/fonts/sansita-v12-latin-900.woff2',
-  '/gitawisdom/assets/fonts/sansita-v12-latin-900italic.woff2',
+  BASE + '/assets/fonts/kelvinch-v42-latin-regular.woff2',
+  BASE + '/assets/fonts/kelvinch-v42-latin-italic.woff2',
+  BASE + '/assets/fonts/kelvinch-v42-latin-700.woff2',
+  BASE + '/assets/fonts/kelvinch-v42-latin-700italic.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-regular.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-italic.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-500.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-500italic.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-600.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-600italic.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-700.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-700italic.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-800.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-800italic.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-900.woff2',
+  BASE + '/assets/fonts/noto-serif-v33-latin-900italic.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin-700.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin-700italic.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin-800.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin-800italic.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin-900.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin-900italic.woff2',
 
   // Gita JSON
-  '/gitawisdom/assets/gita/bg_ch01.json',
-  '/gitawisdom/assets/gita/bg_ch02.json',
-  '/gitawisdom/assets/gita/bg_ch03.json',
-  '/gitawisdom/assets/gita/bg_ch04.json',
-  '/gitawisdom/assets/gita/bg_ch05.json',
-  '/gitawisdom/assets/gita/bg_ch06.json',
-  '/gitawisdom/assets/gita/bg_ch07.json',
-  '/gitawisdom/assets/gita/bg_ch08.json',
-  '/gitawisdom/assets/gita/bg_ch09.json',
-  '/gitawisdom/assets/gita/bg_ch10.json',
-  '/gitawisdom/assets/gita/bg_ch11.json',
-  '/gitawisdom/assets/gita/bg_ch12.json',
-  '/gitawisdom/assets/gita/bg_ch13.json',
-  '/gitawisdom/assets/gita/bg_ch14.json',
-  '/gitawisdom/assets/gita/bg_ch15.json',
-  '/gitawisdom/assets/gita/bg_ch16.json',
-  '/gitawisdom/assets/gita/bg_ch17.json',
-  '/gitawisdom/assets/gita/bg_ch18.json',
+  BASE + '/assets/gita/bg_ch01.json',
+  BASE + '/assets/gita/bg_ch02.json',
+  BASE + '/assets/gita/bg_ch03.json',
+  BASE + '/assets/gita/bg_ch04.json',
+  BASE + '/assets/gita/bg_ch05.json',
+  BASE + '/assets/gita/bg_ch06.json',
+  BASE + '/assets/gita/bg_ch07.json',
+  BASE + '/assets/gita/bg_ch08.json',
+  BASE + '/assets/gita/bg_ch09.json',
+  BASE + '/assets/gita/bg_ch10.json',
+  BASE + '/assets/gita/bg_ch11.json',
+  BASE + '/assets/gita/bg_ch12.json',
+  BASE + '/assets/gita/bg_ch13.json',
+  BASE + '/assets/gita/bg_ch14.json',
+  BASE + '/assets/gita/bg_ch15.json',
+  BASE + '/assets/gita/bg_ch16.json',
+  BASE + '/assets/gita/bg_ch17.json',
+  BASE + '/assets/gita/bg_ch18.json',
 
   // iChing JSON
-  '/gitawisdom/assets/iching/iching.json',
+  BASE + '/assets/iching/iching.json',
+
+  // Search engine
+  BASE + '/js/fuse.min.js',
+
+  // Info card data
+  BASE + '/assets/data/about.json',
+  BASE + '/assets/data/usage.json',
+  BASE + '/assets/data/search.json',
 ];
 
 // ─── Install: cache all assets, tolerate 404s ───────────────────────────────
+/**
+ * On install, open the named cache and populate it with every asset in ASSETS.
+ * Individual fetch failures are logged but do not abort the entire install.
+ * After caching completes, activate the new service worker immediately.
+ */
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION).then(cache => {
@@ -103,6 +128,12 @@ self.addEventListener('install', event => {
 });
 
 // ─── Activate: delete old caches ────────────────────────────────────────────
+/**
+ * On activation, enumerate all existing cache names and delete any that do
+ * not match the current CACHE_VERSION. This prevents stale assets from
+ * being served after a deployment. After cleanup, claim all clients so the
+ * new service worker controls existing tabs immediately.
+ */
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -116,6 +147,14 @@ self.addEventListener('activate', event => {
 });
 
 // ─── Fetch: stale-while-revalidate for navigation, cache-first for rest ─────
+/**
+ * Intercepts all GET requests. Navigation requests (HTML pages) use a
+ * stale-while-revalidate strategy: serve the cached response immediately
+ * while refreshing from the network in the background. All other assets
+ * (images, fonts, JSON, CSS, JS) use cache-first: return the cached copy
+ * if present, otherwise fetch from the network and do not cache the result
+ * (the install step already pre-cached everything).
+ */
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 

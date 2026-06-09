@@ -10,7 +10,7 @@
   <meta name="description" content="Wisdom Oracle — loading…" />
   <meta name="robots" content="noindex, nofollow" />
   <link rel="canonical" href="/gitawisdom/oracle.html" />
-  <title>Wisdom Oracle v1.0.8</title>
+  <title>Wisdom Oracle v1.0.10</title>
 
   <!-- Favicons — same as oracle.html -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
@@ -46,6 +46,17 @@
     <!-- Terminal window — boot text lives here -->
     <div class="terminal" role="status" aria-live="polite" aria-label="Loading Wisdom Oracle">
 
+      <!-- Brand icon — floats above terminal via position:absolute -->
+      <img
+        src="assets/images/imgfooter.png"
+        alt=""
+        class="splash-brand-icon"
+        draggable="false"
+        aria-hidden="true"
+        width="120"
+        height="120"
+      />
+
       <!-- macOS-style window chrome -->
       <div class="terminal-bar" aria-hidden="true">
         <span class="terminal-dot"></span>
@@ -75,8 +86,9 @@
         src="assets/images/wisdomoracle.svg"
         alt="Wisdom Oracle"
         class="splash-logo"
+        aria-hidden="true"
         draggable="false"
-        width="280"
+        width="302"
         height="38"
       />
       <span class="splash-tagline">Bhagavad Gītā &nbsp;·&nbsp; I Ching</span>
@@ -93,9 +105,13 @@
   <!-- Register service worker (same scope as oracle.html) -->
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/gitawisdom/sw.js')
+      navigator.serviceWorker.register('sw.js')
         .catch(function (err) { console.warn('SW registration failed:', err); });
     }
+
+    document.addEventListener('contextmenu', function (e) {
+      if (e.target.tagName === 'IMG') e.preventDefault();
+    });
   </script>
 
 </body>

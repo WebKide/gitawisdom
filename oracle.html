@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Warm-start guard: if session idle > 5 min, force splash -->
+  <!--
+    Warm-start guard: if the user returns after more than 5 minutes of idle
+    time, force the splash screen so the boot sequence and branding are
+    shown rather than resuming mid-session.
+  -->
   <script>
-  (function () {
-    var last = sessionStorage.getItem('wo_last_active');
-    var now  = Date.now();
-    var MAX_IDLE_MS = 300000; // 5 minutes
+    (function () {
+      try {
+        var last = sessionStorage.getItem('wo_last_active');
+        var now  = Date.now();
+        var MAX_IDLE_MS = 300000; // 5 minutes
 
-    if (last && (now - parseInt(last, 10)) > MAX_IDLE_MS) {
-      window.location.replace('/gitawisdom/index.html');
-      return;
-    }
-    sessionStorage.setItem('wo_last_active', now);
+        if (last && (now - parseInt(last, 10)) > MAX_IDLE_MS) {
+          // Derive index.html relative to the current page so the redirect
+          // works correctly under any deployment root (GitHub Pages, localhost, etc.)
+          window.location.replace(new URL('index.html', window.location.href).href);
+          return;
+        }
+        sessionStorage.setItem('wo_last_active', now);
 
-    document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible') {
-        sessionStorage.setItem('wo_last_active', Date.now());
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'visible') {
+            try {
+              sessionStorage.setItem('wo_last_active', Date.now());
+            } catch (e) {
+              // Ignore write failures in private browsing or restricted contexts
+            }
+          }
+        });
+      } catch (e) {
+        // sessionStorage unavailable (private mode, cookies disabled) —
+        // continue without the warm-start guard; the app will still load.
       }
-    });
-  })();
+    })();
   </script>
 
   <meta charset="UTF-8" />
@@ -29,19 +44,21 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
   <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.0.8</title>
+  <title>Wisdom Oracle v1.0.10</title>
   <meta name="author" content="WebKide" />
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Single JS entry-point; gitacore.js and ichingcore.js imported as ES modules -->
-  <script type="module" src="js/app.js"></script>
+  <!-- Fuse.js — must load before app.js module so Fuse is a global -->
+  <script src="js/fuse.min.js"></script>
+
+  <!-- App entry point and dependencies loaded as ES modules; fuse-search.js and search-ui.js power the Gītā search feature -->
   <script src="js/html2canvas.min.js"></script>
 
   <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
-  <link rel="manifest" href="/gitawisdom/site.webmanifest" />
+  <link rel="manifest" href="site.webmanifest" />
   <link rel="preload" href="assets/images/card_bg.png" as="image" />
 </head>
 
@@ -54,11 +71,13 @@
       src="assets/images/wisdomoracle.svg"
       alt="Wisdom Oracle"
       class="top-nav-icon"
-      width="202.855" height="25"
-      aria-hidden="true"
+      width="119"
+      height="25"
+      draggable="false"
     />
     <div class="top-nav-links">
-      <a href="#gita-section" class="top-nav-btn top-nav-btn--oracle">Oracle</a>
+      <button id="search-nav-btn" class="top-nav-btn top-nav-btn--oracle" 
+        aria-label="Open Wisdom search">Search</button>
       <a href="#usage-section" class="top-nav-btn">Usage</a>
       <a href="#about-section" class="top-nav-btn">About</a>
     </div>
@@ -70,6 +89,17 @@
 
   <!-- ── Banner ── -->
   <header class="banner fade-in">
+    <!-- Gītā icon — above Logo position:absolute -->
+    <img
+      src="assets/images/imgfooter.png"
+      alt=""
+      class="banner-lotus-icon"
+      draggable="false"
+      aria-hidden="true"
+      width="65"
+      height="65"
+    />
+    <!-- Logo — floats up and down -->
     <img
       src="assets/images/wisdomoracle.svg"
       alt=""
@@ -113,7 +143,7 @@
                 id="chapter-trigger"
                 aria-haspopup="listbox"
                 aria-expanded="false">
-          <span id="chapter-trigger-text">Select a Gītā Oracle Chapter here</span>
+          <span id="chapter-trigger-text">Select a Wisdom Gītā Chapter here</span>
           <span class="custom-select-arrow">&#9660;</span>
         </button>
 
@@ -229,7 +259,7 @@
   <!-- ── iChing intro ── -->
   <!-- ── iChing random button — SILENT: does NOT populate input ── -->
   <!-- Clicking this button runs randomHexagram() in the background only.     -->
-  <section class="intro fade-in" aria-label="About the Gita Oracle">
+  <section class="intro intro--iching fade-in" aria-label="About the iChing Oracle">
     <div class="intro-inner">
       <ul>
         <li>Connect with ancient tradition through the iChing Oracle.</li>
@@ -255,7 +285,7 @@
         type="number"
         inputmode="numeric"
         min="1"
-        max="66"
+        max="64"
         placeholder="Hex 1–64"
         autocorrect="off"
         autocapitalize="none"
@@ -278,24 +308,22 @@
 
   <!-- ── Page footer — full-width darker block with circular image ──
        imgfooter.png sits like a Discord embed footer icon (28×28, circular).
-       TODO: Replace ACBhaktivedantaSwami.png below with imgfooter.png when
-             that image is ready/confirmed.
   -->
   <footer class="page-footer fade-in">
     <div class="footer-inner">
       <img
-        src="assets/images/ACBhaktivedantaSwami.png"
+        src="assets/images/imgfooter.png"
         alt=""
         class="footer-icon"
         width="28"
         height="28"
         loading="lazy"
         aria-hidden="true"
+        draggable="false"
       />
-      <!-- TODO: replace src above with "assets/images/imgfooter.png" once confirmed -->
       <p>
-        <i>To ŚRĪLA BALADEVA VIDYĀBHŪṢAṆA<br />
-        who presented so nicely the "Govinda-bhāṣya" commentary on Vedānta philosophy.</i> <b>「v1.0.8」</b>
+        <i>To ŚRĪLA BALADEVA VIDYĀBHŪṢAṆA<br />who presented so nicely the 
+        “Govinda-bhāṣya” commentary on Vedānta philosophy.</i> <b>「v1.0.10」</b>
       </p>
     </div>
   </footer>
@@ -334,8 +362,7 @@
 
       <!-- Book / oracle title + current reference -->
       <div class="lb-author">
-        <!-- TODO (iChing): swap src to 'assets/images/iching-author.png' in ichingcore.js
-             once that image is created. app.js handles the swap automatically. -->
+        <!-- iChing icon path is swapped by applyLightboxBranding() in lightbox.js -->
         <img
           id="lb-author-icon"
           src="assets/images/ichingcoin.png"
@@ -343,6 +370,7 @@
           class="lb-author-icon"
           width="28" height="28"
           loading="lazy"
+          draggable="false"
         />
         <span id="lb-author-title" class="lb-author-name">
           <strong><i>Bhagavad Gītā</i> As It Is</strong>
@@ -369,25 +397,26 @@
 
         <!-- Font-size controls -->
         <button id="lb-font-decrease"
-                class="lb-icon-btn lb-font-btn"
+                class="lb-icon-btn lb-font-btn lb-font-decrease"
                 title="Decrease text size"
                 aria-label="Decrease text size">
           Aᴀ−
         </button>
         <button id="lb-font-increase"
-                class="lb-icon-btn lb-font-btn"
+                class="lb-icon-btn lb-font-btn lb-font-increase"
                 title="Increase text size"
                 aria-label="Increase text size">
           +ᴀA
         </button>
 
-        <!-- Purport / commentary toggle (top header)
+        <!-- Purport / commentary toggle — visible only in purport/commentary view -->
         <button id="lb-purport-btn"
                 class="lb-icon-btn lb-purport-top-btn"
-                title="Read the purport / commentary (P)"
-                aria-label="Toggle purport or commentary">
-          🖊️ PURPORT
-        </button> -->
+                title="Return to verse / hexagram (P)"
+                aria-label="Return to verse or hexagram"
+                style="display:none">
+          ↩ Return
+        </button>
 
         <!-- Close -->
         <button id="lb-close"
@@ -425,11 +454,11 @@
         <blockquote id="lb-translation" class="lb-translation"></blockquote>
 
         <!-- 2. Sanskrit / hexagram lines — SECOND -->
-        <p class="section-label">📜 SANSKRIT</p>
+        <p class="section-label" id="lb-sanskrit-label">📜 SANSKRIT</p>
         <p id="lb-sanskrit" class="lb-sanskrit" lang="sa"></p>
 
         <!-- 3. Synonyms / judgment lines — THIRD -->
-        <p class="section-label">📖 SYNONYMS</p>
+        <p class="section-label" id="lb-synonyms-label">📖 SYNONYMS</p>
         <div class="lb-synonyms-wrap">
           <span id="lb-synonyms"></span>
         </div>
@@ -460,7 +489,7 @@
         </p>
 
         <!-- Section label — changes to "COMMENTARY" for iChing via JS class -->
-        <p class="section-label">🖊 PURPORT</p>
+        <p class="section-label" id="lb-purport-label">🖊 PURPORT</p>
 
         <!-- Purport / commentary body — paragraphs injected by renderVerse() -->
         <div id="lb-purport" class="lb-purport"></div>
@@ -525,7 +554,15 @@
   <article class="lb-card">
     <header class="lb-header">
       <div class="lb-author">
-        <img src="assets/images/ACBhaktivedantaSwami.png" alt="" class="lb-author-icon" width="28" height="28" />
+        <img 
+          src="assets/images/ACBhaktivedantaSwami.png" 
+          alt="" 
+          class="lb-author-icon" 
+          width="28" 
+          height="28" 
+          draggable="false"
+          aria-hidden="true"
+        />
         <span class="lb-author-name"><strong>How to use Wisdom Oracle</strong></span>
       </div>
       <div class="lb-header-actions">
@@ -535,46 +572,7 @@
       </div>
     </header>
     <div class="lb-body">
-      <h3 class="lb-chapter-heading">॥ oṁ namo nārāyaṇāya ॥</h3>
-      <section aria-label="Gita Oracle usage">
-        <p class="section-label">✦ WISDOM ORACLE</p>
-        <p style="font-size:0.93rem; line-height:1.7; color:var(--text-primary); margin-bottom:12px;">
-          Connect with ancient tradition through the Gītā Wisdom. Every verse offers deep insights
-          from the Bhagavad Gītā. Let this timeless guideline enlighten your path today.
-          Use it to build self-awareness and spiritual harmony.
-        </p>
-        <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px;">
-          <li>Press <strong style="color:var(--accent);">✦ Wisdom ✦</strong> for a random verse</li>
-          <li>Or select a chapter + verse number and press <strong>Look up</strong></li>
-          <li>Inside the card: press <strong>📖 Read Purport</strong> for commentary</li>
-          <li>Navigate with <strong>← →</strong> arrows, swipe, or keyboard arrow keys</li>
-          <li>Keyboard: <kbd>P</kbd> toggle purport · <kbd>G</kbd> random Gita · <kbd>Esc</kbd> close</li>
-        </ul>
-      </section>
-      <div class="separator fade-in"></div>
-      <section aria-label="iChing Oracle usage">
-        <p class="section-label">✦ ICHING ORACLE</p>
-        <p style="font-size:0.93rem; line-height:1.7; color:var(--text-primary); margin-bottom:12px;">
-          Connect with ancient tradition through the iChing Oracle. Every hexagram offers deep
-          insights from the Book of Changes. Perfect for daily meditation and peaceful reflection.
-        </p>
-        <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px;">
-          <li>Press <strong style="color:var(--iching-border);">✦ iChing ✦</strong> or <strong>☯ Toss Coins</strong> for a random hexagram</li>
-          <li>Or enter a hexagram number (1–64) and press <strong>☯ Toss Coins</strong></li>
-          <li>Inside the card: press <strong>📖 Read Commentary</strong> for interpretation</li>
-          <li>Navigate with <strong>← →</strong> arrows, swipe, or keyboard arrow keys</li>
-          <li>Keyboard: <kbd>P</kbd> toggle commentary · <kbd>H</kbd> random iChing · <kbd>Esc</kbd> close</li>
-        </ul>
-      </section>
-      <div class="separator fade-in"></div>
-      <section aria-label="About the author">
-        <p class="section-label">📖 BHAGAVAD GĪTĀ</p>
-        <p style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary);">
-          <em>Bhagavad-gītā As It Is</em> <code style="background:rgba(255,255,255,0.08);border-radius:3px;padding:1px 5px;font-size:0.88em;color:var(--accent);">1972 Unabridged Edition (Macmillan)</code><br/><br/>
-          <strong style="color:var(--text-primary);">His Divine Grace A.C. Bhaktivedānta Swami Prabhupāda</strong><br/>
-          the Founder-Ācārya of ISKCON and greatest exponent of Kṛṣṇa consciousness in the western world.
-        </p>
-      </section>
+      <!-- populated by renderInfoCard() from assets/data/usage.json -->
     </div>
   </article>
 </div>
@@ -585,7 +583,14 @@
   <article class="lb-card">
     <header class="lb-header">
       <div class="lb-author">
-        <img src="assets/images/ACBhaktivedantaSwami.png" alt="" class="lb-author-icon" width="28" height="28" />
+        <img 
+          src="assets/images/ACBhaktivedantaSwami.png" 
+          alt="" 
+          class="lb-author-icon" 
+          width="28"
+          height="28"
+          draggable="false"
+        />
         <span class="lb-author-name"><strong>About Wisdom Oracle</strong></span>
       </div>
       <div class="lb-header-actions">
@@ -595,62 +600,52 @@
       </div>
     </header>
     <div class="lb-body">
-      <h3 class="lb-chapter-heading">Wisdom Oracle — v1.0.8</h3>
-
-      <p class="section-label">📖 ABOUT</p>
-      <p style="font-size:0.93rem; line-height:1.7; color:var(--text-primary); margin-bottom:12px;">
-        Wisdom Oracle is a spiritual reading web app that brings together two timeless sources of wisdom:
-      </p>
-      <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px; margin-bottom:12px;">
-        <li><em>Bhagavad Gītā As It Is</em> — <code style="background:rgba(255,255,255,0.08);border-radius:3px;padding:1px 5px;font-size:0.88em;color:var(--accent);">1972 Unabridged Edition (Macmillan)</code></li>
-        <li><em>I Ching / Book of Changes</em> — <code style="background:rgba(255,255,255,0.08);border-radius:3px;padding:1px 5px;font-size:0.88em;color:var(--iching-border);">Richard Wilhelm translation</code></li>
-      </ul>
-      <p style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary);">
-        Explore both oracles with a random verse or hexagram, or look up specific chapters and numbers.
-        Clean, dark-themed interface — no ads, no distractions.
-      </p>
-
-      <div class="separator"></div>
-      <p class="section-label">✦ KEY FEATURES</p>
-      <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px;">
-        <li><strong style="color:var(--text-primary);">Fully offline</strong> — once cached, works without internet. Perfect for airplane mode.</li>
-        <li><strong style="color:var(--text-primary);">Auto-updates</strong> — service worker fetches improvements in the background.</li>
-        <li><strong style="color:var(--text-primary);">Share or copy</strong> any verse or hexagram directly from the app.</li>
-        <li><strong style="color:var(--text-primary);">Installable</strong> — add to home screen and use like a native app.</li>
-      </ul>
-
-      <div class="separator"></div>
-      <p class="section-label">⚙ TECHNICAL</p>
-      <ul style="font-size:0.9rem; line-height:1.7; color:var(--text-secondary); margin-left:18px;">
-        <li><strong style="color:var(--text-primary);">Developer:</strong> WebKide</li>
-        <li><strong style="color:var(--text-primary);">Library:</strong> <code style="background:rgba(255,255,255,0.08);border-radius:3px;padding:1px 5px;font-size:0.88em;color:var(--text-primary);">html2canvas.min.js</code> — shareable PNG cards</li>
-        <li><strong style="color:var(--text-primary);">Data:</strong> JSON files stored locally in the app</li>
-        <li><strong style="color:var(--text-primary);">Repository:</strong> <a href="https://github.com/WebKide/gitawisdom/tree/main" target="_blank" rel="noopener" style="color:var(--accent);">GitHub: WebKide/gitawisdom</a></li>
-        <li><strong style="color:var(--text-primary);">Live URL:</strong> <a href="https://webkide.github.io/gitawisdom" target="_blank" rel="noopener" style="color:var(--accent);">webkide.github.io/gitawisdom</a></li>
-      </ul>
-
-      <div class="separator"></div>
-      <p style="font-size:0.8rem; line-height:1.6; color:var(--text-muted); font-style:italic; text-align:center;">
-        No accounts or personal data required. Runs entirely in your browser.<br/>
-        Responsive design for desktop and mobile.
-      </p>
+      <!-- populated by renderInfoCard() from assets/data/about.json -->
     </div>
   </article>
 </div>
+
+<!-- ══════════════════════════════ SEARCH CARD MOUNT ══════════════════════════════
+     Shell only — full card HTML is injected by search-ui.js from
+     assets/data/search.json on first open. IDs assigned by renderer are:
+       search-card, search-overlay, search-close,
+       search-input, search-btn-verse, search-btn-purport,
+       search-status, search-results,
+       search-footer-text, search-prev, search-page-info, search-next
+-->
+<div id="search-card-mount"></div>
 
 <!-- #share-png-card hidden from view, used for template to share PNG -->
 <div id="share-png-card">
   <h2 class="share-png-title"></h2>
   <p class="share-png-verse"></p>
-  <footer class="share-png-footer"><p>v1.0.8</p></footer>
+  <footer class="share-png-footer"><p>v1.0.10</p></footer>
 </div>
 
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/gitawisdom/sw.js')
-      .then(reg => console.log('SW registered:', reg.scope))
-      .catch(err => console.error('SW failed:', err));
-  }
+<!--
+  Dynamically load the application entry point. If the module graph fails
+  (network error, syntax error, etc.), a user-facing error banner is injected
+  so the page is not left blank.
+-->
+<script type="module">
+  /**
+   * Dynamically imports the application entry point.
+   * If the module graph fails to load, surfaces a user-facing error message.
+   */
+  (async function loadOracle() {
+    try {
+      await import('./js/app.js');
+    } catch (err) {
+      console.error('Oracle module failed to load:', err);
+      var banner = document.createElement('div');
+      banner.setAttribute('role', 'alert');
+      banner.style.cssText = 'padding:40px 20px;text-align:center;font-family:system-ui,sans-serif;color:#dbdee1;background:#1e1f22;';
+      banner.innerHTML = '<h3 style="color:#f5a623;margin-bottom:12px;">Wisdom Oracle failed to load</h3>' +
+        '<p>Please check your network connection and refresh the page.</p>' +
+        '<p style="color:#5c6068;font-size:0.85rem;margin-top:16px;">' + (err && err.message ? err.message : 'Unknown error') + '</p>';
+      document.body.insertBefore(banner, document.body.firstChild);
+    }
+  })();
 </script>
 
 </body>
