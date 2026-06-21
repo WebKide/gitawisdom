@@ -247,7 +247,7 @@ function applyLightboxBranding() {
     // Toggle I Ching card border color via CSS class
     dom.lbCard.classList.add('lb-card--iching');
   } else {
-    dom.lbAuthorIcon.src = 'assets/images/ACBhaktivedantaSwami.png';
+    dom.lbAuthorIcon.src = 'assets/images/prabhupada.png';
     dom.lbAuthorIcon.alt = 'A.C. Bhaktivedānta Swami';
     dom.lbAuthorTitle.innerHTML =
       `<strong><i>Bhagavad Gītā</i> As It Is</strong> <b id="lb-author-ref"></b>`;
