@@ -38,7 +38,6 @@ const ASSETS = [
 
   // Images
   BASE + '/assets/images/wisdomoracle.svg',
-  BASE + '/assets/images/ACBhaktivedantaSwami.png',
   BASE + '/assets/images/ichingcoin.png',
   BASE + '/assets/images/card_bg.png',
   BASE + '/assets/images/signature.svg',
