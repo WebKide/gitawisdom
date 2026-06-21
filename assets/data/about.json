@@ -1,0 +1,20 @@
+{
+  "page-name": "About Wisdom Oracle",
+  "icon": "assets/images/ACBhaktivedantaSwami.png",
+  "sections": [
+    {
+      "h1": "Wisdom Oracle — v1.0.12",
+      "h2": "📖 ABOUT",
+      "text": "Wisdom Oracle is a spiritual reading web app that brings together two timeless sources of wisdom:<hr><em>Bhagavad Gītā As It Is</em> — <code>1972 Unabridged Edition (Macmillan)</code><br /><em>I Ching / Book of Changes</em> — <code>Richard Wilhelm translation</code>\nExplore both oracles with a random verse or hexagram, or look up specific chapters and numbers. Clean, dark-themed interface — no ads, no distractions."
+    },
+    {
+      "h2": "✦ KEY FEATURES",
+      "list": "<strong>Fully offline</strong> — once cached, works without internet. Perfect for airplane mode.\n<strong>Auto-updates</strong> — service worker fetches improvements silently in the background.\n<strong>Share or copy</strong> any verse or hexagram directly from the card view.\n<strong>Installable</strong> — add to home screen and open like a native app."
+    },
+    {
+      "h2": "⚙ TECHNICAL",
+      "list": "<strong>Developer:</strong> WebKide\n<strong>Library:</strong> <code>html2canvas.min.js</code> — shareable PNG cards\n<strong>Data:</strong> JSON files stored locally, no external requests\n<strong>Repository:</strong> <a href=\"https://github.com/WebKide/gitawisdom/tree/main\">GitHub · WebKide/gitawisdom</a>\n<strong>Live URL:</strong> <a href=\"https://webkide.github.io/gitawisdom\">webkide.github.io/gitawisdom</a>"
+    }
+  ],
+  "footer": "No accounts, subscriptions or personal data required.\nResponsive design for desktop and mobile.\nRuns entirely in your browser."
+}

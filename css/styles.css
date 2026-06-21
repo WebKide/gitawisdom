@@ -2,16 +2,33 @@
    GitaWisdom + iChing Oracle  ·  styles.css
    Author: WebKide
    Dark aesthetic — Discord-inspired.
-   Typefaces: Waldemar (display) + Kelvinch / Noto Serif (body)
+   Typefaces: Waldemar (display) + Kelvinch / Gentium Plus (body)
 
-   Gita accent:   --accent       #F5A623 (saffron)
+   Gita accent:   --accent        #F5A623 (saffron)
    iChing accent: --iching-accent #6276bb (indigo-blue)
-                  --iching-dim   #5768a4
+                  --iching-dim    #5768a4
                   --iching-border #6761f6 (left border on intro sections)
-   Red buttons:   #c8615f
+   Red buttons:   --red-btn:      #c8615f
+
+   CHANGELOG (this revision):
+   • Replaced Noto Serif with Gentium Plus (full Sanskrit diacritic support)
+   • Replaced CRT pseudo-elements with gradient mesh background on body
+   • Expanded all inset:0 shorthands for Android 8 WebView 66
+   • Added -webkit-user-select prefixes for iOS Safari
+   • Removed filter:drop-shadow() from animated SVGs (WebView 66 raster bug)
+   • Removed margin-top leakage from .btn-oracle (use .u-mt-16 utility)
+   • Added landing-page components: .banner-date, .menu-toggle, .module-tabs
+   • Redesigned .intro--gita / .intro--iching cards (header + thumb + text)
+   • Softened .error-msg aesthetic (friendlier "silly user" vibe)
+   • Updated .page-footer with rounded top corners and side borders
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* kelvinch-regular - latin */
+/* ═══════════════════════════════════════════════════════════════════════════
+   FONT-FACE DECLARATIONS
+   All .WOFF2 fonts saved locally for offline PWA use.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Kelvinch (body text, serif) ────────────────────────────────────────── */
 @font-face {
   font-display: swap;
   font-family: 'Kelvinch';
@@ -20,7 +37,6 @@
   src: url('../assets/fonts/kelvinch-v42-latin-regular.woff2') format('woff2');
 }
 
-/* kelvinch-italic - latin */
 @font-face {
   font-display: swap;
   font-family: 'Kelvinch';
@@ -29,7 +45,6 @@
   src: url('../assets/fonts/kelvinch-v42-latin-italic.woff2') format('woff2');
 }
 
-/* kelvinch-700 - latin */
 @font-face {
   font-display: swap;
   font-family: 'Kelvinch';
@@ -38,7 +53,6 @@
   src: url('../assets/fonts/kelvinch-v42-latin-700.woff2') format('woff2');
 }
 
-/* kelvinch-700italic - latin */
 @font-face {
   font-display: swap;
   font-family: 'Kelvinch';
@@ -47,176 +61,82 @@
   src: url('../assets/fonts/kelvinch-v42-latin-700italic.woff2') format('woff2');
 }
 
-/* noto-serif-regular - latin */
+/* ─── Gentium Plus (replaces Noto Serif) ─────────────────────────────────
+   Full Latin Extended Additional coverage for Sanskrit diacritics:
+   ḍḥḣṁḷṇṅṛśṣṭāūī — e.g. kṛṣṇa, dīkṣā, Kurukṣetra
+   Only 4 files vs. 12 Noto Serif files = lighter cache footprint.
+   ═══════════════════════════════════════════════════════════════════════ */
 @font-face {
   font-display: swap;
-  font-family: 'Noto Serif';
+  font-family: 'Gentium Plus';
   font-style: normal;
   font-weight: 400;
-  src: url('../assets/fonts/noto-serif-v33-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../assets/fonts/gentium-plus-v2-latin_latin-ext-regular.woff2') format('woff2');
 }
 
-/* noto-serif-italic - latin */
 @font-face {
   font-display: swap;
-  font-family: 'Noto Serif';
+  font-family: 'Gentium Plus';
   font-style: italic;
   font-weight: 400;
-  src: url('../assets/fonts/noto-serif-v33-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../assets/fonts/gentium-plus-v2-latin_latin-ext-italic.woff2') format('woff2');
 }
 
-/* noto-serif-500 - latin */
 @font-face {
   font-display: swap;
-  font-family: 'Noto Serif';
-  font-style: normal;
-  font-weight: 500;
-  src: url('../assets/fonts/noto-serif-v33-latin-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* noto-serif-500italic - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Noto Serif';
-  font-style: italic;
-  font-weight: 500;
-  src: url('../assets/fonts/noto-serif-v33-latin-500italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* noto-serif-600 - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Noto Serif';
-  font-style: normal;
-  font-weight: 600;
-  src: url('../assets/fonts/noto-serif-v33-latin-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* noto-serif-600italic - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Noto Serif';
-  font-style: italic;
-  font-weight: 600;
-  src: url('../assets/fonts/noto-serif-v33-latin-600italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* noto-serif-700 - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Noto Serif';
+  font-family: 'Gentium Plus';
   font-style: normal;
   font-weight: 700;
-  src: url('../assets/fonts/noto-serif-v33-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../assets/fonts/gentium-plus-v2-latin_latin-ext-700.woff2') format('woff2');
 }
 
-/* noto-serif-700italic - latin */
 @font-face {
   font-display: swap;
-  font-family: 'Noto Serif';
+  font-family: 'Gentium Plus';
   font-style: italic;
   font-weight: 700;
-  src: url('../assets/fonts/noto-serif-v33-latin-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../assets/fonts/gentium-plus-v2-latin_latin-ext-700italic.woff2') format('woff2');
 }
 
-/* noto-serif-800 - latin */
+/* ─── Sansita (display headings, UI labels) ────────────────────────────── */
 @font-face {
-  font-display: swap;
-  font-family: 'Noto Serif';
-  font-style: normal;
-  font-weight: 800;
-  src: url('../assets/fonts/noto-serif-v33-latin-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* noto-serif-800italic - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Noto Serif';
-  font-style: italic;
-  font-weight: 800;
-  src: url('../assets/fonts/noto-serif-v33-latin-800italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* noto-serif-900 - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Noto Serif';
-  font-style: normal;
-  font-weight: 900;
-  src: url('../assets/fonts/noto-serif-v33-latin-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* noto-serif-900italic - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Noto Serif';
-  font-style: italic;
-  font-weight: 900;
-  src: url('../assets/fonts/noto-serif-v33-latin-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* sansita-700 - latin */
-@font-face {
-  font-display: swap;
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Sansita';
   font-style: normal;
   font-weight: 700;
-  src: url('../assets/fonts/sansita-v12-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../assets/fonts/sansita-v12-latin_latin-ext-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
-/* sansita-700italic - latin */
+/* sansita-700italic - latin_latin-ext */
 @font-face {
-  font-display: swap;
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Sansita';
   font-style: italic;
   font-weight: 700;
-  src: url('../assets/fonts/sansita-v12-latin-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../assets/fonts/sansita-v12-latin_latin-ext-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
-/* sansita-800 - latin */
+/* sansita-900 - latin_latin-ext */
 @font-face {
-  font-display: swap;
-  font-family: 'Sansita';
-  font-style: normal;
-  font-weight: 800;
-  src: url('../assets/fonts/sansita-v12-latin-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* sansita-800italic - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Sansita';
-  font-style: italic;
-  font-weight: 800;
-  src: url('../assets/fonts/sansita-v12-latin-800italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* sansita-900 - latin */
-@font-face {
-  font-display: swap;
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Sansita';
   font-style: normal;
   font-weight: 900;
-  src: url('../assets/fonts/sansita-v12-latin-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../assets/fonts/sansita-v12-latin_latin-ext-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
-/* sansita-900italic - latin */
+/* sansita-900italic - latin_latin-ext */
 @font-face {
-  font-display: swap;
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Sansita';
   font-style: italic;
   font-weight: 900;
-  src: url('../assets/fonts/sansita-v12-latin-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../assets/fonts/sansita-v12-latin_latin-ext-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
-/* ─── Contents ──────────────────────────────────────────────────────────── */
-/*
- * The .WOFF2 fonts are saved locally to use offline.
- *   - Colors for text, background, and other elements
- *   - Main Page design
- *   - Verse Card to read translation and purport, and Share
- *   - Share PNG Card design, out of sight
- */
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   ═══════════════════════════════════════════════════════════════════════════ */
 :root {
   /* Base palette */
   --bg-base:       #1e1f22;
@@ -234,7 +154,7 @@
   --iching-accent: #512f86;
   --iching-dim:    #7334d3;
   --iching-glow:   rgba(98, 118, 187, 0.20);
-  --iching-border: #6761f6;  /* left-border on iChing intro sections */
+  --iching-border: #6761f6;
 
   /* Lilac buttons (purport close / return) */
   --lilac-btn:       #512f86;
@@ -260,7 +180,7 @@
 
   /* Typefaces */
   --font-display:  'Sansita', sans-serif;
-  --font-body:     'Noto Serif', serif;
+  --font-body:     'Gentium Plus', serif;
   --font-text:     'Kelvinch', serif;
 
   --transition:     0.22s ease;
@@ -272,7 +192,9 @@
   --share-footer-font-size: 24px;
 }
 
-/* ─── Reset / base ───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* ─── Show/hide layout ────────────────────────────────────────────────────
@@ -280,7 +202,6 @@
   outline: 1px solid red;
 } ─ */
 
-/* ─── Full page ──────────────────────────────────────────────────────────── */
 html { scroll-behavior: smooth; }
 
 body {
@@ -290,91 +211,140 @@ body {
   color:                  var(--text-primary);
   min-height:             100vh;
   -webkit-font-smoothing: antialiased;
-  /* Subtle noise texture — pure CSS grain */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  /* to deal with swipe and page scroll */
+
+  /*
+   * Gradient mesh background — no pseudo-elements.
+   * Replaces previous CRT vignette (::before) and scanlines (::after)
+   * for better performance on low-end devices (Android 8 WebView).
+   * Layers:
+   *   1. Fractal noise grain (repeating tile)
+   *   2. Warm saffron radial glow (top-left)
+   *   3. Cool indigo radial glow (bottom-right)
+   *   4. Soft edge vignette
+   */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(245, 166, 35, 0.035) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(98, 118, 187, 0.035) 0%, transparent 55%),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.32) 100%);
+  background-size: 200px 200px, 100% 100%, 100% 100%, 100% 100%;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed;
+
   overscroll-behavior-x: none;
   position: relative;
   width: 100%;
+  overflow-x: hidden;
 }
 
-/* ─── CRT vignette — subtle edge darkening ───────────────────────────────── */
-body::before {
-  content:        '';
-  position:       fixed;
-  inset:          0;
-  z-index:        2;
-  pointer-events: none;
-  background:     radial-gradient(
-    ellipse at center,
-    transparent 55%,
-    rgba(0, 0, 0, 0.38) 100%
-  );
-}
-
-/* ─── CRT scanline overlay — barely-there texture ───────────────────────── */
-body::after {
-  content:        '';
-  position:       fixed;
-  inset:          0;
-  z-index:        3;
-  pointer-events: none;
-  background:     repeating-linear-gradient(
-    to bottom,
-    var(--crt-line) 0px,
-    var(--crt-line) 1px,
-    transparent    1px,
-    transparent    3px
-  );
-  opacity:        0.18;
-}
-
-/* ─── Utility ────────────────────────────────────────────────────────────── */
-/* Used to toggle verse-section vs purport-section visibility */
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════════════════ */
 .hidden { display: none !important; }
 
-/* ─── Page layout ────────────────────────────────────────────────────────── */
+/* Spacing utility — replaces margin leakage in reusable components */
+.u-mt-16 { margin-top: 16px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGE LAYOUT
+   ═══════════════════════════════════════════════════════════════════════════ */
 .page-wrap {
   max-width:      680px;
   margin:         0 auto;
-  padding:        0 20px 0;   /* footer handles bottom spacing */
+  padding:        0 20px 0;
   display:        flex;
   flex-direction: column;
   align-items:    center;
   gap:            0;
 }
 
-/* ─── Banner ─────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   BANNER
+   ═══════════════════════════════════════════════════════════════════════════ */
 .banner {
+  position:   relative;
   width:      100%;
-  max-width:  100%; /* ensure container doesn't exceed viewport */
+  max-width:  100%;
   text-align: center;
   padding:    52px 0 32px;
 }
 
+/* ── Date label (top-left, just below fixed nav) ── */
+.banner-date {
+  position:    absolute;
+  top:         8px;
+  left:        0;
+  font-family: var(--font-body);
+  font-size:   0.85rem;
+  color:       var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  z-index:     5;
+}
+
+/* ── Menu toggle (top-right, hamburger + notification dot) ── */
+.menu-toggle {
+  position:        absolute;
+  top:             8px;
+  right:           0;
+  width:           36px;
+  height:          36px;
+  z-index:         990;
+  display:         flex;
+  flex-direction:  column;
+  justify-content: center;
+  align-items:     center;
+  gap:             5px;
+  cursor:          pointer;
+  background:      transparent;
+  border:          none;
+  padding:         0;
+  -webkit-user-select: none;
+  user-select:     none;
+}
+
+.menu-line {
+  display:       block;
+  width:         22px;
+  height:        2px;
+  background:    var(--text-primary);
+  border-radius: 2px;
+  transition:    background var(--transition);
+}
+
+.menu-toggle:hover .menu-line { background: var(--accent); }
+
+.menu-dot {
+  position:      absolute;
+  top:           4px;
+  right:         4px;
+  width:         7px;
+  height:        7px;
+  background:    var(--red-btn);
+  border-radius: 50%;
+  border:        2px solid var(--bg-base);
+}
+
+/* ── Lotus logo ── */
 .banner-lotus {
   display:               block;
   margin:                0 auto 16px;
-  width:                 100%;      /* responsive width */
-  padding-top: 50px;
-  max-width:             360px;     /* optional, caps max size */
-  height:                auto;      /* maintain aspect ratio */
-  filter:                drop-shadow(0 0 18px rgba(245,166,35,0.4));
+  width:                 100%;
+  max-width:             360px;
+  height:                auto;
+  /* filter: drop-shadow() removed — WebView 66 rasterises SVG filters
+     poorly when combined with CSS animations. */
   animation:             lotus-pulse 4s ease-in-out infinite;
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
+  -webkit-user-select:   none;
   user-select:           none;
   pointer-events:        none;
 }
 
 @keyframes lotus-pulse {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-4px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-4px); }
 }
 
 .banner-subtitle {
@@ -386,7 +356,7 @@ body::after {
   letter-spacing: 0.01em;
 }
 
-/* ─── Brand icon — floats above banner-lotus ─────────────────────────────── */
+/* ── Brand icon floating above logo ── */
 .banner-lotus-icon {
   position:              absolute;
   top:                   10px;
@@ -402,10 +372,87 @@ body::after {
   pointer-events:        none;
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
+  -webkit-user-select:   none;
   user-select:           none;
+  opacity:               0;
 }
 
-/* ─── Divider ────────────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .banner-lotus-icon { opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODULE TABS (Row 2 — below banner)
+   Three pill switches: Wisdom Oracle | Gītā Wisdom | iChing Oracle
+   ═══════════════════════════════════════════════════════════════════════════ */
+.module-tabs {
+  width:           100%;
+  display:         flex;
+  justify-content: flex-end;   /* aligned right per spec */
+  gap:             6px;
+  padding:         4px;
+  margin-top:      4px;
+  margin-bottom:   16px;
+}
+
+.module-tab {
+  font-family:     var(--font-display);
+  font-size:       0.72rem;
+  letter-spacing:  0.06em;
+  font-weight:     400;
+  padding:         6px 14px;
+  border:          1px solid var(--border);
+  border-radius:   10px;
+  cursor:          pointer;
+  text-align:      center;
+  white-space:     nowrap;
+  -webkit-user-select: none;
+  user-select:     none;
+  transition:      color var(--transition), border-color var(--transition),
+                   background var(--transition);
+}
+
+/* Inactive colour assignments — each tab keeps its own identity color at rest */
+.module-tab--wisdom {
+  background: var(--red-btn);
+  color:      var(--text-primary);
+}
+
+.module-tab--gita {
+  background: var(--accent);
+  color:      var(--bg-base);
+}
+
+.module-tab--iching {
+  background: var(--iching-accent);
+  color:      var(--text-primary);
+}
+
+/* Active states */
+.module-tab--wisdom.module-tab--active {
+  background:   #a94c4a;
+  color:        var(--text-primary);
+  font-weight:  600;
+  border-color: transparent;
+}
+
+.module-tab--gita.module-tab--active {
+  background:   var(--accent);
+  color:        #1a1000;
+  font-weight:  600;
+  border-color: transparent;
+}
+
+.module-tab--iching.module-tab--active {
+  background:   var(--iching-border);
+  color:        #ffffff;
+  font-weight:  600;
+  border-color: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DIVIDERS & SEPARATORS
+   ═══════════════════════════════════════════════════════════════════════════ */
 .divider {
   width:      100%;
   height:     1px;
@@ -414,7 +461,6 @@ body::after {
   margin:     24px 0;
 }
 
-/* ─── Separator ──────────────────────────────────────────────────────────── */
 .separator {
   width:      100%;
   height:     1px;
@@ -423,26 +469,35 @@ body::after {
   margin:     24px 0;
 }
 
-/* ─── Intro text ─────────────────────────────────────────────────────────── */
+.linebreak {
+  width:      100%;
+  height:     1px;
+  background: linear-gradient(90deg, transparent, var(--text-muted), transparent);
+  opacity:    0.3;
+  margin:     -10px 0 10px 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INTRO CARDS
+   ═══════════════════════════════════════════════════════════════════════════ */
 .intro {
   width:         100%;
   background:    var(--bg-mid);
   border:        1px solid var(--border);
-  border-left:   3px solid var(--accent);   /* Gita default: saffron */
+  border-left:   3px solid var(--accent);
   border-radius: var(--radius);
-  padding:       18px 22px;
+  padding:       16px 20px;
   font-size:     0.93rem;
   color:         var(--text-primary);
   line-height:   1.7;
 }
 
-/* iChing intro variant — indigo-blue left border */
-.intro--iching {
-  border-left-color: var(--iching-border);
-}
+/* iChing variant — indigo-blue left border */
+.intro--iching { border-left-color: var(--iching-border); }
 
 .intro strong { color: var(--text-primary); font-weight: 600; }
 
+/* Default intro paragraph (legacy / generic intros) */
 .intro p {
   color:      var(--text-secondary);
   text-align: center;
@@ -458,14 +513,12 @@ body::after {
   color:         var(--accent);
 }
 
-.intro--iching code {
-  background: rgba(255,255,255,0.08);
-  color: var(--accent);
-}
+.intro--iching code { color: var(--accent); }
 
 .intro ul { margin: 8px 0 0 18px; list-style: disc; }
 .intro ul li { margin-top: 3px; }
 
+/* ── Legacy inner row (flex side-by-side) ── */
 .intro-inner {
   display:     flex;
   align-items: center;
@@ -475,34 +528,73 @@ body::after {
 
 .intro-inner ul { flex: 1; margin: 0; }
 
-.btn-oracle--inline {
-  flex-shrink: 0;
-  width:       120px;
-  min-width:   120px;
-  height:      100px;
-  font-size:   1rem;
-  line-height: 1.6;
-  text-align:  center;
+/* ── NEW: Intro card header (title + thumbnail) ──
+   Expected HTML:
+   <section class="intro intro--gita">
+     <div class="intro-header">
+       <h2 class="intro-title">Gītā Wisdom</h2>
+       <img class="intro-thumb" src="..." alt="">
+     </div>
+     <p class="intro-text">...</p>
+     <div class="intro-btn-row">...</div>
+   </section>
+   ═══════════════════════════════════════════════════════════════════════ */
+.intro-header {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  flex-wrap:       wrap;
+  gap:             12px;
+  margin-bottom:   12px;
 }
 
-@media (max-width: 420px) {
-  .btn-oracle--inline {
-    width:  100%;
-    height: 56px;
-  }
+.intro-title {
+  font-family:    var(--font-display);
+  font-size:      1.1rem;
+  font-weight:    600;
+  color:          var(--text-heading);
+  letter-spacing: 0.02em;
+  line-height:    1.3;
 }
 
-/* ─── Top navigation bar ─────────────────────────────────────────────────── */
+.intro-thumb {
+  width:         80px;
+  height:        80px;
+  border-radius: 12px;
+  object-fit:    cover;
+  flex-shrink:   0;
+  border:        1px solid var(--border);
+}
+
+.intro-text {
+  font-size:     calc(var(--lb-font-size) * 0.95);
+  color:         var(--text-primary);
+  line-height:   1.7;
+  margin-bottom: 16px;
+  text-align:    left;
+  font-style:    normal;
+}
+
+.intro-btn-row {
+  display:         flex;
+  justify-content: center;
+  width:           100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOP NAVIGATION (Row 1 — fixed, always visible)
+   Search | Usage | About
+   ═══════════════════════════════════════════════════════════════════════════ */
 #top-nav {
-  position:     fixed;
-  top:          0;
-  left:         0;
-  right:        0;
-  z-index:      1000;  /* Strictly below .lightbox (1900) so lightbox touches are never intercepted */
-  background:   #18191c;
+  position:      fixed;
+  top:           0;
+  left:          0;
+  right:         0;
+  z-index:       1000;
+  background:    #18191c;
   border-bottom: 1px solid rgba(255,255,255,0.10);
-  padding:      10px 20px;
-  transition:   opacity var(--transition);
+  padding:       10px 20px;
+  transition:    opacity var(--transition);
 }
 
 /* When a lightbox is open, remove the nav from the stacking context entirely
@@ -531,18 +623,18 @@ body.lb-active #top-nav {
   transition:    opacity 0.4s ease;
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
+  -webkit-user-select:   none;
   user-select:           none;
   pointer-events:        none;
-  object-fit: contain;       /* ensures no cropping */
-  object-position: center;   /* optional, center the logo */
+  object-fit: contain;
+  object-position: center;
 }
 
-/* Mobile */
 @media (max-width: 520px) {
   .top-nav-icon {
     width:  111px;
     height: 14px;
-    object-fit: contain;      /* maintain aspect ratio */
+    object-fit: contain;
   }
 }
 
@@ -550,22 +642,31 @@ body.lb-active #top-nav {
 
 .top-nav-links {
   display:     flex;
-  gap:         8px;
+  gap:         6px;
   margin-left: auto;
 }
 
+/* Pill-shaped nav buttons — slightly smaller than module tabs */
 .top-nav-btn {
-  font-family:    var(--font-display);
-  font-size:      0.72rem;
-  letter-spacing: 0.06em;
-  padding:        6px 14px;
-  border-radius:  var(--radius);
-  border:         1px solid var(--border);
-  color:          var(--text-secondary);
+  font-family:     var(--font-display);
+  font-size:       0.82rem;
+  font-weight:     600;
+  letter-spacing:  0.04em;
+  padding:         10px 18px;
+  border-radius:   var(--radius-lg);
+  border:          none;
+  color:           var(--text-secondary);
   text-decoration: none;
-  transition:     color var(--transition), border-color var(--transition),
-                  background var(--transition);
+  text-align:      center;
+  white-space:     nowrap;
+  -webkit-user-select: none;
+  user-select:     none;
+  transition:      background var(--transition), color var(--transition),
+                   box-shadow var(--transition), transform 0.12s;
+  background:      var(--bg-mid);
 }
+
+.top-nav-btn:active { transform: scale(0.96); }
 
 .top-nav-btn:hover {
   color:        var(--text-primary);
@@ -573,6 +674,18 @@ body.lb-active #top-nav {
   background:   var(--bg-mid);
 }
 
+/* Active state (e.g. Search tab) — lilac */
+.top-nav-btn--active {
+  background:   var(--lilac-btn);
+  color:        var(--text-primary);
+  box-shadow:   0 0 20px rgba(81, 47, 134, 0.25);
+}
+
+.top-nav-btn--active:hover {
+  background: var(--lilac-btn-hover);
+}
+
+/* Legacy oracle accent variant (kept for backward compat) */
 .top-nav-btn--oracle {
   color:        var(--accent);
   border-color: var(--border-accent);
@@ -583,7 +696,9 @@ body.lb-active #top-nav {
 /* Push page content below the fixed bar */
 .page-wrap { padding-top: 52px; }
 
-/* ─── Search panel ───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEARCH PANEL
+   ═══════════════════════════════════════════════════════════════════════════ */
 .search-panel {
   width:          100%;
   margin-top:     28px;
@@ -611,7 +726,6 @@ body.lb-active #top-nav {
   outline:       none;
   transition:    border-color var(--transition), box-shadow var(--transition),
                  background var(--transition);
-  /* Remove browser spinner arrows */
   -moz-appearance: textfield;
 }
 
@@ -621,19 +735,39 @@ body.lb-active #top-nav {
   margin: 0;
 }
 
-/* ─── Error message ──────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ERROR MESSAGE
+   Friendlier "silly user" vibe — soft red, rounded, no sharp left border.
+   ═══════════════════════════════════════════════════════════════════════════ */
 .error-msg {
-  display:       none;   /* hidden by default; shown via .visible */
+  display:       none;
   min-height:    0;
+  font-family:   var(--font-body);
+  font-style:    normal !important;
   font-size:     0.92rem;
-  font-weight:   600;
-  color:         #ff5555;
-  background:    rgba(255, 60, 60, 0.12);
-  border:        1px solid rgba(255, 60, 60, 0.35);
-  border-left:   3px solid #ff5555;
+  color:         var(--text-primary);
+  background:    rgba(200, 97, 95, 0.10);
+  border:        3px solid rgba(200, 97, 95, 0.28);
   border-radius: var(--radius);
-  padding:       10px 14px;
+  padding:       12px 16px;
   text-align:    left;
+}
+
+.error-msg h1,
+.error-msg h2,
+.error-msg h3 {
+  font-family:   var(--font-display);
+  font-weight:   700;
+  color:         #e57373;
+  margin-bottom: 6px;
+  font-size:     1rem;
+  line-height:   1.3;
+}
+
+.error-msg p {
+  color:       var(--text-primary);
+  font-weight: 400;
+  margin:      0;
 }
 
 .error-msg.visible {
@@ -657,19 +791,22 @@ body.lb-active #top-nav {
 
 .shake { animation: shake 0.42s ease; }
 
-/* ─── Buttons ────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════════════════════ */
 .btn {
-  font-family:    var(--font-display);
-  font-size:      0.78rem;
-  letter-spacing: 0.06em;
-  font-weight:    400;
-  padding:        11px 22px;
-  border:         none;
-  border-radius:  var(--radius);
-  cursor:         pointer;
-  transition:     background var(--transition), transform 0.12s, box-shadow var(--transition);
-  white-space:    nowrap;
-  user-select:    none;
+  font-family:     var(--font-display);
+  font-size:       0.78rem;
+  letter-spacing:  0.06em;
+  font-weight:     400;
+  padding:         11px 22px;
+  border:          none;
+  border-radius:   var(--radius);
+  cursor:          pointer;
+  transition:      background var(--transition), transform 0.12s, box-shadow var(--transition);
+  white-space:     nowrap;
+  -webkit-user-select: none;
+  user-select:     none;
 }
 
 .btn:active   { transform: scale(0.96); }
@@ -699,32 +836,55 @@ body.lb-active #top-nav {
 
 /* Oracle random button — Gita */
 .btn-oracle {
-  background: var(--bg-card);
+  background: var(--bg-input);
   color:      var(--accent);
   border:     1px solid var(--border-accent);
-  margin-top: 16px;
+  /* margin-top removed — use .u-mt-16 utility or parent spacing */
 }
 
 .btn-oracle:hover:not(:disabled) {
-  background: var(--bg-card-alt);
+  background: var(--bg-input);
   box-shadow: var(--shadow-glow);
 }
 
 /* Oracle random button — iChing variant */
 .btn-oracle--iching {
-  color:        var(--iching-accent);
-  border-color: rgba(98,118,187,0.35);
+  color:        var(--iching-border);
+  border-color: var(--iching-border);
 }
 
 .btn-oracle--iching:hover:not(:disabled) {
+  background:   var(--bg-card);
   box-shadow: 0 0 28px rgba(98,118,187,0.18);
 }
 
-/* ─── Lightbox overlay ───────────────────────────────────────────────────── */
+/* Inline oracle button (legacy — used inside .intro-inner flex rows) */
+.btn-oracle--inline {
+  flex-shrink: 0;
+  width:       160px;
+  min-width:   120px;
+  height:      62px;
+  line-height: 1.6;
+  text-align:  center;
+}
+
+@media (max-width: 420px) {
+  .btn-oracle--inline {
+    width:  100%;
+    height: 56px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIGHTBOX OVERLAY
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lightbox {
   display:         none;
   position:        fixed;
-  inset:           0;
+  top:             0;
+  right:           0;
+  bottom:          0;
+  left:            0;
   z-index:         1900;
   align-items:     flex-start;
   justify-content: center;
@@ -744,7 +904,10 @@ body.lb-active #top-nav {
 
 .lb-overlay {
   position:                fixed;
-  inset:                   0;
+  top:                     0;
+  right:                   0;
+  bottom:                  0;
+  left:                    0;
   background:              rgba(0,0,0,0.82);
   backdrop-filter:         blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -753,21 +916,22 @@ body.lb-active #top-nav {
 
 body.lb-active { overflow: hidden; }
 
-/* ─── Lightbox card ──────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIGHTBOX CARD
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-card {
   width:         100%;
   max-width:     640px;
   background:    var(--bg-card);
   border-radius: var(--radius-lg);
   border:        1px solid var(--border);
-  border-top:    3px solid var(--accent);   /* Gita default: saffron top border */
+  border-top:    3px solid var(--accent);
   box-shadow:    var(--shadow-card), var(--shadow-glow);
   overflow:      hidden;
   position:      relative;
   animation:     card-enter 0.38s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
 }
 
-/* I Ching mode override — indigo-blue top border when the card carries this class */
 .lb-card.lb-card--iching {
   border-top-color: var(--iching-accent);
   box-shadow:       var(--shadow-card), 0 0 28px rgba(98,118,187,0.14);
@@ -780,7 +944,13 @@ body.lb-active { overflow: hidden; }
 
 .lb-card.loading { opacity: 0.6; pointer-events: none; transition: opacity 0.2s; }
 
-/* ─── Card header ────────────────────────────────────────────────────────── */
+#lb-wisdom-body {
+  padding: 0px 16px 6px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARD HEADER
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-header {
   display:         flex;
   align-items:     center;
@@ -812,7 +982,7 @@ body.lb-active { overflow: hidden; }
   font-size:      0.68rem;
   color:          var(--accent);
   letter-spacing: 0.03em;
-  white-space:    nowrap;
+  /* white-space:    nowrap; */
   overflow:       hidden;
   text-overflow:  ellipsis;
 }
@@ -824,7 +994,9 @@ body.lb-active { overflow: hidden; }
   align-items: center;
 }
 
-/* ─── Icon buttons (header) ──────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ICON BUTTONS (header)
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-icon-btn {
   background:     transparent;
   border:         1px solid var(--border);
@@ -846,7 +1018,6 @@ body.lb-active { overflow: hidden; }
   border-color: var(--border-accent);
 }
 
-/* Top return button — saffron accent, only visible in purport/commentary view */
 .lb-purport-top-btn {
   color:        var(--accent);
   border-color: var(--border-accent);
@@ -857,7 +1028,6 @@ body.lb-active { overflow: hidden; }
   border-color: var(--border-accent);
 }
 
-/* Font-size buttons */
 .lb-font-btn {
   padding:     6px 8px;
   font-size:   0.8rem;
@@ -865,7 +1035,6 @@ body.lb-active { overflow: hidden; }
   font-weight: 600;
 }
 
-/* Close button #c8615f --red-pink*/
 .lb-close-btn {
   background:    var(--red-btn);
   border:        1px solid var(--red-btn);
@@ -886,14 +1055,14 @@ body.lb-active { overflow: hidden; }
   border:     1px solid var(--red-btn);
 }
 
-/* ─── Card body ──────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARD BODY
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-body { padding: 20px 22px 6px; }
 
-/* Chapter / hexagram heading */
 .lb-chapter-heading {
   font-family:    var(--font-display);
   font-size:      calc(var(--lb-font-size) * 0.9);
-  /* font-size:      clamp(0.78rem, 2vw, 0.92rem); */
   font-weight:    700;
   color:          var(--text-heading);
   letter-spacing: 0.03em;
@@ -905,7 +1074,9 @@ body.lb-active { overflow: hidden; }
   border-left:    3px solid var(--text-primary);
 }
 
-/* ─── Section labels ─────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION LABELS
+   ═══════════════════════════════════════════════════════════════════════════ */
 .section-label {
   font-family:    var(--font-display);
   font-size:      0.68rem;
@@ -914,26 +1085,27 @@ body.lb-active { overflow: hidden; }
   text-transform: uppercase;
   margin-bottom:  8px;
   margin-top:     18px;
-
-  display: flex;           /* enable horizontal flex layout */
-  align-items: center;     /* vertically center text and line */
+  display:        flex;
+  align-items:    center;
 }
 
 .section-label::after {
-  content: '';             /* empty content for the line */
-  flex-grow: 1;            /* take up remaining horizontal space */
-  margin-left: 8px;        /* space between text and line */
-  border-bottom: 1px solid var(--text-secondary); /* solid line */
-  opacity: 0.5;            /* optional: make it a bit lighter than text */
+  content:       '';
+  flex-grow:     1;
+  margin-left:   8px;
+  border-bottom: 1px solid var(--text-secondary);
+  opacity:       0.5;
 }
 
-/* ─── Translation / Judgment — shown FIRST in verse view ─────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   TRANSLATION / JUDGMENT
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-translation {
   background:    rgba(30, 32, 37, 0.96);
   border-left:   3px solid #7188d8;
   border-radius: 0 var(--radius) var(--radius) 0;
   padding:       12px 16px;
-  font-size:     calc(var(--lb-font-size) * 1.08);  /* slightly larger: main feature */
+  font-size:     calc(var(--lb-font-size) * 1.08);
   font-weight:   400;
   color:         var(--text-heading);
   line-height:   1.75;
@@ -942,11 +1114,13 @@ body.lb-active { overflow: hidden; }
   margin-bottom: 4px;
 }
 
-/* ─── Sanskrit / hexagram lines — shown SECOND ───────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   SANSKRIT / HEXAGRAM LINES
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-sanskrit {
   text-align:    center;
   font-family:   var(--font-body);
-  font-size:     calc(var(--lb-font-size) * 1.0);
+  font-size:     calc(var(--lb-font-size) * 1.00);
   font-style:    italic;
   color:         var(--text-primary);
   line-height:   1.8;
@@ -954,13 +1128,15 @@ body.lb-active { overflow: hidden; }
   white-space:   normal;
 }
 
-/* ─── Synonyms / judgment lines — shown THIRD ────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   SYNONYMS / JUDGMENT LINES
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-synonyms-wrap {
   background:    var(--bg-mid);
   border-radius: var(--radius);
   border:        1px solid var(--border);
   padding:       12px 14px;
-  font-size:     calc(var(--lb-font-size) * 0.88);
+  font-size:     calc(var(--lb-font-size) * 0.92);
   line-height:   1.8;
   color:         var(--text-secondary);
 }
@@ -971,19 +1147,14 @@ body.lb-active { overflow: hidden; }
 .syn-sep     { color: var(--accent); margin: 0 2px; }
 .syn-plain   { color: var(--text-secondary); }
 
-/* ─── Bottom action buttons (65% width, right-aligned) ───────────────────── */
-/*
- * Two bottom buttons share base styles:
- *   .lb-open-purport-btn — shown in VERSE view  — dark-theme blue
- *   .lb-return-btn       — shown in PURPORT view — red (#c8615f)
- *
- * Visibility is managed via .visible class (never inline style).
- */
+/* ═══════════════════════════════════════════════════════════════════════════
+   BOTTOM ACTION BUTTONS
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-bottom-btn {
-  display:        none;   /* hidden by default */
+  display:        none;
   width:          65%;
   margin-top:     20px;
-  margin-left:    auto;   /* right-align */
+  margin-left:    auto;
   padding:        10px 0;
   font-family:    var(--font-display);
   font-size:      0.78rem;
@@ -1001,7 +1172,6 @@ body.lb-active { overflow: hidden; }
   animation: purport-in 0.28s ease;
 }
 
-/* Blue — "Read Purport / Commentary" */
 .lb-open-purport-btn {
   background: var(--iching-accent);
   color:      #ffffff;
@@ -1009,7 +1179,6 @@ body.lb-active { overflow: hidden; }
 
 .lb-open-purport-btn:hover { background: var(--iching-dim); }
 
-/* Red — "Return to Verse / Hexagram" */
 .lb-return-btn {
   background: var(--lilac-btn);
   color:      #ffffff;
@@ -1017,7 +1186,9 @@ body.lb-active { overflow: hidden; }
 
 .lb-return-btn:hover { background: var(--lilac-btn-hover); }
 
-/* ─── Purport / commentary section ──────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   PURPORT / COMMENTARY
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-purport-dedicatory-top {
   font-family:   var(--font-text);
   font-style:    italic;
@@ -1041,11 +1212,10 @@ body.lb-active { overflow: hidden; }
 }
 
 .lb-purport {
-  font-size:   calc(var(--lb-font-size) * 0.93);
-  color:       var(--text-primary);
-  line-height: 1.85;
-  margin-top:  4px;
-  /* Added very dim BG to PURPORT */
+  font-size:     calc(var(--lb-font-size) * 0.93);
+  color:         var(--text-primary);
+  line-height:   1.85;
+  margin-top:    4px;
   background:    rgba(13, 14, 16, 0.08);
   border-radius: var(--radius);
   padding:       10px 12px;
@@ -1055,7 +1225,9 @@ body.lb-active { overflow: hidden; }
 .lb-purport p:last-child { margin-bottom: 0; }
 .lb-purport .no-purport  { font-style: italic; color: var(--text-muted); }
 
-/* ─── Signature image ────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   SIGNATURE IMAGE
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-signature {
   display:               block;
   width:                 100%;
@@ -1067,11 +1239,14 @@ body.lb-active { overflow: hidden; }
   filter:                brightness(0.85);
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
+  -webkit-user-select:   none;
   user-select:           none;
   pointer-events:        none;
 }
 
-/* ─── Chapter-end colophon ───────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHAPTER-END COLOPHON
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-chapter-end {
   display:       none;
   margin-top:    16px;
@@ -1104,7 +1279,9 @@ body.lb-active { overflow: hidden; }
   animation:     purport-in 0.3s ease;
 }
 
-/* ─── Info card content (about / usage / future cards) ──────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   INFO CARD CONTENT (about / usage / future cards)
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-info-text {
   font-size:     calc(var(--lb-font-size) * 0.93);
   color:         var(--text-primary);
@@ -1149,6 +1326,7 @@ body.lb-active { overflow: hidden; }
   cursor:                pointer;
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
+  -webkit-user-select:   none;
   user-select:           none;
 }
 
@@ -1163,7 +1341,9 @@ body.lb-active { overflow: hidden; }
   line-height: 1.6;
 }
 
-/* ─── Card footer / navigation bar ──────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARD FOOTER / NAVIGATION BAR
+   ═══════════════════════════════════════════════════════════════════════════ */
 .lb-footer-bar {
   display:         flex;
   align-items:     center;
@@ -1209,7 +1389,9 @@ body.lb-active { overflow: hidden; }
   border-color: var(--border-accent);
 }
 
-/* ─── Animations ─────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
 @keyframes purport-in {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1219,7 +1401,6 @@ body.lb-active { overflow: hidden; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── Load-in (landing page stagger) ────────────────────────────────────── */
 .fade-in {
   opacity:   0;
   transform: translateY(14px);
@@ -1232,20 +1413,20 @@ body.lb-active { overflow: hidden; }
 .fade-in:nth-child(4) { animation-delay: 0.35s; }
 .fade-in:nth-child(5) { animation-delay: 0.42s; }
 
-/* ─── Page footer ────────────────────────────────────────────────────────── */
-/*
- * Full-width darker block, lighter grey top border, Discord embed style.
- * Contains a circular 28×28 image (imgfooter.png).
- * The page-wrap's padding-bottom is removed; footer provides its own spacing.
- */
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGE FOOTER
+   ═══════════════════════════════════════════════════════════════════════════ */
 .page-footer {
-  width:        calc(100% + 40px);  /* bleed past .page-wrap's 20px padding */
   margin-left:  -20px;
   margin-right: -20px;
   margin-top:   40px;
-  background:   #18191c;            /* darker than --bg-base */
+  background:   #18191c;
   border-top:   1px solid rgba(255,255,255,0.10);
-  padding:      16px 20px 20px;     /* compact height as requested */
+  border-left:  1px solid rgba(255,255,255,0.10);
+  border-right: 1px solid rgba(255,255,255,0.10);
+  border-top-left-radius:  var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  padding:      16px 20px 20px;
 }
 
 .footer-inner {
@@ -1256,7 +1437,6 @@ body.lb-active { overflow: hidden; }
   gap:         10px;
 }
 
-/* Circular footer icon — mirrors Discord embed footer icon style */
 .footer-icon {
   width:         28px;
   height:        28px;
@@ -1277,7 +1457,9 @@ body.lb-active { overflow: hidden; }
 .page-footer a { color: var(--accent); text-decoration: none; opacity: 0.8; }
 .page-footer a:hover { opacity: 1; }
 
-/* ─── Share image template ───────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   SHARE PNG TEMPLATE
+   ═══════════════════════════════════════════════════════════════════════════ */
 #share-png-card {
   position:            fixed;
   left:                -9999px;
@@ -1325,9 +1507,9 @@ body.lb-active { overflow: hidden; }
   display:         flex;
   align-items:     center;
   justify-content: center;
-  font-size:       var(--share-verse-size);  /* change this line */
+  font-size:       var(--share-verse-size);
   line-height:     1.5;
-  overflow:        hidden;  /* hide anything that escapes during measurement */
+  overflow:        hidden;
   text-align:      center;
   margin:          0;
 }
@@ -1340,7 +1522,9 @@ body.lb-active { overflow: hidden; }
   opacity:     0.7;
 }
 
-/* ─── Custom dropdown ────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CUSTOM DROPDOWN
+   ═══════════════════════════════════════════════════════════════════════════ */
 .custom-select {
   position: relative;
   flex:     none;
@@ -1390,7 +1574,6 @@ body.lb-active { overflow: hidden; }
 
 .custom-select.open .custom-select-arrow { transform: rotate(180deg); }
 
-/* Dropdown list — centered modal style with z-index above backdrop */
 .custom-select-list {
   display:       none;
   position:      fixed;
@@ -1406,7 +1589,7 @@ body.lb-active { overflow: hidden; }
   box-shadow:    var(--shadow-card);
   list-style:    none;
   padding:       4px 0;
-  z-index:       1201;  /* Must be above .custom-select-backdrop (1099) so options are clickable */
+  z-index:       1201;
 }
 
 .custom-select.open .custom-select-list {
@@ -1459,28 +1642,28 @@ body.lb-active { overflow: hidden; }
 .custom-select-backdrop {
   display:  none;
   position: fixed;
-  inset:    0;
-  z-index:  1099;  /* Below .custom-select-list (1201) so clicks pass through to options */
+  top:      0;
+  right:    0;
+  bottom:   0;
+  left:     0;
+  z-index:  1099;
 }
 
 .custom-select.open .custom-select-backdrop { display: block; }
 
-/* Scrollbar track (background behind the thumb) */
-::-webkit-scrollbar-track {
-  background: var(--bg-card);
-}
+::-webkit-scrollbar-track { background: var(--bg-card); }
 
-/* Scrollbar itself (the draggable part) */
 ::-webkit-scrollbar-thumb {
-  background-color: var(--bg-input);  /* thumb color */
-  border-radius:    10px;              /* rounded corners */
-  border:           2px solid #2b2d31; /* optional border */
+  background-color: var(--bg-input);
+  border-radius:    10px;
+  border:           2px solid #2b2d31;
 }
 
-/* Scrollbar color for Firefox */
 * { scrollbar-color: var(--bg-card) var(--bg-input); }
 
-/* ─── Verse / hexagram input field ──────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   VERSE / HEXAGRAM INPUT FIELD
+   ═══════════════════════════════════════════════════════════════════════════ */
 .verse-field {
   width:        140px;
   background:   #1a1f2a;
@@ -1495,15 +1678,16 @@ body.lb-active { overflow: hidden; }
   outline:      none;
 }
 
-/* iChing input — same base, slightly different focus ring colour already
-   handled by verse-field:focus using --iching-accent */
 .verse-field--iching::placeholder { color: var(--text-muted); }
 
-/* ─── Mobile ─────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE BREAKPOINTS
+   ═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 520px) {
   .page-wrap       { padding: 0 12px 0; }
-  .banner          { padding: 36px 0 24px; }
-  .banner-lotus    { font-size: 40px; }
+  .banner          { padding: 72px 0 24px; }
+  .banner-date     { font-size: 0.8rem; top: 4px; }
+  .menu-toggle     { top: 4px; }
   .search-row      { flex-wrap: wrap; }
   .btn             { width: 100%; text-align: center; }
   .verse-input     { font-size: 0.97rem; }
@@ -1518,40 +1702,44 @@ body.lb-active { overflow: hidden; }
   .lb-nav-row      { width: 100%; justify-content: space-between; }
   .lb-footer-text  { width: 100%; }
   .lb-font-btn     { padding: 6px 6px; }
-  /* Return button replaces close on narrow screens */
-  .lb-header--purport .lb-close-btn    { display: none; }
-  /* Bottom buttons full-width on mobile */
+  .lb-header--purport .lb-close-btn { display: none; }
   .lb-bottom-btn   { width: 100%; }
-  /* Footer bleeds correctly on narrow screens */
-  .page-footer     { width: calc(100% + 24px); margin-left: -12px; margin-right: -12px; }
+  .page-footer     { margin-left: -12px; margin-right: -12px; padding: 16px 12px 20px; }
+
+  /* Module tabs stack on very small screens */
+  .module-tabs     { flex-wrap: wrap; justify-content: center; }
+  .module-tab      { flex: 1; min-width: 100px; font-size: 0.75rem; padding: 8px 12px; }
+
+  /* Intro cards: thumb shrinks, title centers */
+  .intro-header    { justify-content: center; text-align: center; }
+  .intro-thumb     { width: 60px; height: 60px; }
 }
 
-/* ─── Scrollbar (webkit) ─────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLLBAR & SELECTION
+   ═══════════════════════════════════════════════════════════════════════════ */
 ::-webkit-scrollbar             { width: 6px; }
 ::-webkit-scrollbar-track       { background: var(--bg-base); }
 ::-webkit-scrollbar-thumb       { background: var(--text-muted); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
 
-/* Selection highlight */
 ::selection { background: rgba(245,166,35,0.25); color: var(--text-heading); }
 
-/* ─── Image protection — no drag, no iOS callout ────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   IMAGE PROTECTION
+   ═══════════════════════════════════════════════════════════════════════════ */
 img {
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
+  -webkit-user-select:   none;
   user-select:           none;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Search card
-   Reuses .lightbox, .lb-card, .lb-header, .lb-footer-bar from the shared
-   card system. Only search-specific rules are declared here.
+   SEARCH CARD (reuses shared lightbox/card system)
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ─── Search input ───────────────────────────────────────────────────────── */
-.search-input-row {
-  margin-bottom: 12px;
-}
+.search-input-row { margin-bottom: 12px; }
 
 .search-field {
   width:         100%;
@@ -1565,7 +1753,6 @@ img {
   outline:       none;
   transition:    border-color var(--transition), box-shadow var(--transition),
                  background var(--transition);
-  /* Remove native browser × clear button */
   -webkit-appearance: none;
 }
 
@@ -1580,7 +1767,6 @@ img {
 
 .search-field::placeholder { color: var(--text-muted); }
 
-/* ─── Mode buttons ───────────────────────────────────────────────────────── */
 .search-mode-row {
   display:       flex;
   gap:           8px;
@@ -1604,7 +1790,6 @@ img {
   border-color: var(--border-accent);
 }
 
-/* Pending = index not ready yet */
 .search-mode-btn--pending {
   opacity: 0.42;
   cursor:  not-allowed;
@@ -1616,7 +1801,6 @@ img {
   border-color: rgba(255,255,255,0.14);
 }
 
-/* ─── Status line (indexing / no results) ────────────────────────────────── */
 .search-status {
   font-size:     0.88rem;
   font-style:    italic;
@@ -1629,19 +1813,16 @@ img {
   animation:     purport-in 0.22s ease;
 }
 
-/* ─── Results list ───────────────────────────────────────────────────────── */
 .search-results {
   display:        flex;
   flex-direction: column;
   gap:            2px;
   max-height:     360px;
   overflow-y:     auto;
-  /* Subtle inner scroll shadow to hint there's more content */
-  mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  mask-image:     linear-gradient(to bottom, black 90%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
 }
 
-/* ─── Result item ────────────────────────────────────────────────────────── */
 .search-result-item {
   display:        flex;
   flex-direction: column;
@@ -1669,9 +1850,9 @@ img {
 }
 
 .search-result-chapter {
-  font-size:   0.76rem;
-  color:       var(--text-muted);
-  font-style:  italic;
+  font-size:     0.76rem;
+  color:         var(--text-muted);
+  font-style:    italic;
   margin-bottom: 2px;
 }
 
@@ -1690,7 +1871,6 @@ img {
   font-style:    normal;
 }
 
-/* ─── Pagination page-info ───────────────────────────────────────────────── */
 .search-page-info {
   font-size:   0.78rem;
   color:       var(--text-muted);
@@ -1700,14 +1880,12 @@ img {
   align-self:  center;
 }
 
-/* ─── Nav button active state (Oracle → Search toggle) ──────────────────── */
 .top-nav-btn--active {
   color:        var(--accent) !important;
   border-color: var(--border-accent) !important;
   background:   var(--accent-glow) !important;
 }
 
-/* ─── Mobile ─────────────────────────────────────────────────────────────── */
 @media (max-width: 520px) {
   .search-results    { max-height: 260px; }
   .search-mode-row   { gap: 6px; }

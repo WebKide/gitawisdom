@@ -4,7 +4,7 @@
  * Update CACHE_VERSION to bust the cache on new deployments.
  */
 
-const CACHE_VERSION = 'wisdom-oracle-v1.0.10';
+const CACHE_VERSION = 'wisdom-oracle-v1.0.12';
 
 /**
  * Derive the deployment base path once at the top of the file.
@@ -23,6 +23,7 @@ const ASSETS = [
   BASE + '/js/app.js',
   BASE + '/js/lightbox.js',
   BASE + '/js/oracle-forms.js',
+  BASE + '/js/wisdomoracle.js',
   BASE + '/js/share-utils.js',
   BASE + '/js/gitacore.js',
   BASE + '/js/ichingcore.js',
@@ -42,6 +43,8 @@ const ASSETS = [
   BASE + '/assets/images/card_bg.png',
   BASE + '/assets/images/signature.svg',
   BASE + '/assets/images/imgfooter.png',
+  BASE + '/assets/images/prabhupada.png',
+  BASE + '/assets/images/iching.png',
 
   // Icons
   BASE + '/assets/icons/apple-touch-icon.png',
@@ -53,24 +56,14 @@ const ASSETS = [
   BASE + '/assets/fonts/kelvinch-v42-latin-italic.woff2',
   BASE + '/assets/fonts/kelvinch-v42-latin-700.woff2',
   BASE + '/assets/fonts/kelvinch-v42-latin-700italic.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-regular.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-italic.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-500.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-500italic.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-600.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-600italic.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-700.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-700italic.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-800.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-800italic.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-900.woff2',
-  BASE + '/assets/fonts/noto-serif-v33-latin-900italic.woff2',
-  BASE + '/assets/fonts/sansita-v12-latin-700.woff2',
-  BASE + '/assets/fonts/sansita-v12-latin-700italic.woff2',
-  BASE + '/assets/fonts/sansita-v12-latin-800.woff2',
-  BASE + '/assets/fonts/sansita-v12-latin-800italic.woff2',
-  BASE + '/assets/fonts/sansita-v12-latin-900.woff2',
-  BASE + '/assets/fonts/sansita-v12-latin-900italic.woff2',
+  BASE + '/assets/fonts/gentium-plus-v2-latin_latin-ext-regular.woff2',
+  BASE + '/assets/fonts/gentium-plus-v2-latin_latin-ext-italic.woff2',
+  BASE + '/assets/fonts/gentium-plus-v2-latin_latin-ext-700.woff2',
+  BASE + '/assets/fonts/gentium-plus-v2-latin_latin-ext-700italic.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin_latin-ext-700.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin_latin-ext-700italic.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin_latin-ext-900.woff2',
+  BASE + '/assets/fonts/sansita-v12-latin_latin-ext-900italic.woff2',
 
   // Gita JSON
   BASE + '/assets/gita/bg_ch01.json',
@@ -102,6 +95,7 @@ const ASSETS = [
   BASE + '/assets/data/about.json',
   BASE + '/assets/data/usage.json',
   BASE + '/assets/data/search.json',
+  BASE + '/assets/data/oracle.json',
 ];
 
 // ─── Install: cache all assets, tolerate 404s ───────────────────────────────

@@ -10,18 +10,20 @@
   <meta name="description" content="Wisdom Oracle — loading…" />
   <meta name="robots" content="noindex, nofollow" />
   <link rel="canonical" href="/gitawisdom/oracle.html" />
-  <title>Wisdom Oracle v1.0.10</title>
+  <title>Wisdom Oracle</title>
 
   <!-- Favicons — same as oracle.html -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
-  <link rel="manifest" href="/gitawisdom/site.webmanifest" />
+  <link rel="manifest" href="site.webmanifest" />
 
   <!--
     IMPORTANT — site.webmanifest:
-    Set "start_url" to "/gitawisdom/" (or "/gitawisdom/index.html")
-    so that installed PWA always opens the splash first.
+    Use a relative "start_url" (e.g. "." or "./index.html") so the manifest
+    resolves correctly both during local testing (e.g. localhost:8000/) and
+    when deployed under a sub-path (e.g. /gitawisdom/). This link is relative
+    for the same reason — do not hardcode an absolute path here.
   -->
 
   <link rel="stylesheet" href="css/splash.css" />
@@ -74,7 +76,7 @@
 
     <!-- Progress bar beneath terminal -->
     <div class="progress-wrap" aria-hidden="true">
-      <span class="progress-label">initialising</span>
+      <span class="progress-label">initialising 「v1.0.12」</span>
       <div class="progress-track">
         <div id="progress-fill" class="progress-fill"></div>
       </div>

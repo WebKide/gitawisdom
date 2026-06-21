@@ -1,0 +1,14 @@
+{
+  "page-name": "Wisdom Search",
+  "icon": "assets/images/ACBhaktivedantaSwami.png",
+  "h1": "Search the Bhagavad Gītā As It Is",
+  "input-placeholder": "Search wisdom from the Gītā",
+  "btn-verse": "Verse Search",
+  "btn-purport": "Purport Search",
+  "msg-indexing": "Indexing 700 verses and purports, please wait a few seconds…",
+  "msg-no-results": "No results found. Try a different search term.",
+  "msg-results-count": "Showing {start}–{end} of {total} results",
+  "btn-prev": "◀ Prev",
+  "btn-next": "Next ▶",
+  "footer": "Search covers all 18 chapters — translations and purports."
+}

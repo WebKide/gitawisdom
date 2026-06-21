@@ -12,6 +12,7 @@
 <div align="center">
    <img src="https://img.shields.io/badge/Made%20with-JavaScript-blue.svg?style=popout&logo=javascript&logoColor=yellow" alt="JavaScript" />
    <img src="https://img.shields.io/badge/Library-html2canvas-yellow?style=popout" alt="html2canvas" />
+   <img src="https://img.shields.io/badge/Library-fuse-red?style=popout" alt="fuse.min.js" />
    <img src="https://img.shields.io/badge/Data-LocalJSON-%234ea94b.svg?style=popout&logo=git&logoColor=white" alt="Local JSON" />  
 </div>
 
@@ -27,7 +28,7 @@ Find instant wisdom, clarity, and emotional strength for everyday parenting chal
 
 ![Example]()
 
-## 🗃️ Features v1.0.10
+## 🗃️ Features v1.0.12
 
 - **Random Oracle Readings** - Get a verse from the Bhagavad Gītā or a hexagram from the I Ching at random.
 - **Lookup by Chapter or Number** - Search specific chapters and verse numbers or hexagram numbers.
@@ -87,7 +88,7 @@ For issues or feature requests, please open an issue on [GitHub](https://github.
 ### ✨ Technical Details
 
 - **Developer:** [WebKide](https://webkide.github.io/gitawisdom/)
-- **Libraries used:** [`html2canvas.min.js`](https://html2canvas.hertzen.com/)
+- **Libraries used:** [`html2canvas.min.js`](https://html2canvas.hertzen.com/), [`fuse.min.js`](https://http://fusejs.io/)
 - **Data source:** Bhagavad Gītā As It Is (1972 Unabridged Edition, Macmillan) and I Ching JSON files
 - **Repository:** [GitHub: WebKide/gitawisdom](https://github.com/WebKide/gitawisdom/tree/main)
 - **Live URL:** [https://webkide.github.io/gitawisdom](https://webkide.github.io/gitawisdom)

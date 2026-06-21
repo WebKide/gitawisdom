@@ -44,7 +44,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
   <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.0.10</title>
+  <title>Wisdom Oracle v1.0.12</title>
   <meta name="author" content="WebKide" />
   <link rel="stylesheet" href="css/styles.css" />
 
@@ -67,19 +67,20 @@
 <!-- ═══════════════════════════════════ NAVIGATION ════════════════════════════ -->
 <nav id="top-nav" aria-label="Main navigation">
   <div class="top-nav-inner">
-    <img
-      src="assets/images/wisdomoracle.svg"
-      alt="Wisdom Oracle"
-      class="top-nav-icon"
-      width="119"
-      height="25"
-      draggable="false"
-    />
+    <img src="assets/images/wisdomoracle.svg" alt="Wisdom Oracle" class="top-nav-icon" ... />
     <div class="top-nav-links">
-      <button id="search-nav-btn" class="top-nav-btn top-nav-btn--oracle" 
-        aria-label="Open Wisdom search">Search</button>
-      <a href="#usage-section" class="top-nav-btn">Usage</a>
-      <a href="#about-section" class="top-nav-btn">About</a>
+      <button id="search-nav-btn" class="top-nav-btn top-nav-btn--active" aria-label="Open Wisdom search">
+        <!-- <svg class="nav-icon" ...>magnifier</svg> -->
+        Search
+      </button>
+      <a href="#usage-section" class="top-nav-btn">
+        <!-- <svg class="nav-icon" ...>package</svg> -->
+        Usage
+      </a>
+      <a href="#about-section" class="top-nav-btn">
+        <!-- <svg class="nav-icon" ...>silhouette</svg> -->
+        About
+      </a>
     </div>
   </div>
 </nav>
@@ -89,6 +90,42 @@
 
   <!-- ── Banner ── -->
   <header class="banner fade-in">
+    <span class="banner-date"></span>
+
+      <script>
+      (function () {
+        'use strict';
+        var MONTHS = ['January','February','March','April','May','June','July',
+                      'August','September','October','November','December'];
+
+        function getOrdinalSuffix(n) {
+          var v = n % 100;
+          if (v >= 11 && v <= 13) return 'ᵗʰ';
+          switch (n % 10) {
+            case 1: return 'ˢᵗ';
+            case 2: return 'ⁿᵈ';
+            case 3: return 'ʳᵈ';
+            default: return 'ᵗʰ';
+          }
+        }
+
+        function formatBannerDate(date) {
+          return MONTHS[date.getMonth()] + ' ' + date.getDate() + getOrdinalSuffix(date.getDate());
+        }
+
+        // Exposed so the Share-PNG date script further down can reuse this
+        // instead of duplicating the same month/ordinal logic a second time.
+        window.formatBannerDate = formatBannerDate;
+
+        var banner = document.querySelector('.banner-date');
+        if (banner) banner.textContent = formatBannerDate(new Date());
+      })();
+      </script>
+
+    <button class="menu-toggle" aria-label="Menu">
+      <span class="menu-line"></span><span class="menu-line"></span><span class="menu-line"></span>
+      <span class="menu-dot"></span>
+    </button>
     <!-- Gītā icon — above Logo position:absolute -->
     <img
       src="assets/images/imgfooter.png"
@@ -110,23 +147,36 @@
     <p class="banner-subtitle">Find wisdom, clarity, and emotional strength for everyday challenges.</p>
   </header>
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       GITA ORACLE SECTION
-  ══════════════════════════════════════════════════════════════════════════ -->
+  <!-- ── Module tabs ── -->
+  <div class="module-tabs fade-in">
+    <button
+      id="wisdomoracle-random-btn"
+      class="module-tab module-tab--wisdom module-tab--active">Wisdom Oracle
+    </button>
+    <button 
+      id="gita-random-btn" 
+      class="module-tab module-tab--gita">Gītā Wisdom
+    </button>
+    <button
+      id="iching-random-btn"
+      class="module-tab module-tab--iching">iChing Oracle
+    </button>
+  </div>
 
-  <!-- ── Gita intro ── -->
-  <!-- ── Gita random button — SILENT: does NOT populate dropdown or input ── -->
-  <!-- Clicking this button runs randomVerse() in the background only.        -->
-  <section class="intro fade-in" aria-label="About the Gita Oracle">
-    <div class="intro-inner">
-      <ul>
-        <li>Connect with ancient tradition through the Gītā Wisdom.</li>
-        <li>Click <code>&nbsp;✦ Wisdom ✦&nbsp;</code> to receive instant inspiration.</li>
-      </ul>
-      <button id="gita-random-btn" class="btn btn-oracle btn-oracle--inline" aria-label="Random verse — GitaWisdom">✦ Wisdom ✦</button>
+  <div class="linebreak fade-in"></div>
+
+  <!-- ── Gītā Wisdom card ── -->
+  <section class="intro intro--gita fade-in" aria-label="About the Gita Oracle">
+    <div class="intro-header">
+      <h2 class="intro-title">Gītā Wisdom anchor</h2>
+      <img src="assets/images/prabhupada.png" alt="" class="intro-thumb">
     </div>
-  </section>
+    <p class="intro-text">Connect with ancient tradition</p>
+    <ul>
+      <li>Click <code>&nbsp;Gītā Wisdom&nbsp;</code> to receive instant inspiration, or choose a chapter and verse number to study.</li>
+    </ul>
 
+  <!-- ══════════════════════════ GĪTĀ WISDOM SECTION ══════════════════════════ -->
   <!-- ── Gita search panel ──
        IDs used in app.js:
          gita-form, gita-verse-input, gita-random-btn, gita-error-box
@@ -240,7 +290,7 @@
       />
 
       <button type="submit" class="btn btn-primary" aria-label="Look up verse">
-        𝖫𝗈𝗈𝗄 𝗎𝗉
+        STUDY IT
       </button>
     </form>
 
@@ -248,26 +298,23 @@
     <p id="gita-error-box" class="error-msg" role="alert" aria-live="polite"></p>
 
   </section><!-- /.search-panel (gita) -->
-
-  <div class="divider fade-in"></div>
-
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       ICHING ORACLE SECTION
-       Accent colour: #6276bb  dim: #5768a4  left-border: #6761f6
-  ══════════════════════════════════════════════════════════════════════════ -->
-
-  <!-- ── iChing intro ── -->
-  <!-- ── iChing random button — SILENT: does NOT populate input ── -->
-  <!-- Clicking this button runs randomHexagram() in the background only.     -->
-  <section class="intro intro--iching fade-in" aria-label="About the iChing Oracle">
-    <div class="intro-inner">
-      <ul>
-        <li>Connect with ancient tradition through the iChing Oracle.</li>
-        <li>Click <code>&nbsp;✦ iChing Oracle ✦&nbsp;</code> to receive inspiration from the Book of Changes.</li>
-      </ul>
-      <button id="iching-random-btn" class="btn btn-oracle btn-oracle--iching" aria-label="Random hexagram — iChing Oracle">✦ iChing ✦</button>
-    </div>
   </section>
+
+  <div class="separator fade-in"></div>
+
+  <!-- ═════════════════════════ ICHING ORACLE SECTION ═════════════════════════ -->
+
+  <!-- ── iChing Oracle card ── -->
+  <section class="intro intro--iching fade-in" aria-label="About the iChing Oracle">
+    <div class="intro-header">
+      <h2 class="intro-title">iChing Oracle insight</h2>
+      <img src="assets/images/iching.png" alt="" class="intro-thumb">
+    </div>
+    <p class="intro-text">Move through the challenges</p>
+    <ul>
+      <li>Click <code>&nbsp;iChing Oracle&nbsp;</code> to receive inspiration from the Book of Changes.</li>
+    </ul>
+
 
   <!-- ── iChing lookup panel ──
        IDs used in app.js: iching-form, iching-input, iching-btn, iching-error-box
@@ -295,7 +342,7 @@
 
       <!-- Toss Coins: empty input → random; number → that hexagram -->
       <button id="iching-btn" type="submit" class="btn btn-primary btn-primary--iching" aria-label="Toss coins or look up hexagram">
-        ☯ &nbsp;Toss Coins
+        LOOK UP
       </button>
     </form>
 
@@ -303,33 +350,31 @@
     <p id="iching-error-box" class="error-msg" role="alert" aria-live="polite"></p>
 
   </section><!-- /.search-panel (iching) -->
-
-  <div class="divider fade-in"></div>
-
-  <!-- ── Page footer — full-width darker block with circular image ──
-       imgfooter.png sits like a Discord embed footer icon (28×28, circular).
-  -->
-  <footer class="page-footer fade-in">
-    <div class="footer-inner">
-      <img
-        src="assets/images/imgfooter.png"
-        alt=""
-        class="footer-icon"
-        width="28"
-        height="28"
-        loading="lazy"
-        aria-hidden="true"
-        draggable="false"
-      />
-      <p>
-        <i>To ŚRĪLA BALADEVA VIDYĀBHŪṢAṆA<br />who presented so nicely the 
-        “Govinda-bhāṣya” commentary on Vedānta philosophy.</i> <b>「v1.0.10」</b>
-      </p>
-    </div>
-  </footer>
+  </section>
 
 </main><!-- /.page-wrap -->
 
+<!-- ── Page footer — full-width darker block with circular image ──
+     imgfooter.png sits like a Discord embed footer icon (28×28, circular).
+-->
+<footer class="page-footer fade-in">
+  <div class="footer-inner">
+    <img
+      src="assets/images/ACBhaktivedantaSwami.png"
+      alt=""
+      class="footer-icon"
+      width="28"
+      height="28"
+      loading="lazy"
+      aria-hidden="true"
+      draggable="false"
+    />
+    <p>
+      To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
+      <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.0.12」</b>
+    </p>
+  </div>
+</footer>
 
 <!-- ══════════════════════════════ LIGHTBOX OVERLAY ══════════════════════════════
      Shared by both Gita and iChing oracles.
@@ -619,7 +664,18 @@
 <div id="share-png-card">
   <h2 class="share-png-title"></h2>
   <p class="share-png-verse"></p>
-  <footer class="share-png-footer"><p>v1.0.10</p></footer>
+  <footer class="share-png-footer">
+    <span class="share-png-date"></span>
+      <script>
+      (function () {
+        'use strict';
+        var el = document.querySelector('.share-png-date');
+        if (el && window.formatBannerDate) {
+          el.textContent = window.formatBannerDate(new Date()) + ' • v1.0.12';
+        }
+      })();
+      </script>
+  </footer>
 </div>
 
 <!--

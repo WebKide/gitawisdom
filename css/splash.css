@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    splash.css  —  Wisdom Oracle retro boot screen
    Standalone file. Zero dependency on styles.css.
-   Typeface: Noto-serif to match style
+   Typeface: Gentium Plus (replaces Noto Serif for full Sanskrit diacritic support)
    Palette mirrors app: --bg-base #1e1f22, --accent #f5a623
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -27,6 +27,9 @@
   --green-dim:   rgba(245, 166, 35, 0.55);  /* saffron-dim, replaces green-dim */
 
   --text-muted:  #5c6068;               /* match app text-muted */
+  /* Text */
+  --text-primary:   #dbdee1;
+  --text-secondary: #949ba4;
   --crt-line:    rgba(255, 255, 255, 0.03);
 }
 
@@ -38,53 +41,49 @@ html, body {
   background-color: var(--bg);
   color:            var(--green);
   /*previous font-family was: 'Courier New', Courier, 'Lucida Console', monospace;*/
-  font-family:      'Noto Serif', serif;
+  /* Replaced Noto Serif with Gentium Plus for full Latin Extended Additional
+     coverage — correctly renders Sanskrit diacritics: ḍḥḣṁḷṇṅṛśṣṭāūī */
+  font-family:      'Gentium Plus', serif;
   font-size:        15px;
   line-height:      1.6;
 
   /* Block ALL interaction during boot */
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
+  -webkit-user-select:   none;
   user-select:           none;
   pointer-events:        none;
 }
 
-/* ─── CRT scanline overlay (pseudo element on body) ─────────────────────── */
-body::after {
-  content:    '';
-  position:   fixed;
-  inset:      0;
-  z-index:    999;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--crt-line) 0px,
-    var(--crt-line) 1px,
-    transparent    1px,
-    transparent    3px
-  );
-  /* Very subtle — just enough to read "CRT" */
-  opacity: 0.55;
-}
-
-/* ─── CRT vignette (edges darker) ───────────────────────────────────────── */
-body::before {
-  content:  '';
-  position: fixed;
-  inset:    0;
-  z-index:  998;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 55%,
-    rgba(0, 0, 0, 0.72) 100%
-  );
+/*
+ * Background: gradient mesh (no pseudo-elements) for low-end device performance.
+ * Replaces previous body::before (vignette) and body::after (scanlines).
+ * Layers:
+ *   1. Fractal noise grain (repeating tile)
+ *   2. Warm saffron radial glow (top-left)
+ *   3. Cool indigo radial glow (bottom-right)
+ *   4. Soft edge vignette (replaces CRT edge darkening)
+ *   5. Very subtle scanline texture via background-size trick on noise
+ */
+html, body {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(245, 166, 35, 0.035) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(98, 118, 187, 0.035) 0%, transparent 55%),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.72) 100%);
+  background-size: 200px 200px, 100% 100%, 100% 100%, 100% 100%;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed;
 }
 
 /* ─── Main container ─────────────────────────────────────────────────────── */
 .splash-wrap {
   position:        fixed;
-  inset:           0;
+  /* inset: 0 expanded for Android 8 WebView 66 compatibility */
+  top:               0;
+  right:             0;
+  bottom:            0;
+  left:              0;
   z-index:         100;
   display:         flex;
   flex-direction:  column;
@@ -159,6 +158,7 @@ body::before {
   pointer-events:        none;
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
+  -webkit-user-select:   none;
   user-select:           none;
 }
 
@@ -174,6 +174,7 @@ body::before {
   color:      var(--lilac-dim);
   background: linear-gradient(90deg, var(--accent-dim), var(--lilac-dim));
   -webkit-background-clip: text;
+  background-clip: text;  /* standard fallback for non-WebKit browsers */
   -webkit-text-fill-color: transparent;
 }
 
@@ -227,7 +228,7 @@ body::before {
 
 .progress-label {
   font-size:      0.72rem;
-  color:          var(--text-muted);
+  color:          var(--text-primary);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   opacity:        0.6;
@@ -264,8 +265,8 @@ body::before {
 .splash-logo {
   width:      clamp(180px, 55vw, 280px);
   height:     auto;
-  filter:     drop-shadow(0 0 18px var(--accent-glow))
-              drop-shadow(0 0 6px var(--lilac-dim));
+  /* filter: drop-shadow() removed — WebView 66 rasterises SVG filters poorly.
+     Glow effect deferred to parent wrapper or container box-shadow if needed. */
 }
 
 .splash-tagline {
@@ -298,7 +299,11 @@ body::before {
 /* ─── Fade-to-black exit overlay ─────────────────────────────────────────── */
 .fade-out-cover {
   position:         fixed;
-  inset:            0;
+  /* inset: 0 expanded for Android 8 WebView 66 compatibility */
+  top:              0;
+  right:            0;
+  bottom:           0;
+  left:             0;
   z-index:          9999;
   background:       #000;
   opacity:          0;
@@ -322,5 +327,6 @@ body::before {
 img {
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
+  -webkit-user-select:   none;
   user-select:           none;
 }
