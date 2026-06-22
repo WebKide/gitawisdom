@@ -25,6 +25,56 @@ const getDom = () => window._woDom;
 /** In-memory cache so each JSON file is fetched only once per session. */
 const _infoCardCache = {};
 
+// ─── Settings state ────────────────────────────────────────────────────────────
+/**
+ * Persisted user preferences. Loaded once by initSettingsModal().
+ * Add new keys here and mirror them in _loadSettings() + the checkbox wiring.
+ */
+const _settings = {
+  showDateInPng:      true,
+  showLayoutOutlines: false,
+};
+
+/**
+ * Reads saved settings from localStorage and merges them into _settings.
+ * Unknown or malformed keys are silently ignored; missing keys keep defaults.
+ */
+function _loadSettings() {
+  try {
+    const raw = localStorage.getItem('wo_settings');
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (typeof saved.showDateInPng      === 'boolean') _settings.showDateInPng      = saved.showDateInPng;
+    if (typeof saved.showLayoutOutlines === 'boolean') _settings.showLayoutOutlines = saved.showLayoutOutlines;
+  } catch (_) {}
+}
+
+/**
+ * Persists one setting key/value pair to localStorage.
+ * @param {string}  key   — must match a key in _settings
+ * @param {boolean} value
+ */
+function _saveSetting(key, value) {
+  _settings[key] = value;
+  try { localStorage.setItem('wo_settings', JSON.stringify(_settings)); } catch (_) {}
+}
+
+/**
+ * Injects or removes the developer layout-outline <style> tag.
+ * @param {boolean} enabled
+ */
+function _applyOutlines(enabled) {
+  const existing = document.getElementById('wo-dev-outlines');
+  if (enabled && !existing) {
+    const s       = document.createElement('style');
+    s.id          = 'wo-dev-outlines';
+    s.textContent = '* { outline: 1px solid red !important; }';
+    document.head.appendChild(s);
+  } else if (!enabled && existing) {
+    existing.remove();
+  }
+}
+
 // ─── Generic utilities ──────────────────────────────────────────────────────
 
 /**
@@ -60,7 +110,7 @@ function buildShareText(includeUrl = false) {
     const text = [
       'Wisdom Oracle — Today’s meditation personalised for you.',
       '',
-      '✦ Meditation',
+      '✦ The Personal Meditation',
       p.guidance,
       '',
       '✦ The Current Circumstance',
@@ -239,17 +289,36 @@ async function handleShare() {
   if (state?.mode === 'wisdom' && state?.wisdomPayload) {
     const p = state.wisdomPayload;
 
-    // Title
-    dom.sharePngTitle.innerHTML = 'Today’s insightful meditation and inspiring guidance<br/><span style="font-size:32px;color:#949ba4;">personalised for you</span>';
+    const SHARE_TITLES = [
+      "A meditation for reflection and inner clarity",
+      "Aligning with nature for effortless daily success with guidance",
+      "Cultivate inner truth to influence the world with wisdom",
+      "Eternal wisdom for navigating modern-day chaos",
+      "Living with intention, grace, and spiritual guidance",
+      "Navigate challenge with grace and strategic foresight",
+      "Overcoming fear through ancient spiritual wisdom",
+      "Synchronize your actions with the cosmos today",
+      "The timeless art of mindful, purposeful living in wisdom",
+      "Today’s insightful meditation and inspiring guidance",
+      "Understanding the hidden currents of your day with wisdom",
+      "Wisdom revealed through three perspectives"
+    ];
 
-    // Body: combine all 3 texts with \n\n
-    dom.sharePngVerse.textContent = [
-      p.guidance,
-      '',
-      p.gitaTranslation,
-      '',
-      p.ichingTranslation
-    ].join('\n');
+    function pickRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // Title
+    dom.sharePngTitle.innerHTML =
+      pickRandom(SHARE_TITLES) +
+      '<br/><span style="font-size:32px;color:#949ba4;">carefully personalised for you</span>';
+
+    // Body: combine all 3 texts cleanly
+    dom.sharePngVerse.innerHTML = [
+      `✦ ${escHtml(p.guidance)}`,
+      `<br/>✦ ${escHtml(p.gitaTranslation)}`,
+      `<br/>✦ ${escHtml(p.ichingTranslation)}`
+    ].join('');
 
   } else {
     // ── Existing Gita / iChing logic ──
@@ -260,6 +329,15 @@ async function handleShare() {
       );
 
     dom.sharePngVerse.textContent = dom.lbTranslation.textContent;
+  }
+
+  // ── Override share-card date string based on settings ──────────────────────
+  // Must run before fitShareText() so html2canvas captures the correct content.
+  const _shareDateEl = document.querySelector('.share-png-date');
+  if (_shareDateEl) {
+    _shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
+      ? window.formatBannerDate(new Date()) + ' • v1.0.13'
+      : 'v1.0.13';
   }
 
   // Fit text to card — must happen before html2canvas reads the DOM
@@ -564,6 +642,56 @@ function initAboutModal() {
   });
 }
 
+// ─── Settings modal ────────────────────────────────────────────────────────────
+
+/**
+ * Loads persisted settings, applies them immediately (outline style tag),
+ * then wires the menu-toggle button, backdrop, close button, and checkboxes.
+ * Settings do not lock scroll (no lb-active) — the modal is lightweight.
+ */
+function initSettingsModal() {
+  _loadSettings();
+  _applyOutlines(_settings.showLayoutOutlines);
+
+  const modal      = document.getElementById('settings-modal');
+  const overlay    = document.getElementById('settings-overlay');
+  const closeBtn   = document.getElementById('settings-close');
+  const openBtn    = document.getElementById('menu-toggle-btn');
+  const cbDate     = document.getElementById('setting-show-date');
+  const cbOutlines = document.getElementById('setting-show-outlines');
+
+  if (!modal || !openBtn) return;
+
+  // Reflect persisted state in checkboxes immediately
+  if (cbDate)     cbDate.checked     = _settings.showDateInPng;
+  if (cbOutlines) cbOutlines.checked = _settings.showLayoutOutlines;
+
+  function _closeSettings() {
+    modal.classList.remove('open');
+  }
+
+  // Menu button toggles the panel open/closed
+  openBtn.addEventListener('click', () => modal.classList.toggle('open'));
+
+  closeBtn.addEventListener('click', _closeSettings);
+  overlay.addEventListener('click', _closeSettings);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) _closeSettings();
+  });
+
+  // ── Toggle: include date in PNG share ──────────────────────────────────────
+  cbDate?.addEventListener('change', () => {
+    _saveSetting('showDateInPng', cbDate.checked);
+  });
+
+  // ── Toggle: developer layout outlines ─────────────────────────────────────
+  cbOutlines?.addEventListener('change', () => {
+    _saveSetting('showLayoutOutlines', cbOutlines.checked);
+    _applyOutlines(cbOutlines.checked);
+  });
+}
+
 // ─── Exports ──────────────────────────────────────────────────────────────────
 export {
   handleCopy,
@@ -571,6 +699,7 @@ export {
   openInfoModal,
   initUsageModal,
   initAboutModal,
+  initSettingsModal,
   escHtml,
   isValidAssetPath,
   processInfoText,

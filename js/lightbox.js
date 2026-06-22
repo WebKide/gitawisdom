@@ -714,7 +714,7 @@ function renderWisdomOracle(payload) {
   state.showPurport = false;
 
   // ── Header: Wisdom Oracle branding ──
-  dom.lbAuthorIcon.src = 'assets/images/wisdomoracle.svg';
+  dom.lbAuthorIcon.src = 'assets/images/wisdomoracle_logo.svg';
   dom.lbAuthorIcon.alt = 'Wisdom Oracle';
   dom.lbAuthorTitle.innerHTML = '<strong>「 Personalised guidance for you 」</strong>';
 
@@ -742,7 +742,7 @@ function renderWisdomOracle(payload) {
   // ── Build wisdom body ──
   let html = '';
 
-  // Section 1: Meditation
+  // Section 1: Personal Meditation
   html += `<div class="lb-wisdom-section">
     <h2 style="text-align: center;">Wisdom Oracle’s guidance</h2>
     <h3 class="section-label">✦ The Personal Meditation</h3>
@@ -754,7 +754,7 @@ function renderWisdomOracle(payload) {
   // Section 2: Current Circumstance (Gita)
   html += `<div class="lb-wisdom-section">
     <h3 class="section-label">✦ The Current Circumstance</h3>
-    <div class="lb-translation">
+    <div class="lb-translation" style="border-left-color: var(--accent);">
       ${escHtml(payload.gitaTranslation)}
     </div>
     <div class="intro-btn-row">

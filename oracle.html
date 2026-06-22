@@ -44,7 +44,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
   <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.0.12</title>
+  <title>Wisdom Oracle v1.0.13</title>
   <meta name="author" content="WebKide" />
   <link rel="stylesheet" href="css/styles.css" />
 
@@ -122,7 +122,7 @@
       })();
       </script>
 
-    <button class="menu-toggle" aria-label="Menu">
+    <button class="menu-toggle" id="menu-toggle-btn" aria-label="Open settings">
       <span class="menu-line"></span><span class="menu-line"></span><span class="menu-line"></span>
       <span class="menu-dot"></span>
     </button>
@@ -371,7 +371,7 @@
     />
     <p>
       To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
-      <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.0.12」</b>
+      <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.0.13」</b>
     </p>
   </div>
 </footer>
@@ -650,6 +650,48 @@
   </article>
 </div>
 
+<!-- ═══════════════════════════ SETTINGS OVERLAY ═════════════════════════════ -->
+<div id="settings-modal" class="lightbox" role="dialog" aria-modal="true" aria-label="Settings">
+  <div class="lb-overlay" id="settings-overlay"></div>
+  <article class="lb-card lb-card--settings">
+    <header class="lb-header">
+      <div class="lb-author">
+        <span class="lb-author-name"><strong>Persistent Settings</strong></span>
+      </div>
+      <div class="lb-header-actions">
+        <button class="lb-close-btn" id="settings-close"
+                title="Close" aria-label="Close settings">&times;</button>
+      </div>
+    </header>
+    <div class="lb-body">
+      <h2>⚙ Settings:</h2>
+        <p style="font-family: var(--font-text);font-weight: 400;color:var(--text-secondary);">
+        These settings control some visual aspects</p>
+          <div class="divider"></div>
+
+      <div class="settings-row">
+        <span class="settings-row-label">Include date in PNG share</span>
+        <label class="toggle" aria-label="Include date in PNG share">
+          <input type="checkbox" id="setting-show-date" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="settings-row">
+        <span class="settings-row-label">
+          Show layout outlines
+          <em class="settings-row-tag">dev</em>
+        </span>
+        <label class="toggle" aria-label="Show layout outlines">
+          <input type="checkbox" id="setting-show-outlines" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+  </article>
+</div>
+
 <!-- ══════════════════════════════ SEARCH CARD MOUNT ══════════════════════════════
      Shell only — full card HTML is injected by search-ui.js from
      assets/data/search.json on first open. IDs assigned by renderer are:
@@ -666,15 +708,16 @@
   <p class="share-png-verse"></p>
   <footer class="share-png-footer">
     <span class="share-png-date"></span>
+      <!-- This script is now irrelevant, "js\share-utils.js" controls it
       <script>
       (function () {
         'use strict';
         var el = document.querySelector('.share-png-date');
         if (el && window.formatBannerDate) {
-          el.textContent = window.formatBannerDate(new Date()) + ' • v1.0.12';
+          el.textContent = window.formatBannerDate(new Date()) + ' • v1.0.13';
         }
       })();
-      </script>
+      </script> -->
   </footer>
 </div>
 

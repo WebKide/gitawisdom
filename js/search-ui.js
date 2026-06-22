@@ -133,7 +133,7 @@ function _buildCard() {
     <!-- ── Header ── -->
     <header class="lb-header">
       <div class="lb-author">
-        <img src="${_e(_s.icon ?? 'assets/images/ACBhaktivedantaSwami.png')}"
+        <img src="${_e(_s.icon ?? 'assets/images/prabhupada.png')}"
              alt="" class="lb-author-icon"
              width="28" height="28" draggable="false" />
         <span class="lb-author-name">

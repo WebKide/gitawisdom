@@ -33,7 +33,7 @@ const BG_CHAPTER_INFO = {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const AUTHOR_NAME   = 'Bhagavad Gītā — As It Is (1972 Macmillan Unabriged Edition)';
-const AUTHOR_ICON   = 'assets/images/prabhupada.png';
+const AUTHOR_ICON   = 'assets/images/ACBhaktivedantaSwami.png';
 const FOOTER_ICON   = 'assets/images/imgfooter.png';
 const SIGNATURE_URL = 'assets/images/signature.svg';
 const DEDICATORY    = 'oṁ namo bhagavate vāsudevāya';

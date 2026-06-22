@@ -4,7 +4,7 @@
  * Update CACHE_VERSION to bust the cache on new deployments.
  */
 
-const CACHE_VERSION = 'wisdom-oracle-v1.0.12';
+const CACHE_VERSION = 'wisdom-oracle-v1.0.13';
 
 /**
  * Derive the deployment base path once at the top of the file.
@@ -38,6 +38,7 @@ const ASSETS = [
 
   // Images
   BASE + '/assets/images/wisdomoracle.svg',
+  BASE + '/assets/images/wisdomoracle_logo.svg',
   BASE + '/assets/images/ichingcoin.png',
   BASE + '/assets/images/card_bg.png',
   BASE + '/assets/images/signature.svg',

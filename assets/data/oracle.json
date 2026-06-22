@@ -1,6 +1,6 @@
 {
   "page-name": "About Wisdom Oracle",
-  "icon": "assets/images/ACBhaktivedantaSwami.png",
+  "icon": "assets/images/prabhupada.png",
   "random-guidance": [
     "A clear mind does not chase; it contemplates without attachment.",
     "A small act of clarity today can prevent great confusion tomorrow.",
@@ -124,19 +124,35 @@
     "Without devotion, knowledge remains incomplete and cannot deliver liberation.",
     "You do not always need more answers, sometimes what you need are better questions."
   ],
+
+  "share-titles": [
+    "A meditation for reflection and inner clarity",
+    "Aligning with nature for effortless daily success with guidance",
+    "Cultivate inner truth to influence the world with wisdom",
+    "Eternal wisdom for navigating modern-day chaos",
+    "Living with intention, grace, and spiritual guidance",
+    "Navigate challenge with grace and strategic foresight",
+    "Overcoming fear through ancient spiritual wisdom",
+    "Synchronize your actions with the cosmos today",
+    "The timeless art of mindful, purposeful living in wisdom",
+    "Today’s insightful meditation and inspiring guidance",
+    "Understanding the hidden currents of your day with wisdom",
+    "Wisdom revealed through three perspectives"
+  ],
+
   "sections": [
     {
-      "h1": "Wisdom Oracle",
-      "h2": "✦ Meditation",
-      "text": "{random(random-guidance)}"
+      "h1": "Wisdom Oracle’s guidance",
+      "h2": "✦ The Personal Meditation",
+      "text": ""
     },
     {
       "h2": "✦ The current circumstance",
-      "text": "{Gītā Wisdom Translation}\n<a href=\"\">Read more...</a>"
+      "text": ""
     },
     {
       "h2": "✦ The insightful inspiration",
-      "text": "{iChing Oracle Translation}\n<a href=\"\">Read more...</a>"
+      "text": ""
     }
   ],
   "footer": "No accounts, subscriptions or personal data required.\nResponsive design for desktop and mobile.\nRuns entirely in your browser."

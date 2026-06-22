@@ -64,6 +64,7 @@ import {
   openInfoModal,
   initUsageModal,
   initAboutModal,
+  initSettingsModal,
   escHtml,
 } from './share-utils.js';
 
@@ -384,6 +385,7 @@ applyFontSize();
  */
 initUsageModal();
 initAboutModal();
+initSettingsModal();
 
 // ─── Keyboard Shortcuts (Global) ─────────────────────────────────────────────
 /**
