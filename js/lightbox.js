@@ -112,6 +112,7 @@ function closeLightbox() {
   dom.lbCard.classList.remove('lb-card--iching');
 
   // Reset state
+  state.mode        = 'gita';
   state.chapter     = null;
   state.verseRef    = null;
   state.chapterData = null;
@@ -178,8 +179,11 @@ function closeLightbox() {
 
   // Return focus to the relevant random button (avoids mobile keyboard)
   setTimeout(() => {
-    const btn = state.mode === 'iching' ? dom.ichingBtn : dom.gitaRandomBtn;
-    btn.focus();
+    const el = state.lastFocusEl;
+
+    if (el && typeof el.focus === 'function') {
+      el.focus({ preventScroll: true });
+    }
   }, 80);
 }
 
@@ -716,7 +720,7 @@ function renderWisdomOracle(payload) {
   // ── Header: Wisdom Oracle branding ──
   dom.lbAuthorIcon.src = 'assets/images/wisdomoracle_logo.svg';
   dom.lbAuthorIcon.alt = 'Wisdom Oracle';
-  dom.lbAuthorTitle.innerHTML = '<strong>「 Personalised guidance for you 」</strong>';
+  dom.lbAuthorTitle.innerHTML = '<strong>Guidance personalised for you</strong>';
 
   // ── Red border for wisdom mode ──
   dom.lbCard.classList.remove('lb-card--iching');
@@ -759,7 +763,7 @@ function renderWisdomOracle(payload) {
     </div>
     <div class="intro-btn-row">
       <button class="btn btn-primary" id="wo-goto-gita" data-chapter="${payload.gitaChapter}" data-ref="${payload.gitaRef}">
-        Read full verse ${payload.gitaChapter}/${payload.gitaRef}
+        Read Gītā Wisdom verse ${payload.gitaChapter}.${payload.gitaRef}
       </button>
     </div>
   </div>`;
@@ -772,7 +776,7 @@ function renderWisdomOracle(payload) {
     </div>
     <div class="intro-btn-row">
       <button class="btn btn-primary btn-primary--iching" id="wo-goto-iching" data-ref="${payload.ichingRef}">
-        Read full hexagram ${payload.ichingRef}
+        Read iChing Oracle hexagram ${payload.ichingRef}
       </button>
     </div>
   </div>`;
@@ -782,7 +786,8 @@ function renderWisdomOracle(payload) {
   if (!wisdomBody) {
     wisdomBody = document.createElement('div');
     wisdomBody.id = 'lb-wisdom-body';
-    dom.lbCard.insertBefore(wisdomBody, dom.lbFooter.parentElement || dom.lbCard.lastElementChild);
+    const lbBody = dom.lbCard.querySelector('.lb-body');
+    (lbBody ?? dom.lbCard).appendChild(wisdomBody);
   }
   wisdomBody.innerHTML = html;
   wisdomBody.classList.remove('hidden');

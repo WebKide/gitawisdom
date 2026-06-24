@@ -1,5 +1,5 @@
 <div align="center">
-   <img src="https://github.com/WebKide/gitawisdom/blob/main/assets/images/gitawisdom.svg" alt="project logo" width="40%" />
+   <img src="https://github.com/WebKide/gitawisdom/blob/main/assets/images/wisdomoracle.svg" alt="project logo" width="40%" />
 </div>
 
 ------
@@ -7,7 +7,7 @@
 <div align="center">
    <img src="https://img.shields.io/badge/Project%20by-WebKide-black.svg?style=popout&logo=github&logoColor=white" alt="Author" />
    <img src="https://img.shields.io/github/commit-activity/t/WebKide/gitawisdom?color=%23f5a623" alt="Version" /> 
-   <img src="https://img.shields.io/badge/Version-v1.0.13-magenta.svg?style=popout" alt="Author" />
+   <img src="https://img.shields.io/badge/Version-v1.0.15-magenta.svg?style=popout" alt="Author" />
 </div>
 
 <div align="center">

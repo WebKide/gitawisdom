@@ -44,7 +44,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
   <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.0.13</title>
+  <title>Wisdom Oracle v1.0.15</title>
   <meta name="author" content="WebKide" />
   <link rel="stylesheet" href="css/styles.css" />
 
@@ -67,19 +67,21 @@
 <!-- ═══════════════════════════════════ NAVIGATION ════════════════════════════ -->
 <nav id="top-nav" aria-label="Main navigation">
   <div class="top-nav-inner">
-    <img src="assets/images/wisdomoracle.svg" alt="Wisdom Oracle" class="top-nav-icon" ... />
+    <img src="assets/images/wisdomoracle.svg" alt="Wisdom Oracle" class="top-nav-icon">
     <div class="top-nav-links">
-      <button id="search-nav-btn" class="top-nav-btn top-nav-btn--active" aria-label="Open Wisdom search">
-        <!-- <svg class="nav-icon" ...>magnifier</svg> -->
-        Search
+      <button id="search-nav-btn" class="top-nav-btn" aria-label="Open Wisdom search" title="Search">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 3a6.5 6.5 0 0 1 6.5 6.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3Zm0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/>
+        </svg>
       </button>
-      <a href="#usage-section" class="top-nav-btn">
-        <!-- <svg class="nav-icon" ...>package</svg> -->
-        Usage
+      <a href="#usage-section" class="top-nav-btn" title="Usage">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 7H11V9H13V7M13 11H11V17H13V11M17 1H7C5.9 1 5 1.9 5 3V21C5 22.1 5.9 23 7 23H17C18.1 23 19 22.1 19 21V3C19 1.9 18.1 1 17 1M17 19H7V5H17V19Z" />
+        </svg>
       </a>
-      <a href="#about-section" class="top-nav-btn">
-        <!-- <svg class="nav-icon" ...>silhouette</svg> -->
-        About
+      <a href="#about-section" class="top-nav-btn" title="About">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5,3C3.89,3 3,3.89 3,5V19C3,20.11 3.89,21 5,21H19C20.11,21 21,20.11 21,19V5C21,3.89 20.11,3 19,3H5M5,5H19V19H5V5M7,7V9H17V7H7M7,11V13H17V11H7M7,15V17H14V15H7Z" />
+        </svg>
       </a>
     </div>
   </div>
@@ -126,7 +128,7 @@
       <span class="menu-line"></span><span class="menu-line"></span><span class="menu-line"></span>
       <span class="menu-dot"></span>
     </button>
-    <!-- Gītā icon — above Logo position:absolute -->
+    <!-- Gītā icon — above Logo position:absolute
     <img
       src="assets/images/imgfooter.png"
       alt=""
@@ -135,11 +137,12 @@
       aria-hidden="true"
       width="65"
       height="65"
-    />
+    /> -->
+
     <!-- Logo — floats up and down -->
     <img
       src="assets/images/wisdomoracle.svg"
-      alt=""
+      alt="Wisdom Oracle"
       class="banner-lotus"
       aria-hidden="true"
       draggable="false"
@@ -148,156 +151,174 @@
   </header>
 
   <!-- ── Module tabs ── -->
+  <!-- ── Module tabs ── -->
   <div class="module-tabs fade-in">
-    <button
-      id="wisdomoracle-random-btn"
-      class="module-tab module-tab--wisdom module-tab--active">Wisdom Oracle
+    <button type="button" id="wisdomoracle-random-btn" class="module-tab module-tab--wisdom" title="Click to reveal the inspiration">
+      <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M2.44,20.79c0,0 -2.4,-1.27 -2.4,-2.57c-0,-1.78 2.39,-5.75 2.39,-5.75l0.01,8.32Zm5.99,2.63c0,0 -3.59,.01 -3.6,-2.39l-.01,-7.19c0,0 3.51,9.46 3.61,9.58Zm4.97,-.13c-1.23,.46 -2.65,-.26 -3.12,-1.49l-5.35,-14.6c-.5,-1.38 .05,-2.61 1.43,-3.12l9.04,-3.31c1.61,-.59 2.53,-.12 3.12,1.49l5.35,14.6c0.5,1.34 -.09,2.63 -1.43,3.12l-9.04,3.31Zm-.84,-2.27l9.04,-3.31l-5.35,-14.66l-9.04,3.31l5.35,14.66Zm-5.35,-14.66l9.04,-3.31l-9.04,3.31Z"/>
+      </svg>
+      <div class="tab-label-group">
+        <span class="tab-title">Wisdom Oracle</span>
+        <span class="tab-subtitle">personalised draw</span>
+      </div>
     </button>
-    <button 
-      id="gita-random-btn" 
-      class="module-tab module-tab--gita">Gītā Wisdom
+
+    <button type="button" id="gita-random-btn" class="module-tab module-tab--gita" title="Click for inspiration">
+      <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 22.36c-.87-.69-2.93-2.18-6-2.18-2.19 0-3.69.78-4.36 1.15-.68.35-1.64-.13-1.64-.98V7.2c0-.64 2.97-2.29 6-2.29 3.03 0 5.07 1.09 6 1.64v13.2c.93-.58 2.98-1.75 6-1.75 1.92 0 3.18.44 3.82.65V5.78c1.1 0 2.18 1.44 2.18 1.64v13.15c0 .93-1.25 1.18-1.64.98-.67-.36-2.17-1.15-4.36-1.15-3.03 0-5.13 1.49-6 2.18Zm2.18-5.45V6.55l5.45-5.45v10.91l-5.45 4.91Zm-4.36 1.77V7.88c-.6-.25-1.86-.79-3.82-.79-1.96 0-3.22.51-3.82.76v10.83c.64-.24 2.17-.68 3.82-.68 1.64 0 3.18.45 3.82.68Z"/>
+      </svg>
+      <div class="tab-label-group">
+        <span class="tab-title">Gītā Wisdom</span>
+        <span class="tab-subtitle">timeless guidance</span>
+      </div>
     </button>
-    <button
-      id="iching-random-btn"
-      class="module-tab module-tab--iching">iChing Oracle
+
+    <button type="button" id="iching-random-btn" class="module-tab module-tab--iching" title="Click for inspiration">
+      <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 0a12 12 0 1 1 0 24 12 12 0 0 1 0-24Zm-.04 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-4.93 15.04h9.97V6.95H7.03v10.09Zm1.96-2.04V9h6v6H9Z"/>
+      </svg>
+      <div class="tab-label-group">
+        <span class="tab-title">iChing Oracle</span>
+        <span class="tab-subtitle">millenium tradition</span>
+      </div>
     </button>
   </div>
+
 
   <div class="linebreak fade-in"></div>
 
   <!-- ── Gītā Wisdom card ── -->
-  <section class="intro intro--gita fade-in" aria-label="About the Gita Oracle">
+  <section class="intro intro--gita" aria-label="About the Gita Oracle">
+
+    <!-- Header & Description -->
     <div class="intro-header">
-      <h2 class="intro-title">Gītā Wisdom anchor</h2>
+      <div class="intro-header-text">
+        <h2 class="intro-title">✦ Gītā Wisdom</h2>
+        <p class="intro-text">Connect with ancient tradition of the Gītā to find timless guidance and daily inspiration.</p>
+      </div>
       <img src="assets/images/prabhupada.png" alt="" class="intro-thumb">
     </div>
-    <p class="intro-text">Connect with ancient tradition</p>
     <ul>
-      <li>Click <code>&nbsp;Gītā Wisdom&nbsp;</code> to receive instant inspiration, or choose a chapter and verse number to study.</li>
+      <li><b>OR:</b> Select below a <code>chapter</code> and <code>verse number</code> to study directly.</li>
     </ul>
 
-  <!-- ══════════════════════════ GĪTĀ WISDOM SECTION ══════════════════════════ -->
-  <!-- ── Gita search panel ──
-       IDs used in app.js:
-         gita-form, gita-verse-input, gita-random-btn, gita-error-box
-         chapter-select, chapter-trigger, chapter-trigger-text, chapter-list
-  -->
-  <section class="search-panel fade-in" aria-label="Verse lookup">
+    <!-- ══════════════════════════ GĪTĀ WISDOM SECTION ══════════════════════════ -->
+    <!-- Gita Search Form (Now directly inside the card) -->
+    <div class="search-panel" aria-label="Verse lookup">
+      <form id="gita-form" class="search-row" autocomplete="off" novalidate>
 
-    <form id="gita-form" class="search-row" autocomplete="off" novalidate>
+        <!-- Custom chapter dropdown -->
+        <div id="chapter-select" class="custom-select" aria-label="Chapter">
+          <button type="button"
+                  class="custom-select-trigger"
+                  id="chapter-trigger"
+                  aria-haspopup="listbox"
+                  aria-expanded="false">
+            <span id="chapter-trigger-text">Select a Gītā Wisdom Chapter here</span>
+            <span class="custom-select-arrow">&#9660;</span>
+          </button>
 
-      <!-- Custom chapter dropdown -->
-      <div id="chapter-select" class="custom-select" role="combobox" aria-label="Chapter">
-        <button type="button"
-                class="custom-select-trigger"
-                id="chapter-trigger"
-                aria-haspopup="listbox"
-                aria-expanded="false">
-          <span id="chapter-trigger-text">Select a Wisdom Gītā Chapter here</span>
-          <span class="custom-select-arrow">&#9660;</span>
+          <ul class="custom-select-list" id="chapter-list" role="listbox" aria-label="Select a chapter">
+            <li class="custom-select-option" role="option" data-value="1">
+              <b>1 · First Chapter <span class="verse-count">(46 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Observing the Armies on the Battlefield of Kurukṣetra</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="2">
+              <b>2 · Second Chapter <span class="verse-count">(72 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Contents of the Gītā Summarized</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="3">
+              <b>3 · Third Chapter <span class="verse-count">(43 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Karma-yoga</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="4">
+              <b>4 · Fourth Chapter <span class="verse-count">(42 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Transcendental Knowledge</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="5">
+              <b>5 · Fifth Chapter <span class="verse-count">(29 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Karma-yoga — Action in Kṛṣṇa Consciousness</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="6">
+              <b>6 · Sixth Chapter <span class="verse-count">(47 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Sāṅkhya-yoga</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="7">
+              <b>7 · Seventh Chapter <span class="verse-count">(30 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Knowledge of the Absolute</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="8">
+              <b>8 · Eighth Chapter <span class="verse-count">(28 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Attaining the Supreme</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="9">
+              <b>9 · Ninth Chapter <span class="verse-count">(34 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>The Most Confidential Knowledge</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="10">
+              <b>10 · Tenth Chapter <span class="verse-count">(42 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>The Opulence of the Absolute</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="11">
+              <b>11 · Eleventh Chapter <span class="verse-count">(55 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>The Universal Form</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="12">
+              <b>12 · Twelfth Chapter <span class="verse-count">(20 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Devotional Service</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="13">
+              <b>13 · Thirteenth Chapter <span class="verse-count">(35 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Nature, the Enjoyer, and Consciousness</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="14">
+              <b>14 · Fourteenth Chapter <span class="verse-count">(27 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>The Three Modes of Material Nature</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="15">
+              <b>15 · Fifteenth Chapter <span class="verse-count">(20 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>The Yoga of the Supreme Person</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="16">
+              <b>16 · Sixteenth Chapter <span class="verse-count">(24 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>The Divine and Demoniac Natures</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="17">
+              <b>17 · Seventeenth Chapter <span class="verse-count">(28 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>The Divisions of Faith</small>
+            </li>
+            <li class="custom-select-option" role="option" data-value="18">
+              <b>18 · Eighteenth Chapter <span class="verse-count">(78 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
+              <small>Conclusion — The Perfection of Renunciation</small>
+            </li>
+          </ul>
+          <div class="custom-select-backdrop" id="chapter-backdrop"></div>
+        </div><!-- /#chapter-select -->
+
+        <!-- Verse number input — empty by default (spec: no trailing "1") -->
+        <input
+          id="gita-verse-input"
+          class="verse-input verse-field"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="81"
+          placeholder="Verse number"
+          autocorrect="off"
+          autocapitalize="none"
+          spellcheck="false"
+          aria-label="Verse number"
+        />
+
+        <button type="submit" class="btn btn-primary" aria-label="Look up verse">
+          STUDY IT
         </button>
+      </form>
 
-        <ul class="custom-select-list" id="chapter-list" role="listbox" aria-label="Select a chapter">
-          <li class="custom-select-option" role="option" data-value="1">
-            <b>1 · First Chapter <span class="verse-count">(46 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Observing the Armies on the Battlefield of Kurukṣetra</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="2">
-            <b>2 · Second Chapter <span class="verse-count">(72 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Contents of the Gītā Summarized</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="3">
-            <b>3 · Third Chapter <span class="verse-count">(43 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Karma-yoga</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="4">
-            <b>4 · Fourth Chapter <span class="verse-count">(42 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Transcendental Knowledge</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="5">
-            <b>5 · Fifth Chapter <span class="verse-count">(29 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Karma-yoga — Action in Kṛṣṇa Consciousness</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="6">
-            <b>6 · Sixth Chapter <span class="verse-count">(47 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Sāṅkhya-yoga</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="7">
-            <b>7 · Seventh Chapter <span class="verse-count">(30 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Knowledge of the Absolute</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="8">
-            <b>8 · Eighth Chapter <span class="verse-count">(28 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Attaining the Supreme</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="9">
-            <b>9 · Ninth Chapter <span class="verse-count">(34 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>The Most Confidential Knowledge</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="10">
-            <b>10 · Tenth Chapter <span class="verse-count">(42 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>The Opulence of the Absolute</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="11">
-            <b>11 · Eleventh Chapter <span class="verse-count">(55 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>The Universal Form</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="12">
-            <b>12 · Twelfth Chapter <span class="verse-count">(20 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Devotional Service</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="13">
-            <b>13 · Thirteenth Chapter <span class="verse-count">(35 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Nature, the Enjoyer, and Consciousness</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="14">
-            <b>14 · Fourteenth Chapter <span class="verse-count">(27 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>The Three Modes of Material Nature</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="15">
-            <b>15 · Fifteenth Chapter <span class="verse-count">(20 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>The Yoga of the Supreme Person</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="16">
-            <b>16 · Sixteenth Chapter <span class="verse-count">(24 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>The Divine and Demoniac Natures</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="17">
-            <b>17 · Seventeenth Chapter <span class="verse-count">(28 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>The Divisions of Faith</small>
-          </li>
-          <li class="custom-select-option" role="option" data-value="18">
-            <b>18 · Eighteenth Chapter <span class="verse-count">(78 𝗏𝖾𝗋𝗌𝖾𝗌)</span></b>
-            <small>Conclusion — The Perfection of Renunciation</small>
-          </li>
-        </ul>
-        <div class="custom-select-backdrop" id="chapter-backdrop"></div>
-      </div><!-- /#chapter-select -->
+      <!-- Gita error box -->
+      <p id="gita-error-box" class="error-msg" role="alert" aria-live="polite"></p>
+    </div><!-- /.search-panel -->
 
-      <!-- Verse number input — empty by default (spec: no trailing "1") -->
-      <input
-        id="gita-verse-input"
-        class="verse-input verse-field"
-        type="number"
-        inputmode="numeric"
-        min="1"
-        max="81"
-        placeholder="Verse number"
-        autocorrect="off"
-        autocapitalize="none"
-        spellcheck="false"
-        aria-label="Verse number"
-      />
-
-      <button type="submit" class="btn btn-primary" aria-label="Look up verse">
-        STUDY IT
-      </button>
-    </form>
-
-    <!-- Gita error box -->
-    <p id="gita-error-box" class="error-msg" role="alert" aria-live="polite"></p>
-
-  </section><!-- /.search-panel (gita) -->
   </section>
 
   <div class="separator fade-in"></div>
@@ -305,76 +326,79 @@
   <!-- ═════════════════════════ ICHING ORACLE SECTION ═════════════════════════ -->
 
   <!-- ── iChing Oracle card ── -->
-  <section class="intro intro--iching fade-in" aria-label="About the iChing Oracle">
+  <section class="intro intro--iching" aria-label="About the iChing Oracle">
+
+    <!-- Header & Description -->
     <div class="intro-header">
-      <h2 class="intro-title">iChing Oracle insight</h2>
+      <div class="intro-header-text">
+        <h2 class="intro-title">✦ iChing Oracle</h2>
+        <p class="intro-text">Move through the challenges of everyday life with the inspiration from the Book of Changes.</p>
+      </div>
       <img src="assets/images/iching.png" alt="" class="intro-thumb">
     </div>
-    <p class="intro-text">Move through the challenges</p>
     <ul>
-      <li>Click <code>&nbsp;iChing Oracle&nbsp;</code> to receive inspiration from the Book of Changes.</li>
+      <li><b>OR:</b> Input a <code>hexagram</code> number to read it.to receive inspiration from the Book of Changes.</li>
+      <li><b>OR:</b> Receive inspiration for the moment by clicking <code>LOOK UP</code> below.</li>
     </ul>
 
+    <!-- ── iChing lookup panel ──
+         IDs used in app.js: iching-form, iching-input, iching-btn, iching-error-box
+         No chapter dropdown — single file, hexagram 1–64 (plus 65–66 special).
+         Empty input = random hexagram.
+    -->
+    <div class="search-panel">
+      <form id="iching-form" class="search-row" autocomplete="off" novalidate>
 
-  <!-- ── iChing lookup panel ──
-       IDs used in app.js: iching-form, iching-input, iching-btn, iching-error-box
-       No chapter dropdown — single file, hexagram 1–64 (plus 65–66 special).
-       Empty input = random hexagram.
-  -->
-  <section class="search-panel fade-in" aria-label="Hexagram lookup">
+        <!-- Hexagram number input — empty = random (spec) -->
+        <input
+          id="iching-input"
+          class="verse-input verse-field verse-field--iching"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="64"
+          placeholder="Hex 1–64"
+          autocorrect="off"
+          autocapitalize="none"
+          spellcheck="false"
+          aria-label="Hexagram number 1 to 64, leave empty for random"
+        />
 
-    <form id="iching-form" class="search-row" autocomplete="off" novalidate>
+        <!-- Toss Coins: empty input → random; number → that hexagram -->
+        <button id="iching-btn" type="submit" class="btn btn-primary btn-primary--iching" aria-label="Toss coins or look up hexagram">
+          LOOK UP
+        </button>
+      </form>
 
-      <!-- Hexagram number input — empty = random (spec) -->
-      <input
-        id="iching-input"
-        class="verse-input verse-field verse-field--iching"
-        type="number"
-        inputmode="numeric"
-        min="1"
-        max="64"
-        placeholder="Hex 1–64"
-        autocorrect="off"
-        autocapitalize="none"
-        spellcheck="false"
-        aria-label="Hexagram number 1 to 64, leave empty for random"
-      />
+      <!-- iChing error box -->
+      <p id="iching-error-box" class="error-msg" role="alert" aria-live="polite"></p>
 
-      <!-- Toss Coins: empty input → random; number → that hexagram -->
-      <button id="iching-btn" type="submit" class="btn btn-primary btn-primary--iching" aria-label="Toss coins or look up hexagram">
-        LOOK UP
-      </button>
-    </form>
-
-    <!-- iChing error box -->
-    <p id="iching-error-box" class="error-msg" role="alert" aria-live="polite"></p>
-
-  </section><!-- /.search-panel (iching) -->
+    </div><!-- /.search-panel (iching) -->
   </section>
 
-</main><!-- /.page-wrap -->
+  <!-- ── Page footer — full-width darker block with circular image ──
+       imgfooter.png sits like a Discord embed footer icon (28×28, circular).
+  -->
+  <footer class="page-footer fade-in">
+    <div class="footer-inner">
+      <img
+        src="assets/images/prabhupada.png"
+        alt=""
+        class="footer-icon"
+        width="28"
+        height="28"
+        loading="lazy"
+        aria-hidden="true"
+        draggable="false"
+      />
+      <p>
+        To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
+        <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.0.15」</b>
+      </p>
+    </div>
+  </footer>
 
-<!-- ── Page footer — full-width darker block with circular image ──
-     imgfooter.png sits like a Discord embed footer icon (28×28, circular).
--->
-<footer class="page-footer fade-in">
-  <div class="footer-inner">
-    <img
-      src="assets/images/prabhupada.png"
-      alt=""
-      class="footer-icon"
-      width="28"
-      height="28"
-      loading="lazy"
-      aria-hidden="true"
-      draggable="false"
-    />
-    <p>
-      To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
-      <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.0.13」</b>
-    </p>
-  </div>
-</footer>
+</main><!-- /.page-wrap -->
 
 <!-- ══════════════════════════════ LIGHTBOX OVERLAY ══════════════════════════════
      Shared by both Gita and iChing oracles.
@@ -411,7 +435,7 @@
         <img
           id="lb-author-icon"
           src="assets/images/ichingcoin.png"
-          alt="A.C. Bhaktivedānta Swami"
+          alt="I Ching coin"
           class="lb-author-icon"
           width="28" height="28"
           loading="lazy"
@@ -665,7 +689,10 @@
     </header>
     <div class="lb-body">
       <h2>⚙ Settings:</h2>
-        <p style="font-family: var(--font-text);font-weight: 400;color:var(--text-secondary);">
+        <p style="
+          font-family: var(--font-text);
+          font-weight: 400;
+          color:       var(--text-secondary);">
         These settings control some visual aspects</p>
           <div class="divider"></div>
 
@@ -680,7 +707,7 @@
       <div class="settings-row">
         <span class="settings-row-label">
           Show layout outlines
-          <em class="settings-row-tag">dev</em>
+          <em class="settings-row-tag">devTools</em>
         </span>
         <label class="toggle" aria-label="Show layout outlines">
           <input type="checkbox" id="setting-show-outlines" />
@@ -708,16 +735,6 @@
   <p class="share-png-verse"></p>
   <footer class="share-png-footer">
     <span class="share-png-date"></span>
-      <!-- This script is now irrelevant, "js\share-utils.js" controls it
-      <script>
-      (function () {
-        'use strict';
-        var el = document.querySelector('.share-png-date');
-        if (el && window.formatBannerDate) {
-          el.textContent = window.formatBannerDate(new Date()) + ' • v1.0.13';
-        }
-      })();
-      </script> -->
   </footer>
 </div>
 

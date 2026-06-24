@@ -23,21 +23,21 @@
 'use strict';
 
 import {
-  openLightbox,
-  closeLightbox,
-  renderVerse,
-  displayVerse,
-  displayHexagram,
-  togglePurport,
-  applyLightboxBranding,
-  updateBottomButtons,
-  applyFontSize,
-  increaseFontSize,
-  decreaseFontSize,
-  goNext,
-  goPrev,
-  setNavDisabled,
-  initSwipe,
+  openLightbox,           // ← called inside displayVerse/displayHexagram in lightbox.js
+  closeLightbox,          // ← used ✓ (wired to lbClose, lbOverlay)
+  renderVerse,            // ← called internally in lightbox.js only
+  displayVerse,           // ← used ✓
+  displayHexagram,        // ← used ✓
+  togglePurport,          // ← used ✓
+  applyLightboxBranding,  // ← called inside displayVerse/displayHexagram in lightbox.js
+  updateBottomButtons,    // ← called inside renderVerse in lightbox.js
+  applyFontSize,          // ← used ✓
+  increaseFontSize,       // ← used ✓
+  decreaseFontSize,       // ← used ✓
+  goNext,                 // ← used ✓
+  goPrev,                 // ← used ✓
+  setNavDisabled,         // ← called inside displayVerse/displayHexagram in lightbox.js
+  initSwipe,              // ← used ✓
 } from './lightbox.js';
 
 import {
@@ -72,8 +72,7 @@ import { GitaSearch } from './fuse-search.js';
 import {
   initSearchController,
   enableSearchButtons,
-  openSearchCard,
-  closeSearchCard as closeSearchCardUI,
+  closeSearchCard as closeSearchCardUI,  // ← never called anywhere
 } from './search-ui.js';
 
 // —>
@@ -143,7 +142,7 @@ const dom = {
   // ── iChing landing controls ────────────────────────────────────────────────
   ichingForm:      document.getElementById('iching-form'),
   ichingInput:     document.getElementById('iching-input'),
-  ichingBtn:       document.getElementById('iching-btn'),
+  // —  ichingBtn: document.getElementById('iching-btn'),
   ichingErrorBox:  document.getElementById('iching-error-box'),
 
   // ── NEW: Wisdom Oracle ──
@@ -265,22 +264,28 @@ const _decreaseFontSize = wrapHandler('decreaseFontSize', decreaseFontSize);
 
 // ─── Event Wiring ─────────────────────────────────────────────────────────────
 // Gita form and random button
-dom.gitaForm.addEventListener('submit', _handleGitaSubmit);
-dom.gitaRandomBtn.addEventListener('click', _handleGitaRandom);
+dom.gitaForm.addEventListener('submit', (e) => { closeSearchCardUI(); _handleGitaSubmit(e); });
+dom.gitaRandomBtn.addEventListener('click', () => { closeSearchCardUI(); _handleGitaRandom(); });
 
 // iChing form and random button
-dom.ichingForm.addEventListener('submit', _handleIChingSubmit);
+dom.ichingForm.addEventListener('submit', (e) => { closeSearchCardUI(); _handleIChingSubmit(e); });
 const ichingRandomBtn = document.getElementById('iching-random-btn');
-if (ichingRandomBtn) ichingRandomBtn.addEventListener('click', _handleIChingRandom);
+if (ichingRandomBtn) ichingRandomBtn.addEventListener('click', () => { closeSearchCardUI(); _handleIChingRandom(); });
 
 // ── NEW: Wisdom Oracle random button ──
+const _wrappedHandleWisdomOracle = wrapHandler('handleWisdomOracle', handleWisdomOracle);
 if (dom.wisdomoracleRandomBtn) {
-  dom.wisdomoracleRandomBtn.addEventListener('click', wrapHandler('handleWisdomOracle', handleWisdomOracle));
+  dom.wisdomoracleRandomBtn.addEventListener('click', () => { closeSearchCardUI(); _wrappedHandleWisdomOracle(); });
 }
 
 // Lightbox controls — close, overlay click, prev/next navigation
-dom.lbClose.addEventListener('click', closeLightbox);
-dom.lbOverlay.addEventListener('click', closeLightbox);
+function handleLightboxClose() {
+  const wasWisdom = window._woState?.mode === 'wisdom';
+  closeLightbox();
+  if (wasWisdom) closeOracleCard();
+}
+dom.lbClose.addEventListener('click', handleLightboxClose);
+dom.lbOverlay.addEventListener('click', handleLightboxClose);
 dom.lbPrev.addEventListener('click', goPrev);
 dom.lbNext.addEventListener('click', goNext);
 
@@ -397,7 +402,7 @@ document.addEventListener('keydown', e => {
   switch (e.key) {
     case 'ArrowRight': e.preventDefault(); goNext(); break;
     case 'ArrowLeft':  e.preventDefault(); goPrev(); break;
-    case 'Escape':     e.preventDefault(); closeLightbox(); break;
+    case 'Escape':     e.preventDefault(); handleLightboxClose(); break;
     case 'p': case 'P': togglePurport(); break;
     case 'g': case 'G': closeLightbox(); setTimeout(handleGitaRandom, 80); break;
     case 'h': case 'H': closeLightbox(); setTimeout(handleIChingRandom, 80); break;

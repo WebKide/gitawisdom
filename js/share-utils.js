@@ -115,7 +115,7 @@ function buildShareText(includeUrl = false) {
       '',
       '✦ The Current Circumstance',
       p.gitaTranslation,
-      `Read full verse ${p.gitaChapter}/${p.gitaRef}`,
+      `Read full verse ${p.gitaChapter}.${p.gitaRef}`,
       '',
       '✦ The Insightful Inspiration',
       p.ichingTranslation,
@@ -336,8 +336,8 @@ async function handleShare() {
   const _shareDateEl = document.querySelector('.share-png-date');
   if (_shareDateEl) {
     _shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' • v1.0.13'
-      : 'v1.0.13';
+      ? window.formatBannerDate(new Date()) + ' • v1.0.15'
+      : 'v1.0.15';
   }
 
   // Fit text to card — must happen before html2canvas reads the DOM
@@ -529,7 +529,7 @@ function renderInfoCard(modal, data) {
 
   // Footer (plain text only, \n → <br />)
   if (data.footer && String(data.footer).trim()) {
-    const ft = String(data.footer).replace(/\n/g, '<br />');
+    const ft = String(data.footer).replace(/\n/g, ' ✦ ');
     html += `<p class="lb-info-footer">${ft}</p>`;
   }
 

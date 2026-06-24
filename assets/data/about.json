@@ -3,7 +3,7 @@
   "icon": "assets/images/prabhupada.png",
   "sections": [
     {
-      "h1": "Wisdom Oracle — v1.0.13",
+      "h1": "Wisdom Oracle — v1.0.15",
       "h2": "📖 ABOUT",
       "text": "Wisdom Oracle is a spiritual reading web app that brings together two timeless sources of wisdom:<hr><em>Bhagavad Gītā As It Is</em> — <code>1972 Unabridged Edition (Macmillan)</code><br /><em>I Ching / Book of Changes</em> — <code>Richard Wilhelm translation</code>\nExplore both oracles with a random verse or hexagram, or look up specific chapters and numbers. Clean, dark-themed interface — no ads, no distractions."
     },

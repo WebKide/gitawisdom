@@ -139,54 +139,86 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 :root {
   /* Base palette */
-  --bg-base:       #1e1f22;
-  --bg-mid:        #2b2d31;
-  --bg-card:       #313338;
-  --bg-card-alt:   #2e3035;
-  --bg-input:      #1e1f22;
+  --bg-base:     #1e1f22; /* Raisin Black */
+  --bg-mid:      #2b2d31; /* Charcoal */
+  --bg-card:     #313338; /* Gunmetal */
+  --bg-card-alt: #2e3035; /* Outer Space */
+  --bg-input:    #1e1f22; /* Raisin Black ?? */
+
+  /* Main colors */
+  --black:       #18191c; /* Eerie Black */
+  --navy:        #1a1f2a; /* Dark Charcoal Navy */
+  --blue:        #1a2235; /* Deep Oxford Blue */
+  --emerald:     #2ecc71; /* Emerald Green */
+  --blueflower:  #7188d8; /* Soft Cornflower Blue */
+  --crimson:     #a94c4a; /* Crimson Jasper */
+  --flamingo:    #e57373; /* Flamingo Pink */
+  --cerulean:    #3593d2; /* Cerulean Blue */
+  --royal-blue:  #2563eb; /* Royal Blue */
+  --coral:       #f87171; /* Pastel Coral */
+  --amber:       #fbbf24; /* Amber */
 
   /* Gita / saffron accent */
-  --accent:        #f5a623;
-  --accent-dim:    #c07d10;
-  --accent-glow:   rgba(245, 166, 35, 0.18);
+  --accent:      #f5a623;                  /* Saffron */
+  --accent-dim:  #c07d10;                  /* Ochre */
+  --accent-glow: rgba(245, 166, 35, 0.18); /* Translucent Saffron */
+  --accent-gold-bright: #ffbf00;           /* Pure gold accent highlighting */
 
   /* iChing / indigo-blue accent */
-  --iching-accent: #512f86;
-  --iching-dim:    #7334d3;
-  --iching-glow:   rgba(98, 118, 187, 0.20);
-  --iching-border: #6761f6;
+  --iching-accent:     #512f86;                  /* Royal Purple */
+  --iching-purple-lg:  rgba(81, 47, 134, 0.18);  /* Royal Purple Translucent */
+  --iching-purple:     rgba(115, 52, 211, 0.22);
+  --iching-jade:       #2e7d32;                  /* Oracle jade */
+  --iching-green-glow: rgba(16, 185, 129, 0.1);  /* Emerald Green */
+  --iching-dim:        #7334d3;                  /* Vivid Violet */
+  --iching-glow:       rgba(98, 118, 187, 0.20); /* Periwinkle Mist */
+  --iching-border:     #6761f6;                  /* Neon Blue */
+  --iching-lila:       #bfa1f7;
 
-  /* Lilac buttons (purport close / return) */
-  --lilac-btn:       #512f86;
-  --lilac-btn-hover: #7334d3;
-  --red-btn:         #c8615f;
+  /* Lilac/Red buttons (purport close / return) */
+  --lilac-btn:       #512f86; /* # */
+  --lilac-btn-hover: #7334d3; /* # */
+  --red-btn:         #c8615f; /* Muted Coral */
+  --red-btn-bright:  #da6e6b; /* Light Carmine */
+  --lotus-pink:      #e06c9f; /* Deep spiritual pink states */
+
+  /* Wisdom Statuses & Notifications */
+  --wisdom-red:    rgba(248, 113, 113, 0.13); /* Pink Translucent */
+  --success-green: #23a55a; /* Safe green for active meditations */
+  --active-green:  #34d399; /* Emerald Mist */
+  --warning-amber: #f0b232; /* Soft alert tone matching saffron */
+  --info-cyan:     #00b0f4; /* Calm sky tone for system tips and popups */
+
+  /* Advanced Surfaces */
+  --bg-overlay: rgba(17, 18, 20, 0.70); /* Modal backdrop shade */
+  --bg-toast:   #111214;                /* Deepest black for small popups */
 
   /* Text */
-  --text-primary:   #dbdee1;
-  --text-secondary: #949ba4;
-  --text-muted:     #5c6068;
-  --text-heading:   #f2f3f5;
+  --text-primary:   #dbdee1; /* Platinum */
+  --text-secondary: #949ba4; /* Cool Grey */
+  --text-muted:     #747f8d; /* Dim Grey */
+  --text-heading:   #f2f3f5; /* Crisp White */
 
   /* Borders / shadows */
-  --border:        rgba(255,255,255,0.06);
-  --border-accent: rgba(245,166,35,0.35);
-  --shadow-card:   0 8px 40px rgba(0,0,0,0.55);
-  --shadow-glow:   0 0 28px rgba(245,166,35,0.14);
-  --crt-line:      rgba(255,255,255,0.03);
+  --border:        rgba(255,255,255,0.06);         /* White Mask */
+  --border-accent: rgba(245,166,35,0.35);          /* Muted Saffron Tint */
+  --shadow-card:   0 8px 40px rgba(0,0,0,0.55);    /* Deep Obsidian Shadow */
+  --shadow-glow:   0 0 28px rgba(245,166,35,0.14); /* Soft Saffron Aura */
+  --crt-line:      rgba(255,255,255,0.03);         /* Micro Opacity */
 
   /* Radii */
-  --radius:        8px;
-  --radius-lg:     12px;
+  --radius:    8px;
+  --radius-lg: 12px;
 
   /* Typefaces */
-  --font-display:  'Sansita', sans-serif;
-  --font-body:     'Gentium Plus', serif;
-  --font-text:     'Kelvinch', serif;
+  --font-display: 'Sansita', sans-serif;
+  --font-body:    'Gentium Plus', serif;
+  --font-text:    'Kelvinch', serif;
 
-  --transition:     0.22s ease;
+  --transition:   0.22s ease;
 
   /* In-reader font size — controlled by JS font-size buttons */
-  --lb-font-size:   16px;
+  --lb-font-size: 16px;
 
   /* Share PNG footer font size */
   --share-footer-font-size: 24px;
@@ -206,30 +238,10 @@ body {
   color:                  var(--text-primary);
   min-height:             100vh;
   -webkit-font-smoothing: antialiased;
-
-  /*
-   * Gradient mesh background — no pseudo-elements.
-   * Replaces previous CRT vignette (::before) and scanlines (::after)
-   * for better performance on low-end devices (Android 8 WebView).
-   * Layers:
-   *   1. Fractal noise grain (repeating tile)
-   *   2. Warm saffron radial glow (top-left)
-   *   3. Cool indigo radial glow (bottom-right)
-   *   4. Soft edge vignette
-   */
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(245, 166, 35, 0.035) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(98, 118, 187, 0.035) 0%, transparent 55%),
-    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.32) 100%);
-  background-size: 200px 200px, 100% 100%, 100% 100%, 100% 100%;
-  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
-  background-attachment: fixed;
-
-  overscroll-behavior-x: none;
-  position: relative;
-  width: 100%;
-  overflow-x: hidden;
+  overscroll-behavior-x:  none;
+  position:               relative;
+  width:                  100%;
+  overflow-x:             hidden;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -246,7 +258,7 @@ body {
 .page-wrap {
   max-width:      680px;
   margin:         0 auto;
-  padding:        0 20px 0;
+  padding:        52px 0 0 0;
   display:        flex;
   flex-direction: column;
   align-items:    center;
@@ -284,7 +296,7 @@ body {
   right:           0;
   width:           36px;
   height:          36px;
-  z-index:         990;
+  z-index:         5;
   display:         flex;
   flex-direction:  column;
   justify-content: center;
@@ -302,12 +314,12 @@ body {
   display:       block;
   width:         20px;
   height:        2px;
-  background:    var(--text-primary);
+  background:    var(--text-secondary);
   border-radius: 2px;
   transition:    background var(--transition);
 }
 
-.menu-toggle:hover .menu-line { background: var(--accent); }
+.menu-toggle:hover .menu-line { background: var(--text-primary); }
 
 .menu-dot {
   position:      absolute;
@@ -315,7 +327,7 @@ body {
   right:         4px;
   width:         10px;
   height:        10px;
-  background:    var(--accent);
+  background:    var(--success-green);
   border-radius: 50%;
   border:        2px solid var(--bg-base);
 }
@@ -327,8 +339,6 @@ body {
   width:                 100%;
   max-width:             360px;
   height:                auto;
-  /* filter: drop-shadow() removed — WebView 66 rasterises SVG filters
-     poorly when combined with CSS animations. */
   animation:             lotus-pulse 4s ease-in-out infinite;
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
@@ -369,7 +379,6 @@ body {
   -webkit-touch-callout: none;
   -webkit-user-select:   none;
   user-select:           none;
-  opacity:               0;
 }
 
 @media (max-width: 520px) {
@@ -377,73 +386,97 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   MODULE TABS (Row 2 — below banner)
-   Three pill switches: Wisdom Oracle | Gītā Wisdom | iChing Oracle
+   MODULE TABS (below banner)
+   Three buttons: Wisdom Oracle | Gītā Wisdom | iChing Oracle
    ═══════════════════════════════════════════════════════════════════════════ */
+/* --- GLOBAL TAB STYLES (Applies to desktop and mobile) --- */
 .module-tabs {
-  width:           100%;
-  display:         flex;
-  justify-content: flex-end;   /* aligned right per spec */
-  gap:             6px;
-  padding:         4px;
-  margin-top:      4px;
-  margin-bottom:   16px;
+  width:         100%;
+  display:       flex;
+  background:    var(--black);
+  border-radius: var(--radius-lg);
+  border:        1px solid rgba(255,255,255,0.10);
+  box-shadow:    0 0 0 3px var(--crt-line);
+  gap:           10px;
+  padding:       8px 10px;
+  margin-top:    4px;
+  margin-bottom: 16px;
 }
 
+/* Consolidated tab button properties */
 .module-tab {
-  font-family:     var(--font-display);
-  font-size:       0.72rem;
-  letter-spacing:  0.06em;
-  font-weight:     400;
-  padding:         6px 14px;
-  border:          1px solid var(--border);
-  border-radius:   10px;
-  cursor:          pointer;
-  text-align:      center;
-  white-space:     nowrap;
+  display:         inline-flex;
+  align-items:     center;  /* Centers the SVG icon vertically with the text */
+  justify-content: center;
+  gap:             12px;    /* Margin between SVG icon and whole text group */
+  padding:         10px 12px;
+  border-radius:   var(--radius, 6px);
+  cursor:          pointer;    
   -webkit-user-select: none;
   user-select:     none;
-  transition:      color var(--transition), border-color var(--transition),
-                   background var(--transition);
+  transition:      all 0.2s ease;
+  flex:            1;
 }
 
-/* Inactive colour assignments — each tab keeps its own identity color at rest */
+/* Text Container Stack */
+.tab-label-group {
+  display:        flex;
+  flex-direction: column;      /* Pushes subtitle to the second line */
+  align-items:    flex-start;  /* Left aligns titles within their button block */
+}
+
+/* Primary text heading styling */
+.tab-title {
+  font-weight: 700;
+  font-size:   0.85rem;
+  line-height: 1.2;
+}
+
+/* Secondary smaller description styling */
+.tab-subtitle {
+  font-weight:    400;
+  font-size:      0.68rem;
+  line-height:    1.2;
+  margin-top:     2px;
+  opacity:        0.7;  /* Dimer color text */
+  text-transform: lowercase;
+}
+
+.module-tabs svg, .tab-icon {
+  width:       24px;
+  height:      24px;
+  flex-shrink: 0;
+  fill:        currentColor;
+}
+
+/* --- THEME COLORS --- */
 .module-tab--wisdom {
-  background: var(--red-btn);
-  color:      var(--text-primary);
+  background: rgba(248, 113, 113, 0.08);
+  border:     1px solid var(--red-btn-bright);
+  color:      var(--coral);
+}
+.module-tab--wisdom:hover {
+  background: rgba(248, 113, 113, 0.16);
 }
 
 .module-tab--gita {
-  background: var(--accent);
-  color:      var(--bg-base);
+  background: rgba(245, 166, 35, 0.08);
+  border:     1px solid var(--accent-dim);
+  color:      var(--amber);
+}
+.module-tab--gita:hover {
+  background: rgba(245, 166, 35, 0.18);
 }
 
 .module-tab--iching {
-  background: var(--iching-accent);
-  color:      var(--text-primary);
+  background: rgba(115, 52, 211, 0.12);
+  border:     1px solid var(--iching-dim);
+  color:      var(--iching-lila);
+}
+.module-tab--iching:hover {
+  background: rgba(115, 52, 211, 0.22);
 }
 
-/* Active states */
-.module-tab--wisdom.module-tab--active {
-  background:   #a94c4a;
-  color:        var(--text-primary);
-  font-weight:  600;
-  border-color: transparent;
-}
-
-.module-tab--gita.module-tab--active {
-  background:   var(--accent);
-  color:        #1a1000;
-  font-weight:  600;
-  border-color: transparent;
-}
-
-.module-tab--iching.module-tab--active {
-  background:   var(--iching-border);
-  color:        #ffffff;
-  font-weight:  600;
-  border-color: transparent;
-}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    DIVIDERS & SEPARATORS
@@ -469,7 +502,7 @@ body {
   height:     1px;
   background: linear-gradient(90deg, transparent, var(--text-muted), transparent);
   opacity:    0.3;
-  margin:     -10px 0 10px 0;
+  margin:     -6px 0 12px 0;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -536,11 +569,17 @@ body {
    ═══════════════════════════════════════════════════════════════════════ */
 .intro-header {
   display:         flex;
+  align-items:     flex-start;
   align-items:     center;
   justify-content: space-between;
   flex-wrap:       wrap;
   gap:             12px;
   margin-bottom:   12px;
+}
+
+.intro-header-text {
+  flex:      1;        /* takes remaining space */
+  min-width: 0;        /* allows text to shrink */
 }
 
 .intro-title {
@@ -550,8 +589,10 @@ body {
   color:          var(--text-heading);
   letter-spacing: 0.02em;
   line-height:    1.3;
+  margin-bottom:  4px;  /* tight gap to p */
 }
 
+/* Desktop: image sits to the right of text */
 .intro-thumb {
   width:         80px;
   height:        80px;
@@ -561,12 +602,12 @@ body {
   border:        1px solid var(--border);
 }
 
-.intro-text {
+.intro .intro-text {
   font-size:     calc(var(--lb-font-size) * 0.95);
   color:         var(--text-primary);
   line-height:   1.7;
   margin-bottom: 16px;
-  text-align:    left;
+  text-align:    left;    /* now wins because .intro .intro-text beats .intro p */
   font-style:    normal;
 }
 
@@ -574,6 +615,24 @@ body {
   display:         flex;
   justify-content: center;
   width:           100%;
+}
+
+/* Mobile: image wraps above, centered */
+@media (max-width: 520px) {
+  .intro-header {
+    flex-direction: column-reverse;  /* image on top */
+    align-items:    center;
+    text-align:     center;
+  }
+
+  .intro-header-text {
+    width: 100%;
+  }
+
+  .intro-thumb {
+    width:  60px;
+    height: 60px;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -586,7 +645,7 @@ body {
   left:          0;
   right:         0;
   z-index:       1000;
-  background:    #18191c;
+  background:    var(--black);
   border-bottom: 1px solid rgba(255,255,255,0.10);
   padding:       10px 20px;
   transition:    opacity var(--transition);
@@ -612,17 +671,14 @@ body.lb-active #top-nav {
 .top-nav-icon {
   width:         119px;
   height:        25px;
-  border-radius: 0;
-  flex-shrink:   0;
-  opacity:       0;
   transition:    opacity 0.4s ease;
   -webkit-user-drag:     none;
   -webkit-touch-callout: none;
   -webkit-user-select:   none;
   user-select:           none;
   pointer-events:        none;
-  object-fit: contain;
-  object-position: center;
+  object-fit:            contain;
+  object-position:       center;
 }
 
 @media (max-width: 520px) {
@@ -647,8 +703,8 @@ body.lb-active #top-nav {
   font-size:       0.82rem;
   font-weight:     600;
   letter-spacing:  0.04em;
-  padding:         10px 18px;
-  border-radius:   var(--radius-lg);
+  padding:         6px 20px;
+  border-radius:   var(--radius);
   border:          none;
   color:           var(--text-secondary);
   text-decoration: none;
@@ -661,6 +717,14 @@ body.lb-active #top-nav {
   background:      var(--bg-mid);
 }
 
+/* Base button layout for the SVG icons */
+.top-nav-btn svg {
+  width:       18px;
+  height:      18px;
+  flex-shrink: 0;
+  fill:        currentColor; /* Automatically matches the WCAG text colors */
+}
+
 .top-nav-btn:active { transform: scale(0.96); }
 
 .top-nav-btn:hover {
@@ -671,7 +735,7 @@ body.lb-active #top-nav {
 
 /* Active state (e.g. Search tab) — lilac */
 .top-nav-btn--active {
-  background:   var(--lilac-btn);
+  background:   var(--cerulean);
   color:        var(--text-primary);
   box-shadow:   0 0 20px rgba(81, 47, 134, 0.25);
 }
@@ -688,9 +752,6 @@ body.lb-active #top-nav {
 
 .top-nav-btn--oracle:hover { background: var(--accent-glow); }
 
-/* Push page content below the fixed bar */
-.page-wrap { padding-top: 52px; }
-
 /* ═══════════════════════════════════════════════════════════════════════════
    SEARCH PANEL
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -701,7 +762,17 @@ body.lb-active #top-nav {
   flex-direction: column;
   gap:            12px;
 }
+/* Override: search-panel must NOT retain a transform, because
+   position:fixed children (the chapter dropdown) use it as their
+   containing block instead of the viewport when transform is present. */
+.search-panel.fade-in {
+  animation: fade-opacity-only 0.55s ease 0.3s forwards;
+}
 
+@keyframes fade-opacity-only {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 .search-row {
   display:     flex;
   gap:         10px;
@@ -753,7 +824,7 @@ body.lb-active #top-nav {
 .error-msg h3 {
   font-family:   var(--font-display);
   font-weight:   700;
-  color:         #e57373;
+  color:         var(--flamingo);
   margin-bottom: 6px;
   font-size:     1rem;
   line-height:   1.3;
@@ -927,6 +998,10 @@ body.lb-active { overflow: hidden; }
   animation:     card-enter 0.38s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
 }
 
+.lb-wisdom-section {
+  border-top-color: var(--accent-gold-bright);
+}
+
 .lb-card.lb-card--iching {
   border-top-color: var(--iching-accent);
   box-shadow:       var(--shadow-card), 0 0 28px rgba(98,118,187,0.14);
@@ -978,10 +1053,6 @@ body.lb-active { overflow: hidden; }
 }
 
 .lb-card.loading { opacity: 0.6; pointer-events: none; transition: opacity 0.2s; }
-
-#lb-wisdom-body {
-  padding: 0px 16px 6px;
-}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    CARD HEADER
@@ -1137,7 +1208,7 @@ body.lb-active { overflow: hidden; }
    ═══════════════════════════════════════════════════════════════════════════ */
 .lb-translation {
   background:    rgba(30, 32, 37, 0.96);
-  border-left:   3px solid #7188d8;
+  border-left:   3px solid var(--iching-dim);
   border-radius: 0 var(--radius) var(--radius) 0;
   padding:       12px 16px;
   font-size:     calc(var(--lb-font-size) * 1.08);
@@ -1438,7 +1509,7 @@ body.lb-active { overflow: hidden; }
 
 .fade-in {
   opacity:   0;
-  transform: translateY(14px);
+  transform: none; /* translateY(14px); */
   animation: fade-up 0.55s ease forwards;
 }
 
@@ -1452,16 +1523,15 @@ body.lb-active { overflow: hidden; }
    PAGE FOOTER
    ═══════════════════════════════════════════════════════════════════════════ */
 .page-footer {
-  margin-left:  -20px;
-  margin-right: -20px;
+  width:        100%;
+  padding:      16px 20px 20px;
   margin-top:   40px;
-  background:   #18191c;
+  background:   var(--black);
   border-top:   1px solid rgba(255,255,255,0.10);
   border-left:  1px solid rgba(255,255,255,0.10);
   border-right: 1px solid rgba(255,255,255,0.10);
   border-top-left-radius:  var(--radius-lg);
   border-top-right-radius: var(--radius-lg);
-  padding:      16px 20px 20px;
 }
 
 .footer-inner {
@@ -1565,12 +1635,16 @@ body.lb-active { overflow: hidden; }
   flex:     none;
   width:    320px;
   z-index:  300;
+  overflow: visible !important;
 }
 
 .custom-select.open { z-index: 1200; }
 
+/* Also remove the conflicting z-index rules that fight each other */
+/*
 .search-panel { position: relative; z-index: 600; }
 .intro        { position: relative; z-index: 1; }
+*/
 
 .custom-select-trigger {
   display:         flex;
@@ -1578,7 +1652,7 @@ body.lb-active { overflow: hidden; }
   justify-content: space-between;
   width:           100%;
   padding:         11px 14px;
-  background:      #1a1f2a;
+  background:      var(--navy);
   border:          1px solid #1e3a5a;
   border-radius:   var(--radius);
   color:           var(--text-primary);
@@ -1615,7 +1689,7 @@ body.lb-active { overflow: hidden; }
   top:           50%;
   left:          50%;
   transform:     translate(-50%, -50%);
-  width:         min(340px, 90vw);
+  width:         min(340px, 100vw);
   max-height:    60vh;
   overflow-y:    auto;
   background:    var(--bg-card);
@@ -1624,7 +1698,11 @@ body.lb-active { overflow: hidden; }
   box-shadow:    var(--shadow-card);
   list-style:    none;
   padding:       4px 0;
-  z-index:       1201;
+  z-index:       9999;
+}
+
+.custom-select.open {
+  z-index: 9999;              /* ← ensure parent also wins */
 }
 
 .custom-select.open .custom-select-list {
@@ -1696,12 +1774,23 @@ body.lb-active { overflow: hidden; }
 
 * { scrollbar-color: var(--bg-card) var(--bg-input); }
 
+@media (max-width: 520px) {
+  .custom-select-list {
+    width:     70vw;        /* override min() on mobile */
+    max-width: 80vw;
+  }
+
+  .custom-select-option {
+    padding: 9px 10px;      /* reduce from 14px horizontal to 10px */
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    VERSE / HEXAGRAM INPUT FIELD
    ═══════════════════════════════════════════════════════════════════════════ */
 .verse-field {
   width:        140px;
-  background:   #1a1f2a;
+  background:   var(--navy);
   border-color: #1e3a5a;
   text-align:   center;
 }
@@ -1709,7 +1798,7 @@ body.lb-active { overflow: hidden; }
 .verse-field:focus {
   border-color: var(--iching-accent);
   box-shadow:   0 0 0 3px rgba(98,118,187,0.2);
-  background:   #1a2235;
+  background:   var(--blue);
   outline:      none;
 }
 
@@ -1719,10 +1808,10 @@ body.lb-active { overflow: hidden; }
    MOBILE BREAKPOINTS
    ═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 520px) {
-  .page-wrap       { padding: 0 12px 0; }
-  .banner          { padding: 100px 0 2px; }
-  .banner-date     { font-size: 0.8rem; top: 60px; }
-  .menu-toggle     { top: 55px; }
+  .page-wrap       { padding: 52px 12px 0 12px; }
+  .banner          { padding: 62px 0 2px; }
+  .banner-date     { font-size: 0.8rem; padding-left: 6px; }
+  .menu-toggle     { padding-right: 5px; }
   .search-row      { flex-wrap: wrap; }
   .btn             { width: 100%; text-align: center; }
   .verse-input     { font-size: 0.97rem; }
@@ -1732,24 +1821,73 @@ body.lb-active { overflow: hidden; }
   .lightbox        { padding: 12px 8px 32px; }
   .lb-body         { padding: 16px 15px 6px; }
   .lb-header       { padding: 10px 12px 8px; }
-  .lb-author-name  { display: none; }
+  .lb-author-name  { min-width: 0; flex-shrink: 1; }
   .lb-footer-bar   { flex-direction: column; align-items: flex-start; }
   .lb-nav-row      { width: 100%; justify-content: space-between; }
   .lb-footer-text  { width: 100%; }
   .lb-font-btn     { padding: 6px 6px; }
   .lb-header--purport .lb-close-btn { display: none; }
   .lb-bottom-btn   { width: 100%; }
-  .page-footer     { margin-left: -12px; margin-right: -12px; padding: 16px 12px 20px; }
+  .page-footer     { padding: 16px 0 20px; width: 100%; }
 
   /* Module tabs stack on very small screens */
-  .module-tabs     { flex-wrap: wrap; justify-content: center; }
-  .module-tab      { flex: 1; min-width: 100px; font-size: 0.75rem; padding: 8px 12px; }
+  .module-tabs {
+    flex-direction:  column;
+    align-items:     stretch;
+    justify-content: center;
+    gap:             10px;
+  }
+
+  .module-tab {
+    width: 93%;
+    justify-content: center;
+    display:         inline-flex;  /* key: flex row inside button */
+    align-items:     center;       /* vertical centering */
+    gap:             6px;          /* space between icon and text */
+    /* keep existing styles: */
+    flex:        1;
+    min-width:   100px;
+    font-size:   0.75rem;
+    padding:     12px;
+    margin:      0 12px;
+  }
+
+  /* Base button layout to align the icon and text horizontally */
+  .module-tabs button {
+    align-items:     center;
+    justify-content: center;
+    gap:             8px; /* Perfectly spaces the icon away from your text */
+    padding:         6px 14px;
+    border-radius:   var(--radius-md, 6px);
+    font-weight:     700;
+    cursor:          pointer;
+    font-size:       1em;
+    transition:      all 0.2s ease;
+  }
+
+  .module-tabs svg, .tab-icon {
+    width:       24px;
+    height:      24px;
+    flex-shrink: 0;
+    fill: currentColor; /* Automatically matches the WCAG text colors */
+  }
 
   /* Intro cards: thumb shrinks, title centers */
   .intro-header    { justify-content: center; text-align: center; }
   .intro-thumb     { width: 60px; height: 60px; }
 }
 
+/* --- DESKTOP LAYOUT (Large Screens) --- */
+@media (min-width: 769px) {
+  .module-tabs {
+    flex-direction: row;
+    justify-content: center; /* Horizontally centered rows */
+  }
+  .module-tab {
+    min-width: 100px;
+    max-width: 200px;
+  }
+}
 /* ═══════════════════════════════════════════════════════════════════════════
    SCROLLBAR & SELECTION
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -1797,7 +1935,7 @@ img {
 .search-field:focus {
   border-color: var(--accent);
   box-shadow:   0 0 0 3px var(--accent-glow);
-  background:   #1a2235;
+  background:   var(--blue);
 }
 
 .search-field::placeholder { color: var(--text-muted); }
@@ -1915,12 +2053,6 @@ img {
   align-self:  center;
 }
 
-.top-nav-btn--active {
-  color:        var(--accent) !important;
-  border-color: var(--border-accent) !important;
-  background:   var(--accent-glow) !important;
-}
-
 @media (max-width: 520px) {
   .search-results    { max-height: 260px; }
   .search-mode-row   { gap: 6px; }
@@ -1974,7 +2106,7 @@ img {
 
 /* ON state */
 .toggle input:checked + .slider {
-  background-color: #2ecc71; /* green active */
+  background-color: var(--emerald); /* green active */
 }
 
 /* move knob */
