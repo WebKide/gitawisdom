@@ -72,6 +72,12 @@ Find instant wisdom, clarity, and emotional strength for everyday parenting chal
 - PNG share cards are generated with the verse text, title, and background image.
 - Service worker ensures offline functionality and background updates.
 
+### 📱 Mobile Support
+
+<div align="center">
+   <img src="https://github.com/WebKide/gitawisdom/blob/main/screenshot/Screenshot_v1-0-15.png" alt="project logo" width="40%" />
+</div>
+
 ## 🌟 FOSS and Privacy
 
 **Wisdom Oracle** is a free and open-source project (FOSS). This means all the code and content are publicly available, so anyone can inspect, modify, or contribute. No accounts or subscriptions are required to use the app, and it does not collect, track, or share any personal data.
@@ -90,7 +96,7 @@ For issues or feature requests, please open an issue on [GitHub](https://github.
 
 - **Developer:** [WebKide](https://webkide.github.io/gitawisdom/)
 - **Libraries used:** [`html2canvas.min.js`](https://html2canvas.hertzen.com/), [`fuse.min.js`](https://http://fusejs.io/)
-- **Data source:** Bhagavad Gītā As It Is (1972 Unabridged Edition, Macmillan) and I Ching JSON files
+- **Data source:** Bhagavad Gītā As It Is (1972 Unabridged Edition, Macmillan) and I Ching the Book of Change JSON files
 - **Repository:** [GitHub: WebKide/gitawisdom](https://github.com/WebKide/gitawisdom/tree/main)
 - **Live URL:** [https://webkide.github.io/gitawisdom](https://webkide.github.io/gitawisdom)
 
