@@ -336,8 +336,8 @@ async function handleShare() {
   const _shareDateEl = document.querySelector('.share-png-date');
   if (_shareDateEl) {
     _shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' • v1.0.15'
-      : 'v1.0.15';
+      ? window.formatBannerDate(new Date()) + ' • v1.1.1'
+      : 'v1.1.1';
   }
 
   // Fit text to card — must happen before html2canvas reads the DOM

@@ -793,7 +793,7 @@ function renderWisdomOracle(payload) {
   wisdomBody.classList.remove('hidden');
 
   // ── Footer ──
-  dom.lbFooter.textContent = 'Wisdom Oracle — Gītā + iChing';
+  dom.lbFooter.textContent = 'Wisdom Oracle — Use it for daily reflection, study, and spiritual guidance with hope and love.';
 
   // ── Show COPY / SHARE (share combines all 3 texts) ──
   dom.lbCopyBtn.style.display = '';
@@ -848,5 +848,5 @@ export {
   initSwipe,
   // ── NEW: Wisdom Oracle helpers ──
   renderWisdomOracle,   // builds the 3-section card body
-  openWisdomLightbox,   // opens lb-card in wisdom mode (no nav, red border)
+  openWisdomLightbox,   // opens lb-card in wisdom mode (no nav)
 };

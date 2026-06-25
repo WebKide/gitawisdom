@@ -1045,11 +1045,10 @@ body.lb-active { overflow: hidden; }
 .settings-row-tag {
   font-style:    normal;
   font-size:     0.72rem;
-  color:         var(--text-muted);
+  color:         var(--text-secondary);
   background:    rgba(255,255,255,0.07);
   border-radius: 3px;
-  padding:       1px 5px;
-  margin-left:   5px;
+  padding:       1px 3px;
 }
 
 .lb-card.loading { opacity: 0.6; pointer-events: none; transition: opacity 0.2s; }
@@ -1178,6 +1177,18 @@ body.lb-active { overflow: hidden; }
   background:     rgba(81,47,134,0.23);
   border-radius:  var(--radius);
   border-left:    3px solid var(--text-primary);
+}
+
+/* iChing — indigo */
+.lb-card--iching .lb-chapter-heading {
+  background:  rgba(81, 47, 134, 0.23);
+  border-left: 3px solid var(--iching-accent);
+}
+
+/* Wisdom Oracle — red */
+.lb-card--wisdom .lb-chapter-heading {
+  background:  rgba(200, 97, 95, 0.10);
+  border-left: 3px solid var(--red-btn);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1814,6 +1825,7 @@ body.lb-active { overflow: hidden; }
   .menu-toggle     { padding-right: 5px; }
   .search-row      { flex-wrap: wrap; }
   .btn             { width: 100%; text-align: center; }
+  .intro-thumb     {  }
   .verse-input     { font-size: 0.97rem; }
   .custom-select,
   .custom-select-list,
@@ -1829,6 +1841,7 @@ body.lb-active { overflow: hidden; }
   .lb-header--purport .lb-close-btn { display: none; }
   .lb-bottom-btn   { width: 100%; }
   .page-footer     { padding: 16px 0 20px; width: 100%; }
+  .footer-inner    { padding-left: 8px }
 
   /* Module tabs stack on very small screens */
   .module-tabs {
@@ -1874,7 +1887,7 @@ body.lb-active { overflow: hidden; }
 
   /* Intro cards: thumb shrinks, title centers */
   .intro-header    { justify-content: center; text-align: center; }
-  .intro-thumb     { width: 60px; height: 60px; }
+  .intro-thumb     { width: 160px; height: 120px; }
 }
 
 /* --- DESKTOP LAYOUT (Large Screens) --- */

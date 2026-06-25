@@ -3,17 +3,19 @@
   "icon": "assets/images/prabhupada.png",
   "sections": [
     {
-      "h1": "Wisdom Oracle — v1.0.15",
-      "h2": "📖 ABOUT",
-      "text": "Wisdom Oracle is a spiritual reading web app that brings together two timeless sources of wisdom:<hr><em>Bhagavad Gītā As It Is</em> — <code>1972 Unabridged Edition (Macmillan)</code><br /><em>I Ching / Book of Changes</em> — <code>Richard Wilhelm translation</code>\nExplore both oracles with a random verse or hexagram, or look up specific chapters and numbers. Clean, dark-themed interface — no ads, no distractions."
+      "h1": "॥ oṁ namo bhagavate vāsudevāya ॥",
+      "h2": "✦ ABOUT",
+      "text": "Wisdom Oracle is a progressive web app that brings together two timeless sources of wisdom:",
+      "list": "<em>Bhagavad Gītā As It Is</em> — <code>1972 Unabridged Edition (Macmillan)</code>\n<em>I Ching the Book of Changes</em> — <code>Richard Wilhelm translation</code>"
     },
     {
       "h2": "✦ KEY FEATURES",
-      "list": "<strong>Fully offline</strong> — once cached, works without internet. Perfect for airplane mode.\n<strong>Auto-updates</strong> — service worker fetches improvements silently in the background.\n<strong>Share or copy</strong> any verse or hexagram directly from the card view.\n<strong>Installable</strong> — add to home screen and open like a native app."
+      "list": "<strong>Fully offline</strong> — once cached, works without internet. Perfect for airplane mode.\n<strong>Auto-updates</strong> — service worker fetches improvements in the background.\n<strong>Share or Copy</strong> any verse or hexagram directly from the card view.\n<strong>Installable</strong> — add to home screen and open like a native app.\n<strong>Privacy focused</strong> — No ads, and zero distractions."
     },
     {
-      "h2": "⚙ TECHNICAL",
-      "list": "<strong>Developer:</strong> WebKide\n<strong>Library:</strong> <code>html2canvas.min.js</code> — shareable PNG cards\n<strong>Data:</strong> JSON files stored locally, no external requests\n<strong>Repository:</strong> <a href=\"https://github.com/WebKide/gitawisdom/tree/main\">GitHub · WebKide/gitawisdom</a>\n<strong>Live URL:</strong> <a href=\"https://webkide.github.io/gitawisdom\">webkide.github.io/gitawisdom</a>"
+      "h2": "⚙ TECHNICAL DETAILS",
+      "list": "<strong>Developer:</strong> WebKide\n<strong>Library:</strong> <code>html2canvas.min.js</code> — shareable PNG cards\n<strong>Data:</strong> JSON files stored locally, no external requests\n<strong>Repository:</strong> <a href=\"https://github.com/WebKide/gitawisdom/tree/main\">GitHub/<strong>WebKide</strong>/gitawisdom</a>\n<strong>Live URL:</strong> <a href=\"https://webkide.github.io/gitawisdom\">https://webkide.github.io/gitawisdom</a>",
+      "text": "<hr>Official launch date: 24.06.2026 on the celebration of the appearance of Gaṅgāmātā Gosvāminī and the disappearance of Śrīla Baladeva Vidyābhūṣaṇa, the festival of Gaṅgā-daśaharā and Śrī Gaṅgā pūjā."
     }
   ],
   "footer": "No accounts, subscriptions or personal data required.\nResponsive design for desktop and mobile.\nRuns entirely in your browser."

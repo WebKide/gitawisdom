@@ -4,7 +4,7 @@
  * Update CACHE_VERSION to bust the cache on new deployments.
  */
 
-const CACHE_VERSION = 'wisdom-oracle-v1.0.15';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.1';
 
 /**
  * Derive the deployment base path once at the top of the file.
