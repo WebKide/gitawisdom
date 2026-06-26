@@ -61,11 +61,7 @@
   src: url('../assets/fonts/kelvinch-v42-latin-700italic.woff2') format('woff2');
 }
 
-/* ─── Gentium Plus (replaces Noto Serif) ─────────────────────────────────
-   Full Latin Extended Additional coverage for Sanskrit diacritics:
-   ḍḥḣṁḷṇṅṛśṣṭāūī — e.g. kṛṣṇa, dīkṣā, Kurukṣetra
-   Only 4 files vs. 12 Noto Serif files = lighter cache footprint.
-   ═══════════════════════════════════════════════════════════════════════ */
+/* ─── Gentium Plus (replaces Noto Serif) ───────────────────────────────── */
 @font-face {
   font-display: swap;
   font-family: 'Gentium Plus';
@@ -132,6 +128,44 @@
   font-style: italic;
   font-weight: 900;
   src: url('../assets/fonts/sansita-v12-latin_latin-ext-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* ─── Ubuntu Sans (boxes and footers) ────────────────────────────── */
+
+/* ubuntu-sans-regular - latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Ubuntu Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/ubuntu-sans-v4-latin-ext-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* ubuntu-sans-italic - latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Ubuntu Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url('../assets/fonts/ubuntu-sans-v4-latin-ext-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* ubuntu-sans-600 - latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Ubuntu Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../assets/fonts/ubuntu-sans-v4-latin-ext-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* ubuntu-sans-600italic - latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Ubuntu Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: url('../assets/fonts/ubuntu-sans-v4-latin-ext-600italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -209,11 +243,13 @@
   /* Radii */
   --radius:    8px;
   --radius-lg: 12px;
+  --radius-xl: 20px;
 
   /* Typefaces */
   --font-display: 'Sansita', sans-serif;
   --font-body:    'Gentium Plus', serif;
   --font-text:    'Kelvinch', serif;
+  --font-sans:    'Ubuntu Sans', sans-serif;
 
   --transition:   0.22s ease;
 
@@ -325,11 +361,11 @@ body {
   position:      absolute;
   top:           4px;
   right:         4px;
-  width:         10px;
-  height:        10px;
+  width:         12px;
+  height:        12px;
   background:    var(--success-green);
   border-radius: 50%;
-  border:        2px solid var(--bg-base);
+  border:        3px solid var(--bg-base);
 }
 
 /* ── Lotus logo ── */
@@ -379,10 +415,6 @@ body {
   -webkit-touch-callout: none;
   -webkit-user-select:   none;
   user-select:           none;
-}
-
-@media (max-width: 520px) {
-  .banner-lotus-icon { opacity: 0; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -522,7 +554,6 @@ body {
 
 /* iChing variant — indigo-blue left border */
 .intro--iching { border-left-color: var(--iching-border); }
-
 .intro strong { color: var(--text-primary); font-weight: 600; }
 
 /* Default intro paragraph (legacy / generic intros) */
@@ -607,7 +638,7 @@ body {
   color:         var(--text-primary);
   line-height:   1.7;
   margin-bottom: 16px;
-  text-align:    left;    /* now wins because .intro .intro-text beats .intro p */
+  text-align:    left;    /* wins because .intro .intro-text beats .intro p */
   font-style:    normal;
 }
 
@@ -617,26 +648,8 @@ body {
   width:           100%;
 }
 
-/* Mobile: image wraps above, centered */
-@media (max-width: 520px) {
-  .intro-header {
-    flex-direction: column-reverse;  /* image on top */
-    align-items:    center;
-    text-align:     center;
-  }
-
-  .intro-header-text {
-    width: 100%;
-  }
-
-  .intro-thumb {
-    width:  60px;
-    height: 60px;
-  }
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
-   TOP NAVIGATION (Row 1 — fixed, always visible)
+   TOP NAVIGATION (Row 1 — always visible)
    Search | Usage | About
    ═══════════════════════════════════════════════════════════════════════════ */
 #top-nav {
@@ -681,14 +694,6 @@ body.lb-active #top-nav {
   object-position:       center;
 }
 
-@media (max-width: 520px) {
-  .top-nav-icon {
-    width:  111px;
-    height: 14px;
-    object-fit: contain;
-  }
-}
-
 .top-nav-icon.visible { opacity: 0.7; }
 
 .top-nav-links {
@@ -697,7 +702,7 @@ body.lb-active #top-nav {
   margin-left: auto;
 }
 
-/* Pill-shaped nav buttons — slightly smaller than module tabs */
+/* Pill-shaped nav buttons — smaller than module tabs */
 .top-nav-btn {
   font-family:     var(--font-display);
   font-size:       0.82rem;
@@ -733,7 +738,7 @@ body.lb-active #top-nav {
   background:   var(--bg-mid);
 }
 
-/* Active state (e.g. Search tab) — lilac */
+/* Active state */
 .top-nav-btn--active {
   background:   var(--cerulean);
   color:        var(--text-primary);
@@ -803,7 +808,6 @@ body.lb-active #top-nav {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    ERROR MESSAGE
-   Friendlier "silly user" vibe — soft red, rounded, no sharp left border.
    ═══════════════════════════════════════════════════════════════════════════ */
 .error-msg {
   display:       none;
@@ -932,13 +936,6 @@ body.lb-active #top-nav {
   height:      62px;
   line-height: 1.6;
   text-align:  center;
-}
-
-@media (max-width: 420px) {
-  .btn-oracle--inline {
-    width:  100%;
-    height: 56px;
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1449,6 +1446,8 @@ body.lb-active { overflow: hidden; }
 
 .lb-info-footer {
   font-size:   calc(var(--lb-font-size) * 0.8);
+  font-family: var(--font-sans);
+  font-weight: 400;
   color:       var(--text-muted);
   font-style:  italic;
   text-align:  center;
@@ -1473,11 +1472,13 @@ body.lb-active { overflow: hidden; }
 }
 
 .lb-footer-text {
-  font-size:  0.78rem;
-  color:      var(--text-muted);
-  font-style: italic;
-  flex:       1;
-  min-width:  0;
+  font-size:   0.78rem;
+  color:       var(--text-muted);
+  font-style:  italic;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  flex:        1;
+  min-width:   0;
 }
 
 .lb-nav-row {
@@ -1566,7 +1567,8 @@ body.lb-active { overflow: hidden; }
   font-size:   0.8rem;
   color:       var(--text-muted);
   font-style:  normal;
-  font-family: var(--font-text);
+  font-family: var(--font-sans);
+  font-weight: 400;
   line-height: 1.5;
 }
 
@@ -1632,7 +1634,8 @@ body.lb-active { overflow: hidden; }
 
 .share-png-footer {
   font-size:   var(--share-footer-font-size);
-  font-family: var(--font-text);
+  font-family: var(--font-sans);
+  font-weight: 400;
   font-style:  italic;
   color:       var(--text-secondary);
   opacity:     0.7;
@@ -1785,17 +1788,6 @@ body.lb-active { overflow: hidden; }
 
 * { scrollbar-color: var(--bg-card) var(--bg-input); }
 
-@media (max-width: 520px) {
-  .custom-select-list {
-    width:     70vw;        /* override min() on mobile */
-    max-width: 80vw;
-  }
-
-  .custom-select-option {
-    padding: 9px 10px;      /* reduce from 14px horizontal to 10px */
-  }
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    VERSE / HEXAGRAM INPUT FIELD
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -1815,81 +1807,6 @@ body.lb-active { overflow: hidden; }
 
 .verse-field--iching::placeholder { color: var(--text-muted); }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   MOBILE BREAKPOINTS
-   ═══════════════════════════════════════════════════════════════════════════ */
-@media (max-width: 520px) {
-  .page-wrap       { padding: 52px 12px 0 12px; }
-  .banner          { padding: 62px 0 2px; }
-  .banner-date     { font-size: 0.8rem; padding-left: 6px; }
-  .menu-toggle     { padding-right: 5px; }
-  .search-row      { flex-wrap: wrap; }
-  .btn             { width: 100%; text-align: center; }
-  .intro-thumb     {  }
-  .verse-input     { font-size: 0.97rem; }
-  .custom-select,
-  .custom-select-list,
-  .verse-field     { width: 100%; text-align: left; }
-  .lightbox        { padding: 12px 8px 32px; }
-  .lb-body         { padding: 16px 15px 6px; }
-  .lb-header       { padding: 10px 12px 8px; }
-  .lb-author-name  { min-width: 0; flex-shrink: 1; }
-  .lb-footer-bar   { flex-direction: column; align-items: flex-start; }
-  .lb-nav-row      { width: 100%; justify-content: space-between; }
-  .lb-footer-text  { width: 100%; }
-  .lb-font-btn     { padding: 6px 6px; }
-  .lb-header--purport .lb-close-btn { display: none; }
-  .lb-bottom-btn   { width: 100%; }
-  .page-footer     { padding: 16px 0 20px; width: 100%; }
-  .footer-inner    { padding-left: 8px }
-
-  /* Module tabs stack on very small screens */
-  .module-tabs {
-    flex-direction:  column;
-    align-items:     stretch;
-    justify-content: center;
-    gap:             10px;
-  }
-
-  .module-tab {
-    width: 93%;
-    justify-content: center;
-    display:         inline-flex;  /* key: flex row inside button */
-    align-items:     center;       /* vertical centering */
-    gap:             6px;          /* space between icon and text */
-    /* keep existing styles: */
-    flex:        1;
-    min-width:   100px;
-    font-size:   0.75rem;
-    padding:     12px;
-    margin:      0 12px;
-  }
-
-  /* Base button layout to align the icon and text horizontally */
-  .module-tabs button {
-    align-items:     center;
-    justify-content: center;
-    gap:             8px; /* Perfectly spaces the icon away from your text */
-    padding:         6px 14px;
-    border-radius:   var(--radius-md, 6px);
-    font-weight:     700;
-    cursor:          pointer;
-    font-size:       1em;
-    transition:      all 0.2s ease;
-  }
-
-  .module-tabs svg, .tab-icon {
-    width:       24px;
-    height:      24px;
-    flex-shrink: 0;
-    fill: currentColor; /* Automatically matches the WCAG text colors */
-  }
-
-  /* Intro cards: thumb shrinks, title centers */
-  .intro-header    { justify-content: center; text-align: center; }
-  .intro-thumb     { width: 160px; height: 120px; }
-}
-
 /* --- DESKTOP LAYOUT (Large Screens) --- */
 @media (min-width: 769px) {
   .module-tabs {
@@ -1901,6 +1818,7 @@ body.lb-active { overflow: hidden; }
     max-width: 200px;
   }
 }
+
 /* ═══════════════════════════════════════════════════════════════════════════
    SCROLLBAR & SELECTION
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -2066,12 +1984,6 @@ img {
   align-self:  center;
 }
 
-@media (max-width: 520px) {
-  .search-results    { max-height: 260px; }
-  .search-mode-row   { gap: 6px; }
-  .search-mode-btn   { font-size: 0.72rem; padding: 8px 0; }
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    TOGGLE BUTTON & TEXT (pill switch styling)
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -2130,4 +2042,152 @@ img {
 /* optional: focus accessibility */
 .toggle input:focus + .slider {
   box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.25);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE STYLES  ·  mobiles.css
+   All @media (max-width: ...) rules consolidated from styles.css
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── Banner ─── */
+@media (max-width: 520px) {
+  .banner-lotus-icon { opacity: 0; }
+}
+
+
+/* ─── Intro Cards ─── */
+@media (max-width: 520px) {
+  .intro-header {
+    flex-direction: column-reverse;  /* image on top */
+    align-items:    center;
+    text-align:     center;
+  }
+
+  .intro-header-text {
+    width: 100%;
+  }
+
+  .intro-thumb {
+    width:  60px;
+    height: 60px;
+  }
+}
+
+
+/* ─── Top Navigation ─── */
+@media (max-width: 520px) {
+  .top-nav-icon {
+    width:  111px;
+    height: 14px;
+    object-fit: contain;
+  }
+}
+
+
+/* ─── Buttons ─── */
+@media (max-width: 420px) {
+  .btn-oracle--inline {
+    width:  100%;
+    height: 56px;
+  }
+}
+
+
+/* ─── Custom Dropdown ─── */
+@media (max-width: 520px) {
+  .custom-select-list {
+    width:     70vw;        /* override min() on mobile */
+    max-width: 80vw;
+  }
+
+  .custom-select-option {
+    padding: 9px 10px;      /* reduce from 14px horizontal to 10px */
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE BREAKPOINTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Layout & Module Tabs (big consolidated block) ─── */
+@media (max-width: 520px) {
+  .page-wrap       { padding: 52px 12px 0 12px; }
+  .banner          { padding: 62px 0 2px; }
+  .banner-date     { font-size: 0.8rem; padding-left: 6px; }
+  .banner-subtitle { padding: 0 60px 10px 60px; }
+  .menu-toggle     { padding-right: 5px; }
+  .search-row      { flex-wrap: wrap; }
+  .btn             { width: 100%; text-align: center; }
+  .verse-input     { font-size: 0.97rem; }
+  .custom-select,
+  .custom-select-list,
+  .verse-field     { width: 100%; text-align: left; }
+  .lightbox        { padding: 12px 8px 32px; }
+  .lb-body         { padding: 16px 15px 6px; }
+  .lb-header       { padding: 10px 12px 8px; }
+  .lb-author-name  { min-width: 0; flex-shrink: 1; }
+  .lb-footer-bar   { flex-direction: column; align-items: flex-start; }
+  .lb-nav-row      { width: 100%; justify-content: space-between; }
+  .lb-footer-text  { width: 100%; }
+  .lb-font-btn     { padding: 6px 6px; }
+  .lb-header--purport .lb-close-btn { display: none; }
+  .lb-bottom-btn   { width: 100%; }
+  .page-footer     { padding: 12px 0 16px; width: 100%; }
+  .footer-inner    { padding: 0 16px }
+  .footer-icon     { width: 38px; height: 38px; }
+
+  /* Module tabs stack on very small screens */
+  .module-tabs {
+    flex-direction:  column;
+    align-items:     stretch;
+    justify-content: center;
+    gap:             10px;
+  }
+
+  .module-tab {
+    width: 93%;
+    justify-content: center;
+    display:         inline-flex;  /* key: flex row inside button */
+    align-items:     center;       /* vertical centering */
+    gap:             6px;          /* space between icon and text */
+    /* keep existing styles: */
+    flex:        1;
+    min-width:   100px;
+    font-size:   0.75rem;
+    padding:     12px;
+    margin:      0 12px;
+  }
+
+  /* Base button layout to align the icon and text horizontally */
+  .module-tabs button {
+    align-items:     center;
+    justify-content: center;
+    gap:             8px; /* Perfectly spaces the icon away from your text */
+    padding:         6px 14px;
+    border-radius:   var(--radius-md, 6px);
+    font-weight:     700;
+    cursor:          pointer;
+    font-size:       1em;
+    transition:      all 0.2s ease;
+  }
+
+  .module-tabs svg, .tab-icon {
+    width:       24px;
+    height:      24px;
+    flex-shrink: 0;
+    fill: currentColor; /* Automatically matches the WCAG text colors */
+  }
+
+  /* Intro cards: thumb shrinks, title centers */
+  .intro-header    { justify-content: center; text-align: center; }
+  .intro-thumb     { width: 160px; height: 120px; }
+}
+
+
+/* ─── Search Card ─── */
+@media (max-width: 520px) {
+  .search-results    { max-height: 260px; }
+  .search-mode-row   { gap: 6px; }
+  .search-mode-btn   { font-size: 0.72rem; padding: 8px 0; }
 }

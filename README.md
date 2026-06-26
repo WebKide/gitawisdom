@@ -7,7 +7,7 @@
 <div align="center">
    <img src="https://img.shields.io/badge/Project%20by-WebKide-black.svg?style=popout&logo=github&logoColor=white" alt="Author" />
    <img src="https://img.shields.io/github/commit-activity/t/WebKide/gitawisdom?color=%23f5a623" alt="Version" /> 
-   <img src="https://img.shields.io/badge/Version-v1.1.1-magenta.svg?style=popout" alt="Author" />
+   <img src="https://img.shields.io/badge/Version-v1.1.2-magenta.svg?style=popout" alt="Author" />
 </div>
 
 <div align="center">
@@ -23,22 +23,31 @@
 
 <div align="center">
    <h2>「✦ Wisdom Oracle ✦」</h2>
+   <p>॥ oṁ namo bhagavate vāsudevāya ॥</p>
 </div>
 
 Find instant wisdom, clarity, and emotional strength for everyday parenting challenges. Explore timeless teachings from the **Bhagavad Gītā** and **I Ching**, rendered in a clean, dark-themed web app that works fully offline.
 
-![Example]()
-
 ## 🗃️ Features
 
-- **Random Oracle Readings** - Get a verse from the Bhagavad Gītā or a hexagram from the I Ching at random.
-- **Lookup by Chapter or Number** - Search specific chapters and verse numbers or hexagram numbers.
-- **Share Text or Image** - Share verses as plain text or as a ready-made social media-friendly PNG.
+- **Wisdom Oracle** - Main feature that draws inspiration for you.
+- **Gītā Wisdom** - Get a timeless guidance verse from the Bhagavad Gītā.
+- **iChing Oracle** - Fetch a hexagram from the I Ching’s millenium tradition.
+- **Lookup by Chapter/Text or Number** - Search specific text to read and study.
+- **Share Text or Image** - Share verses as plain text or as a ready-made social media-friendly PNG images.
 - **Fully Offline** - Works completely offline after the initial load.
 - **Auto-Updates** - Service worker fetches new content and improvements automatically.
-- **Ad-Free** - No data collection, no accounts required, free to use.
+- **Ad-Free** - No data collection, no accounts required, no subscription fees, free to use now and forever.
 
 ## 📦 Installation
+
+### Desktop (Windows/MacOS):
+
+1. Open [WisdomOracle](https://webkide.github.io/gitawisdom) in **Chrome Browser** or **Safari**
+2. Tap the three-dot menu (⋮) top right.
+3. Tap **"Add to Home screen"**.
+4. Confirm the name and tap **Add**.
+5. The app icon appears on your home screen and works offline.
 
 ### Android (Chrome):
 
@@ -100,6 +109,9 @@ For issues or feature requests, please open an issue on [GitHub](https://github.
 - **Repository:** [GitHub: WebKide/gitawisdom](https://github.com/WebKide/gitawisdom/tree/main)
 - **Live URL:** [https://webkide.github.io/gitawisdom](https://webkide.github.io/gitawisdom)
 
+### ✦ Official launch
+
+- `24.06.2026` on the celebration of the festival of Gaṅgā-daśaharā and Śrī Gaṅgā pūjā, the appearance of Śrīmatī Gaṅgāmātā Gosvāminī and the disappearance of Śrīla Baladeva Vidyābhūṣaṇa. For the benefit of all.
 
 ### 🤔 TODOs
 
@@ -113,3 +125,6 @@ For issues or feature requests, please open an issue on [GitHub](https://github.
 - [x] Share verse, generates PNG 1080px * 1350 px (4:5 ratio) compatible with socail media
 - [ ] Verse Search function to search keyword and get clickable link to verse
 - [x] Settings card, it controls date in PNG share, visual borders (dev)
+
+
+###### No accounts, subscriptions or personal data required. Responsive design for desktop and mobile. Runs entirely in your browser.

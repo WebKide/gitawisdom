@@ -1,12 +1,6 @@
 /**
  * fuse-search.js
  * Wisdom Oracle — Gītā corpus builder and Fuse.js search engine
- *
- * Loads all 18 chapter JSON files (already SW-cached), flattens them into a
- * single searchable corpus, and wraps Fuse.js for verse and purport search.
- *
- * Fuse is expected as a global loaded by js/lib/fuse.min.js before this module
- * is evaluated. A guard logs a clear error if it is missing.
  */
 
 'use strict';
@@ -17,11 +11,13 @@ import { BG_CHAPTER_INFO, loadChapterData } from './gitacore.js';
 const TOTAL_CHAPTERS = 18;
 
 const BASE_OPTIONS = {
-  threshold:          0.4,
-  ignoreLocation:     true,
+  threshold:          0.35,  // ← FIX A: tighter threshold (was 0.4)
+  ignoreLocation:     false,  // ← FIX A: require matches near their natural position (was true)
   includeScore:       true,
   includeMatches:     true,
-  minMatchCharLength: 2,
+  minMatchCharLength: 3,      // ← FIX A: require 3+ chars (was 2)
+  ignoreDiacritics:   true,
+  distance:           64,     // ← FIX A: limit how far matches can stray from expected position
 };
 
 const KEYS_VERSE   = [
@@ -45,7 +41,7 @@ function buildQuery(term) {
 
   var words = term
     .toLowerCase()
-    .replace(/[^\w\s]/g, ' ')
+    .replace(/[^\p{L}\p{N}\s]/gu, '')
     .trim()
     .split(/\s+/);
 
@@ -63,23 +59,15 @@ function buildQuery(term) {
 // ─── GitaSearch ───────────────────────────────────────────────────────────────
 export class GitaSearch {
   constructor() {
-    this.corpus = [];   // flat array — one object per verse / grouped verse
+    this.corpus = [];
     this.ready  = false;
     this._fuse  = null;
     this._mode  = 'verse';
   }
 
-  // ── Public ──────────────────────────────────────────────────────────────────
-
-  /**
-   * Load all 18 chapters and build the Fuse index.
-   * Returns a promise that resolves when indexing is complete.
-   *
-   * @returns {Promise<void>}
-   */
   async init() {
     if (typeof Fuse === 'undefined') {
-      console.error('[GitaSearch] Fuse is not loaded. Ensure js/lib/fuse.min.js is included before app.js.');
+      console.error('[GitaSearch] Fuse is not loaded.');
       return;
     }
 
@@ -96,7 +84,7 @@ export class GitaSearch {
 
       verses.forEach(verse => {
         const ref = this._parseRef(verse['Text-num'] ?? '');
-        if (!ref) return; // skip malformed / comment-only entries
+        if (!ref) return;
 
         this.corpus.push({
           chapter,
@@ -113,13 +101,6 @@ export class GitaSearch {
     this.ready = true;
   }
 
-  /**
-   * Run a fuzzy search.
-   *
-   * @param {string}           term — the search query
-   * @param {'verse'|'purport'} mode — which field set to search
-   * @returns {Array} Fuse result objects with item, score, and matches
-   */
   search(term, mode = 'verse') {
     if (!this.ready || !term.trim()) return [];
 
@@ -127,135 +108,144 @@ export class GitaSearch {
 
     var q = buildQuery(term);
 
-    // If only one word → normal Fuse search
-    if (!q.phrase || q.phrase === q.anchor) {
-      return this._fuse.search(q.anchor || q.phrase);
+    // Single word: search once
+    if (!q.phrase.includes(' ')) {
+      if (!q.phrase || q.phrase.length < BASE_OPTIONS.minMatchCharLength) {
+        return [];
+      }
+      return this._fuse.search(q.phrase || q.anchor);
     }
 
-    // Phrase search (primary signal)
+    // Multi-word: phrase search (primary) + anchor fallback (secondary)
     var phraseResults = this._fuse.search(q.phrase);
-
-    // Anchor fallback (secondary signal)
-    var anchorResults = q.anchor
+    var anchorResults = q.anchor && q.anchor.length >= BASE_OPTIONS.minMatchCharLength
       ? this._fuse.search(q.anchor)
       : [];
 
     return mergeResults(phraseResults, anchorResults);
   }
 
-
-  /**
-   * Extract a ~12-word highlighted snippet from a Fuse match.
-   * Returns an HTML string; matched region is wrapped in <mark>.
-   *
-   * @param {object}            result — Fuse result object
-   * @param {'verse'|'purport'} mode   — which field the match is in
-   * @returns {string} HTML snippet with highlighted matches
-   */
   buildSnippet(result, mode) {
     const field = mode === 'purport' ? 'purport' : 'translation';
     const text  = result.item[field] ?? '';
 
-    const match = result.matches?.find(m => m.key === field);
+    // Collect all match indices for this field, merge overlaps
+    const allIndices = [];
+    (result.matches || []).forEach(m => {
+      if (m.key === field && m.indices) {
+        m.indices.forEach(([s, e]) => {
+          if ((e - s + 1) >= 3) {  // ← FIX B: filter tiny matches
+            allIndices.push([s, e]);
+          }
+        });
+      }
+    });
 
-    if (!match || !match.indices || !text) {
+    if (!allIndices.length || !text) {
       return this._escHtml(text.slice(0, 130)) + (text.length > 130 ? '…' : '');
     }
 
-    // STEP 1: build fully highlighted full text
-    let highlighted = '';
-    let lastIndex = 0;
+    // ← FIX B: merge overlapping/adjacent indices
+    const mergedIndices = mergeOverlappingIndices(allIndices);
 
-    const indices = match.indices;
+    // Find the best (longest) match to center the snippet around
+    let bestIdx = 0;
+    let bestLen = 0;
+    mergedIndices.forEach(([s, e], i) => {
+      const len = e - s + 1;
+      if (len > bestLen) { bestLen = len; bestIdx = i; }
+    });
 
-    for (let i = 0; i < indices.length; i++) {
-      const [start, end] = indices[i];
+    const centerPos = mergedIndices[bestIdx][0];
 
-      // skip tiny noise matches
-      if ((end - start) < 2) continue;
+    // Extract word window around center position
+    const textBeforeCenter = text.slice(0, centerPos);
+    const wordIdx = textBeforeCenter.split(/\s+/).length - 1;
 
-      highlighted += this._escHtml(text.slice(lastIndex, start));
-      highlighted += '<mark>' +
-                     this._escHtml(text.slice(start, end + 1)) +
-                     '</mark>';
-      lastIndex = end + 1;
-    }
-
-    highlighted += this._escHtml(text.slice(lastIndex));
-
-    // STEP 2: now slice context around FIRST match position
-    const first = indices[0]?.[0] ?? 0;
-
-    const words = highlighted.split(/\s+/);
-
-    let charCount = 0;
-    let wordIdx = 0;
-
-    for (let i = 0; i < words.length; i++) {
-      if (charCount >= first) {
-        wordIdx = i;
-        break;
-      }
-      charCount += words[i].length + 1;
-    }
-
+    const allWords = text.split(/\s+/);
     const from = Math.max(0, wordIdx - 5);
-    const to   = Math.min(words.length, wordIdx + 8);
+    const to   = Math.min(allWords.length, wordIdx + 8);
+
+    // Build character position map: word index → char position in text
+    let charPos = 0;
+    const wordCharStarts = [];
+    for (let i = 0; i < allWords.length; i++) {
+      wordCharStarts.push(charPos);
+      charPos += allWords[i].length + 1; // +1 for space
+    }
+
+    const sliceStart = wordCharStarts[from] ?? 0;
+    const sliceEnd = (to < allWords.length ? wordCharStarts[to] : text.length) - 1;
+
+    const sliceText = text.slice(sliceStart, sliceEnd);
+
+    // Apply highlights within slice (slice-relative positions)
+    let highlighted = '';
+    let lastIdx = 0;
+
+    mergedIndices.forEach(([s, e]) => {
+      // Clamp to slice bounds
+      const effStart = Math.max(s, sliceStart);
+      const effEnd = Math.min(e, sliceEnd - 1);
+
+      if (effStart > effEnd) return;
+
+      const relStart = effStart - sliceStart;
+      const relEnd = effEnd - sliceStart;
+
+      if (relStart < lastIdx) return; // skip if already processed
+
+      highlighted += this._escHtml(sliceText.slice(lastIdx, relStart));
+      highlighted += '<mark>' + this._escHtml(sliceText.slice(relStart, relEnd + 1)) + '</mark>';
+      lastIdx = relEnd + 1;
+    });
+
+    highlighted += this._escHtml(sliceText.slice(lastIdx));
 
     return (
       (from > 0 ? '…' : '') +
-      words.slice(from, to).join(' ') +
-      (to < words.length ? '…' : '')
+      highlighted +
+      (to < allWords.length ? '…' : '')
     );
   }
 
-  // ── Private ─────────────────────────────────────────────────────────────────
-
-  /**
-   * Rebuilds the Fuse index with the appropriate keys for the current mode.
-   * @param {'verse'|'purport'} mode
-   */
   _buildIndex(mode) {
     const keys  = mode === 'purport' ? KEYS_PURPORT : KEYS_VERSE;
     this._fuse  = new Fuse(this.corpus, { ...BASE_OPTIONS, keys });
     this._mode  = mode;
   }
 
-  /**
-   * Parses a "TEXT 4" or "TEXTS 26-27" string into a canonical ref.
-   * "TEXT 4" → "4"  |  "TEXTS 26-27" → "26-27"  |  "" → null
-   *
-   * @param {string} textNum — the raw Text-num field from JSON
-   * @returns {string|null} the canonical reference or null if malformed
-   */
   _parseRef(textNum) {
     const ref = textNum.replace(/^TEXTS?\s+/i, '').trim();
     return ref || null;
   }
 
-  /**
-   * Escapes HTML special characters.
-   * @param {string} str
-   * @returns {string}
-   */
   _escHtml(str) {
     return String(str)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
   }
-
-  /**
-   * Escapes regex special characters for safe inclusion in a RegExp.
-   * @param {string} str
-   * @returns {string}
-   */
-  _escRegex(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
 }
 
-// ─── merge helper (IMPORTANT) ─────────────────────────────────────────────────
+// ─── merge overlapping indices ────────────────────────────────────────────────
+function mergeOverlappingIndices(indices) {
+  if (!indices.length) return [];
+  const sorted = [...indices].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const merged = [sorted[0]];
+  for (let i = 1; i < sorted.length; i++) {
+    const last = merged[merged.length - 1];
+    const curr = sorted[i];
+    if (curr[0] <= last[1] + 1) { // overlapping or adjacent
+      last[1] = Math.max(last[1], curr[1]);
+    } else {
+      merged.push(curr);
+    }
+  }
+  return merged;
+}
+
+// ─── merge results ──────────────────────────────────────────────────────────
 function mergeResults(a, b) {
   var map = new Map();
 
@@ -265,21 +255,80 @@ function mergeResults(a, b) {
       var key = item.item.chapter + ':' + item.item.ref;
 
       if (!map.has(key)) {
+        // ← FIX C: deduplicate and merge match indices before storing
+        const mergedMatches = mergeMatchIndices(item.matches);
         map.set(key, {
           item: item.item,
           score: item.score * weight,
-          matches: item.matches
+          rawScore: item.score,
+          matches: mergedMatches
         });
       } else {
         var existing = map.get(key);
-        existing.score = Math.min(existing.score, item.score * weight);
+        var newWeighted = item.score * weight;
+        if (newWeighted < existing.score) {
+          existing.score = newWeighted;
+          existing.rawScore = item.score;
+        }
+        // Merge and deduplicate match indices
+        if (item.matches) {
+          existing.matches = mergeMatchArrays(existing.matches, item.matches);
+        }
       }
     }
   }
 
-  add(a, 1.0);   // phrase = higher priority
-  add(b, 1.15);  // anchor = slightly lower priority
+  add(a, 1.0);
+  add(b, 1.15);
 
   return Array.from(map.values())
+    .map(({ item, score, matches }) => ({ item, score, matches }))
     .sort((x, y) => x.score - y.score);
+}
+
+// ← FIX C: merge match indices within a single matches array
+function mergeMatchIndices(matches) {
+  if (!matches) return [];
+  const byKey = {};
+  matches.forEach(m => {
+    if (!m.indices) return;
+    const k = m.key || 'default';
+    if (!byKey[k]) byKey[k] = [];
+    m.indices.forEach(([s, e]) => {
+      if ((e - s + 1) >= 3) { // filter tiny matches
+        byKey[k].push([s, e]);
+      }
+    });
+  });
+  const result = [];
+  Object.keys(byKey).forEach(key => {
+    const merged = mergeOverlappingIndices(byKey[key]);
+    merged.forEach(([s, e]) => {
+      result.push({ key, indices: [[s, e]], score: 0 });
+    });
+  });
+  return result;
+}
+
+// ← FIX C: merge two matches arrays from different searches
+function mergeMatchArrays(a, b) {
+  const byKey = {};
+  [...(a || []), ...(b || [])].forEach(m => {
+    if (!m.indices) return;
+    const k = m.key || 'default';
+    if (!byKey[k]) byKey[k] = [];
+    m.indices.forEach(([s, e]) => {
+      if ((e - s + 1) >= 3) {
+        byKey[k].push([s, e]);
+      }
+    });
+  });
+  const result = [];
+  Object.keys(byKey).forEach(key => {
+    const merged = mergeOverlappingIndices(byKey[key]);
+    merged.forEach(([s, e]) => {
+      result.push({ key, indices: [[s, e]], score: 0 });
+    });
+  });
+  return result;
 }

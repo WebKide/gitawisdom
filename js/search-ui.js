@@ -1,43 +1,27 @@
 /**
  * search-ui.js
  * Wisdom Oracle — Search Card UI controller
- *
- * Responsibilities:
- *   • Fetch assets/data/search.json and inject the card DOM once.
- *   • Manage open / close state of the search card.
- *   • Handle mode switching (Verse / Purport).
- *   • Render paginated results with highlighted snippets.
- *   • Bridge search results ↔ verse lightbox (searchOrigin flow):
- *       result click  → close search card → open verse lightbox
- *       lightbox close → reopen search card at previous scroll + results
  */
 
 'use strict';
 
 // ─── Module state ─────────────────────────────────────────────────────────────
-let _engine    = null;   // GitaSearch instance
-let _cb        = {};     // callbacks: { displayVerse, appState, increaseFontSize, decreaseFontSize }
-let _s         = {};     // string map from search.json
+let _engine    = null;
+let _cb        = {};
+let _s         = {};
 
 let _mode      = 'verse';
-let _results   = [];     // current full Fuse result set
+let _results   = [];
 let _page      = 1;
 const PAGE_SIZE = 50;
 
-let _savedScrollTop = 0; // restored when returning from verse card
+let _savedScrollTop = 0;
+let _lastQueryWords = [];
 
-// DOM refs — populated after card HTML is injected
 let _dom = {};
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
-/**
- * Initialise the controller.
- * Fetches search.json, builds the card, binds all events.
- *
- * @param {import('./fuse-search.js').GitaSearch} engine
- * @param {object} callbacks — { displayVerse, appState, increaseFontSize, decreaseFontSize }
- */
 export async function initSearchController(engine, callbacks) {
   _engine = engine;
   _cb     = callbacks;
@@ -55,17 +39,12 @@ export async function initSearchController(engine, callbacks) {
   _bindEvents();
 }
 
-/**
- * Called by app.js once GitaSearch.init() resolves.
- * Removes the pending state from mode buttons so the user can search.
- */
 export function enableSearchButtons() {
   _dom.btnVerse?.classList.remove('search-mode-btn--pending');
   _dom.btnPurport?.classList.remove('search-mode-btn--pending');
   _hideStatus();
 }
 
-/** Open the search card (exported so app.js can call it from closeLightbox). */
 export function openSearchCard() {
   const card = document.getElementById('search-card');
   if (!card) return;
@@ -74,7 +53,6 @@ export function openSearchCard() {
   document.body.classList.add('lb-active');
   _setNavActive(true);
 
-  // If returning from a verse card, restore previous results + scroll
   if (_cb.appState?.searchOrigin) {
     requestAnimationFrame(() => {
       if (_dom.results) _dom.results.scrollTop = _savedScrollTop;
@@ -84,7 +62,6 @@ export function openSearchCard() {
   }
 }
 
-/** Close the search card and clear searchOrigin. */
 export function closeSearchCard() {
   const card = document.getElementById('search-card');
   if (!card) return;
@@ -93,16 +70,13 @@ export function closeSearchCard() {
   document.body.classList.remove('lb-active');
   _setNavActive(false);
 
-  // searchOrigin is true only when we're closing to view a clicked result —
-  // in that case we WANT the term/results preserved so openSearchCard() can
-  // restore them on return. Any other close (×, backdrop, Escape) is a true
-  // dismissal, so reset the field and results for a fresh search next time.
   const viewingResult = !!_cb.appState?.searchOrigin;
 
   if (!viewingResult) {
     if (_dom.input) _dom.input.value = '';
     _results = [];
     _page    = 1;
+    _lastQueryWords = [];
     if (_dom.results) _dom.results.innerHTML = '';
     _hideStatus();
     _hidePagination();
@@ -113,10 +87,6 @@ export function closeSearchCard() {
 
 // ─── Card builder ─────────────────────────────────────────────────────────────
 
-/**
- * Injects the search card HTML into the #search-card-mount container.
- * Caches DOM references for all interactive elements.
- */
 function _buildCard() {
   const mount = document.getElementById('search-card-mount');
   if (!mount) return;
@@ -130,7 +100,6 @@ function _buildCard() {
 
   <article class="lb-card lb-card--search">
 
-    <!-- ── Header ── -->
     <header class="lb-header">
       <div class="lb-author">
         <img src="${_e(_s.icon ?? 'assets/images/prabhupada.png')}"
@@ -153,7 +122,6 @@ function _buildCard() {
       </div>
     </header>
 
-    <!-- ── Body ── -->
     <div class="lb-body">
 
       <div class="search-input-row">
@@ -190,9 +158,8 @@ function _buildCard() {
            class="search-results"
            role="list"></div>
 
-    </div><!-- /.lb-body -->
+    </div>
 
-    <!-- ── Footer ── -->
     <footer class="lb-footer-bar">
       <span id="search-footer-text" class="lb-footer-text">
         ${_e(_s.footer ?? '')}
@@ -213,7 +180,6 @@ function _buildCard() {
   </article>
 </div>`;
 
-  // Cache refs
   const root = document.getElementById('search-card');
   _dom = {
     card:       root,
@@ -235,25 +201,17 @@ function _buildCard() {
 
 // ─── Event binding ────────────────────────────────────────────────────────────
 
-/**
- * Attaches all event listeners to the search card after DOM injection.
- */
 function _bindEvents() {
   if (!_dom.card) return;
 
-  // Close — button and backdrop
   _dom.closeBtn.addEventListener('click', closeSearchCard);
   _dom.overlay.addEventListener('click', closeSearchCard);
 
-  // Keyboard — Escape closes; no conflict with app.js (that guard requires lightbox open)
   document.addEventListener('keydown', e => {
     if (!_dom.card?.classList.contains('open')) return;
     if (e.key === 'Escape') closeSearchCard();
   });
 
-  // Mode buttons — labeled "Verse Search" / "Purport Search": they double as
-  // the search trigger itself (there is no separate "Go" button), so each
-  // click both switches mode AND runs a search against the current input.
   _dom.btnVerse.addEventListener('click', () => {
     if (_dom.btnVerse.classList.contains('search-mode-btn--pending')) {
       _showStatus(_s['msg-indexing']);
@@ -272,33 +230,22 @@ function _bindEvents() {
     _runSearch();
   });
 
-  // Search — Enter key submits
   _dom.input.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
     if (!_engine?.ready) { _showStatus(_s['msg-indexing']); return; }
     _runSearch();
   });
 
-  // Pagination
   _dom.prev.addEventListener('click', () => _goToPage(_page - 1));
   _dom.next.addEventListener('click', () => _goToPage(_page + 1));
 
-  // Font-size — delegate to app.js callbacks
-  /* commented for test in production
-  _dom.fontInc.addEventListener('click', () => _cb.increaseFontSize?.());
-  _dom.fontDec.addEventListener('click', () => _cb.decreaseFontSize?.());
-  remove comments and next block */
-
   _dom.fontInc.addEventListener('click', () => {
-    console.log('[WO-DEBUG] Search font increase clicked');
     _cb.increaseFontSize?.();
   });
   _dom.fontDec.addEventListener('click', () => {
-    console.log('[WO-DEBUG] Search font decrease clicked');
     _cb.decreaseFontSize?.();
   });
 
-  // Nav button
   const navBtn = document.getElementById('search-nav-btn');
   if (navBtn) {
     navBtn.addEventListener('click', () => {
@@ -309,9 +256,6 @@ function _bindEvents() {
 
 // ─── Search logic ─────────────────────────────────────────────────────────────
 
-/**
- * Executes a search using the current query and mode, then renders the first page.
- */
 function _runSearch() {
   const term = _dom.input?.value.trim() ?? '';
   if (!term) {
@@ -320,6 +264,14 @@ function _runSearch() {
     _hidePagination();
     return;
   }
+
+  // Extract query words for highlighting
+  _lastQueryWords = term
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, '')
+    .trim()
+    .split(/\s+/)
+    .filter(w => w.length >= 2);
 
   _results = _engine.search(term, _mode);
   _page    = 1;
@@ -335,10 +287,6 @@ function _runSearch() {
   _renderPage();
 }
 
-/**
- * Renders the current page of search results into the results container.
- * Binds click and keyboard handlers to each result item for opening the verse.
- */
 function _renderPage() {
   const start = (_page - 1) * PAGE_SIZE;
   const end   = Math.min(start + PAGE_SIZE, _results.length);
@@ -348,7 +296,6 @@ function _renderPage() {
     .map(r => _buildResultHTML(r))
     .join('');
 
-  // Bind click + keyboard on each result item
   _dom.results.querySelectorAll('.search-result-item').forEach(el => {
     const activate = () => {
       const chapter = parseInt(el.dataset.chapter, 10);
@@ -358,8 +305,6 @@ function _renderPage() {
 
       if (_cb.appState) _cb.appState.searchOrigin = true;
 
-      // Keep lb-active on body — closeLightbox will not remove it when
-      // searchOrigin is true, so no flash of the landing page.
       closeSearchCard();
       _cb.displayVerse?.(chapter, ref);
     };
@@ -375,17 +320,10 @@ function _renderPage() {
   _dom.results.scrollTop = 0;
 }
 
-/**
- * Builds the HTML for a single search result item.
- *
- * @param {object} result — a Fuse.js result object with item and matches
- * @returns {string} — HTML string for the result item
- */
 function _buildResultHTML(result) {
   const { chapter, ref, chapterTitle } = result.item;
-  const snippet  = _engine.buildSnippet(result, _mode);
+  const snippet = _engine.buildSnippet(result, _mode, _lastQueryWords);
 
-  // Strip leading "N. " ordinal that some titles carry
   const title = chapterTitle.includes('. ')
     ? chapterTitle.split('. ').slice(1).join('. ')
     : chapterTitle;
@@ -404,11 +342,6 @@ function _buildResultHTML(result) {
 
 // ─── Pagination helpers ───────────────────────────────────────────────────────
 
-/**
- * Navigates to a specific page number and re-renders.
- *
- * @param {number} page — the target page number (1-based)
- */
 function _goToPage(page) {
   const total = Math.ceil(_results.length / PAGE_SIZE);
   _page = Math.max(1, Math.min(page, total));
@@ -416,13 +349,6 @@ function _goToPage(page) {
   _dom.results.scrollTop = 0;
 }
 
-/**
- * Updates the footer text with the current result range.
- *
- * @param {number} start — first result number on this page
- * @param {number} end   — last result number on this page
- * @param {number} total — total number of results
- */
 function _updateFooter(start, end, total) {
   const tpl = _s['msg-results-count'] ?? 'Showing {start}–{end} of {total} results';
   _dom.footerText.textContent = tpl
@@ -431,9 +357,6 @@ function _updateFooter(start, end, total) {
     .replace('{total}', total);
 }
 
-/**
- * Shows/hides pagination buttons and updates page indicator.
- */
 function _updatePagination() {
   const total = Math.ceil(_results.length / PAGE_SIZE);
   _dom.prev.classList.toggle('hidden', _page <= 1);
@@ -441,9 +364,6 @@ function _updatePagination() {
   _dom.pageInfo.textContent = total > 1 ? `${_page} / ${total}` : '';
 }
 
-/**
- * Hides all pagination controls.
- */
 function _hidePagination() {
   _dom.prev.classList.add('hidden');
   _dom.next.classList.add('hidden');
@@ -453,13 +373,6 @@ function _hidePagination() {
 
 // ─── Mode switch ──────────────────────────────────────────────────────────────
 
-/**
- * Switches between verse search and purport search modes (visual/state only —
- * callers are responsible for re-running the search afterward; see the
- * btnVerse/btnPurport click handlers in _bindEvents()).
- *
- * @param {'verse'|'purport'} mode — the target search mode
- */
 function _setMode(mode) {
   if (mode === _mode) return;
   _mode = mode;
@@ -472,29 +385,18 @@ function _setMode(mode) {
 
 // ─── Status helpers ───────────────────────────────────────────────────────────
 
-/**
- * Shows a status message (e.g. "Indexing…" or "No results").
- * @param {string} msg — the message to display
- */
 function _showStatus(msg) {
   if (!_dom.status) return;
   _dom.status.textContent = msg ?? '';
   _dom.status.classList.remove('hidden');
 }
 
-/** Hides the status message. */
 function _hideStatus() {
   if (!_dom.status) return;
   _dom.status.classList.add('hidden');
   _dom.status.textContent = '';
 }
 
-// ─── Nav button active state ──────────────────────────────────────────────────
-
-/**
- * Toggles the active state on the top-nav search button.
- * @param {boolean} active — whether the search card is currently open
- */
 function _setNavActive(active) {
   document.getElementById('search-nav-btn')
     ?.classList.toggle('top-nav-btn--active', active);
@@ -502,11 +404,6 @@ function _setNavActive(active) {
 
 // ─── HTML escape ─────────────────────────────────────────────────────────────
 
-/**
- * Escapes HTML special characters for safe insertion into HTML.
- * @param {string} str — the string to escape
- * @returns {string} — escaped HTML string
- */
 function _e(str) {
   return String(str ?? '')
     .replace(/&/g, '&amp;')

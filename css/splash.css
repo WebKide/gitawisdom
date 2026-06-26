@@ -1,326 +1,162 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   splash.css  —  Wisdom Oracle retro boot screen
+   splash.css  —  Wisdom Oracle splash screen
    Standalone file. Zero dependency on styles.css.
-   Typeface: Gentium Plus (replaces Noto Serif for full Sanskrit diacritic support)
-   Palette mirrors app: --bg-base #1e1f22, --accent #f5a623
    ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ubuntu-sans-600 - latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Ubuntu Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../assets/fonts/ubuntu-sans-v4-latin-ext-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+:root {
+  --font-sans:      'Ubuntu Sans', sans-serif;
+  --text-heading:   #f2f3f5; /* Crisp White */
+  --text-secondary: #949ba4; /* Cool Grey */
+  --bg-base:        #1e1f22; /* Raisin Black */
+  --black:          #18191c; /* Eerie Black */
+  --amber:          #fbbf24; /* Amber */
+}
 
 /* ─── Reset ──────────────────────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin:     0;
   padding:    0;
+  font-family: var(--font-sans);
 }
 
-/* ─── Root vars (keep in sync with styles.css palette) ───────────────────── */
-:root {
-  /* Blend splash with app palette */
-  --bg:          #1e1f22;               /* match PWA --bg-base */
-  --accent:      #f5a623;               /* saffron (Gita) */
-  --accent-dim:  #c07d10;
-  --accent-glow: rgba(245, 166, 35, 0.22);
-
-  --lilac:       #512f86;               /* from app lilac buttons */
-  --lilac-dim:   #7334d3;
-
-  --green:       #39ff6e;               /* keep for terminal flavor */
-  --green-dim:   rgba(245, 166, 35, 0.55);  /* saffron-dim, replaces green-dim */
-
-  --text-muted:  #5c6068;               /* match app text-muted */
-  /* Text */
-  --text-primary:   #dbdee1;
-  --text-secondary: #949ba4;
-  --crt-line:    rgba(255, 255, 255, 0.03);
+header {
+  position: relative;
+  left:     0;
+  top:      0;
+  width:    100%;
+  height:   80px;
 }
 
-/* ─── Full-screen stage ──────────────────────────────────────────────────── */
-html, body {
+.version {
+  position:    absolute;
+  bottom:      2rem;
+  left:        50%;
+  transform:   translateX(-50%);
+  font-family: var(--font-sans);
+  color:       var(--text-secondary);
+  font-weight: 600;
+  text-align:  center;
+  font-size:   1rem;   /* smaller than 1.6rem for version text */
+  opacity:     0;
+  transition:  opacity 0.4s ease;
+}
+
+.version.visible {
+  opacity: 1;
+}
+
+/* Splash screen */
+
+.intro {
+  position:         fixed;
+  z-index:          1;
+  left:             0;
+  top:              0;
   width:            100%;
-  height:           100%;
-  overflow:         hidden;
-  background-color: var(--bg);
-  color:            var(--green);
-  /*previous font-family was: 'Courier New', Courier, 'Lucida Console', monospace;*/
-  /* Replaced Noto Serif with Gentium Plus for full Latin Extended Additional
-     coverage — correctly renders Sanskrit diacritics: ḍḥḣṁḷṇṅṛśṣṭāūī */
-  font-family:      'Gentium Plus', serif;
-  font-size:        15px;
-  line-height:      1.6;
-
-  /* Block ALL interaction during boot */
-  -webkit-user-drag:     none;
-  -webkit-touch-callout: none;
-  -webkit-user-select:   none;
-  user-select:           none;
-  pointer-events:        none;
+  height:           100vh;
+  background-color: var(--black);
+  transition:       top 1s ease;  /* explicit transition */
 }
 
-/*
- * Background: gradient mesh (no pseudo-elements) for low-end device performance.
- * Replaces previous body::before (vignette) and body::after (scanlines).
- * Layers:
- *   1. Fractal noise grain (repeating tile)
- *   2. Warm saffron radial glow (top-left)
- *   3. Cool indigo radial glow (bottom-right)
- *   4. Soft edge vignette (replaces CRT edge darkening)
- *   5. Very subtle scanline texture via background-size trick on noise
- */
-html, body {
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(245, 166, 35, 0.035) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(98, 118, 187, 0.035) 0%, transparent 55%),
-    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.72) 100%);
-  background-size: 200px 200px, 100% 100%, 100% 100%, 100% 100%;
-  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
-  background-attachment: fixed;
-}
-
-/* ─── Main container ─────────────────────────────────────────────────────── */
-.splash-wrap {
+.logo-header {
   position:        fixed;
-  /* inset: 0 expanded for Android 8 WebView 66 compatibility */
-  top:               0;
-  right:             0;
-  bottom:            0;
-  left:              0;
-  z-index:         100;
+  inset:           0;
   display:         flex;
-  flex-direction:  column;
   align-items:     center;
   justify-content: center;
-  padding:         40px 24px;
-  gap:             32px;
+  pointer-events:  none;
 }
 
-/* ─── Terminal window ────────────────────────────────────────────────────── */
-.terminal {
-  position:      relative;
-  width:         100%;
-  max-width:     520px;
-  background:    rgba(13, 14, 16, 0.92);
-  border:        1px solid rgba(245, 166, 35, 0.18);
-  border-radius: 6px;
-  overflow:      visible;
-  box-shadow:    0 0 40px rgba(245, 166, 35, 0.06),
-                 0 0 80px rgba(245, 166, 35, 0.03);
+.logo-wrap {
+  display:     flex;
+  align-items: flex-start;
+  gap:         10px;
 }
 
-/* Terminal title bar */
-.terminal-bar {
-  display:         flex;
-  align-items:     center;
-  gap:             7px;
-  padding:         9px 14px;
-  background:      rgba(255, 255, 255, 0.04);
-  border-bottom:   1px solid rgba(245, 166, 35, 0.10);
-}
-
-.terminal-dot {
-  width:         10px;
-  height:        10px;
-  border-radius: 50%;
-  background:    var(--text-muted);
-  opacity:       0.55;
-}
-
-.terminal-dot:nth-child(1) { background: #ff5f57; opacity: 0.7; }
-.terminal-dot:nth-child(2) { background: #febc2e; opacity: 0.7; }
-.terminal-dot:nth-child(3) { background: #28c840; opacity: 0.7; }
-
-.terminal-bar-title {
-  margin-left: 8px;
-  font-size:   0.72rem;
-  color:       var(--text-muted);
-  opacity:     0.6;
-  letter-spacing: 0.08em;
-}
-
-/* Terminal body */
-.terminal-body {
-  padding:    22px 24px 26px;
-  min-height: 200px;
-}
-
-/* ─── Brand icon — floats above terminal, outside its overflow ───────────── */
-.splash-brand-icon {
-  position:              absolute;
-  top:                   -130px;
-  left:                  50%;
-  transform:             translateX(-50%);
-  width:                 120px;
-  height:                120px;
-  border-radius:         50%;
-  object-fit:            cover;
-  border:                1.5px solid rgba(245, 166, 35, 0.35);
-  box-shadow:            0 0 14px rgba(245, 166, 35, 0.18);
-  opacity:               0.82;
-  pointer-events:        none;
-  -webkit-user-drag:     none;
-  -webkit-touch-callout: none;
-  -webkit-user-select:   none;
-  user-select:           none;
-}
-
-/* ─── Boot lines ─────────────────────────────────────────────────────────── */
-.boot-line {
+.logo {
   display:    block;
   opacity:    0;
-  transform:  translateX(-6px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  white-space: nowrap;
-  overflow:   hidden;
-  font-size:  0.9rem;
-  color:      var(--lilac-dim);
-  background: linear-gradient(90deg, var(--accent-dim), var(--lilac-dim));
-  -webkit-background-clip: text;
-  background-clip: text;  /* standard fallback for non-WebKit browsers */
-  -webkit-text-fill-color: transparent;
+  transform:  translateY(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease, fill 0.6s ease;
 }
 
-.boot-line.visible {
+.logo path {
+  fill: #fbbf24;
+  transition: fill 0.6s ease;
+}
+
+.logo.active {
   opacity:   1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
-/* Prefix bracket */
-.boot-line .prefix {
-  color:   var(--accent-dim);
-  opacity: 0.7;
+.logo.fade {
+  opacity:   0;
+  transform: translateY(-120vh);
+  transition: opacity 0.6s ease-in, transform 0.8s cubic-bezier(0.55, 0, 1, 1), fill 0.8s ease;
 }
 
-/* Dots after the text (ellipsis) */
-.boot-line .dots {
-  color:   var(--accent-dim);
-  opacity: 0.5;
+.logo.fade path {
+  fill: var(--bg-base);
 }
 
-/* The last line — brighter, accent-coloured */
-.boot-line.boot-line--final {
-  color:       var(--accent);
-  font-weight: 600;
-}
-
-/* Blinking cursor appended to the active line */
-.cursor {
-  display:          inline-block;
-  width:            9px;
-  height:           1.1em;
-  background:       var(--lilac);
-  margin-left:      3px;
-  vertical-align:   text-bottom;
-  animation:        cursor-blink 0.78s step-end infinite;
-}
-
-@keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-
-/* ─── Progress bar ───────────────────────────────────────────────────────── */
-.progress-wrap {
-  width:         100%;
-  max-width:     520px;
-  display:       flex;
-  flex-direction: column;
-  gap:           8px;
-}
-
-.progress-label {
-  font-size:      0.72rem;
-  color:          var(--text-primary);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity:        0.6;
-}
-
-.progress-track {
-  width:         100%;
-  height:        3px;
-  background:    rgba(255, 255, 255, 0.07);
-  border-radius: 2px;
-  overflow:      hidden;
-  box-shadow:    0 0 6px rgba(245, 166, 35, 0.08);
-}
-
-.progress-fill {
-  height:           100%;
-  width:            0%;
-  background:       linear-gradient(90deg, var(--accent-dim), var(--lilac-dim));
-  border-radius:    2px;
-  box-shadow:       0 0 10px var(--lilac),
-                    0 0 20px rgba(115, 52, 211, 0.4);
-  transition:       width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ─── Logo block ─────────────────────────────────────────────────────────── */
-.splash-logo-wrap {
-  display:  flex;
-  flex-direction: column;
-  align-items: center;
-  gap:      12px;
-  opacity:  0;   /* revealed by JS */
-}
-
-.splash-logo {
-  width:      clamp(180px, 55vw, 280px);
-  height:     auto;
-  /* filter: drop-shadow() removed — WebView 66 rasterises SVG filters poorly.
-     Glow effect deferred to parent wrapper or container box-shadow if needed. */
-}
-
-.splash-tagline {
-  font-size:      0.78rem;
-  color:          var(--accent-dim);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  opacity:        0.75;
-}
-
-/* ─── CRT flicker keyframes (applied by JS on logo reveal) ──────────────── */
-@keyframes crt-flicker {
-   0% { opacity: 0;    filter: brightness(3)   blur(2px); }
-   8% { opacity: 0.9;  filter: brightness(1.8) blur(0px); }
-  12% { opacity: 0.3;  filter: brightness(0.5) blur(1px); }
-  18% { opacity: 1;    filter: brightness(1.4) blur(0px); }
-  22% { opacity: 0.6;  filter: brightness(0.8) blur(0.5px); }
-  28% { opacity: 1;    filter: brightness(1.1) blur(0px); }
-  35% { opacity: 0.85; filter: brightness(1.3) blur(0px); }
-  42% { opacity: 1;    filter: brightness(1.0) blur(0px); }
-  55% { opacity: 0.95; filter: brightness(1.1) blur(0px); }
-  65% { opacity: 1;    filter: brightness(1.05) blur(0px); }
- 100% { opacity: 1;    filter: brightness(1.0)  blur(0px); }
-}
-
-.splash-logo-wrap.flicker {
-  animation: crt-flicker 1.1s ease-out forwards;
-}
-
-/* ─── Fade-to-black exit overlay ─────────────────────────────────────────── */
-.fade-out-cover {
-  position:         fixed;
-  /* inset: 0 expanded for Android 8 WebView 66 compatibility */
-  top:              0;
-  right:            0;
-  bottom:           0;
-  left:             0;
-  z-index:          9999;
-  background:       #000;
-  opacity:          0;
-  pointer-events:   none;
-  transition:       opacity 0.55s ease;
-}
-
-.fade-out-cover.active {
-  opacity:        1;
-  pointer-events: all;
+/* Background fade on the intro container */
+.intro.fade-bg {
+  background-color: var(--bg-base);
+  transition: background-color 1.2s ease;
 }
 
 /* ─── Mobile tweaks ──────────────────────────────────────────────────────── */
 @media (max-width: 480px) {
-  .terminal-body  { padding: 16px 16px 20px; }
-  .boot-line      { font-size: 0.82rem; white-space: normal; }
-  .splash-logo    { width: clamp(160px, 70vw, 240px); }
+  .logo-header {
+    padding: 0 16px;
+  }
+  
+  .logo-wrap {
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+  
+  .logo {
+    max-width: 45vw;
+    height: auto;
+  }
+  
+  .logo:first-child {
+    width: 180px;
+  }
+  
+  .logo:last-child {
+    width: 145px;
+  }
+}
+
+@media (max-width: 360px) {
+  .logo-header {
+    padding: 0 12px;
+  }
+  
+  .logo-wrap {
+    gap: 6px;
+  }
+  
+  .logo:first-child {
+    width: 150px;
+  }
+  
+  .logo:last-child {
+    width: 120px;
+  }
 }
 
 /* ─── Image protection — no drag, no iOS callout ────────────────────────── */

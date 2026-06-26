@@ -336,8 +336,8 @@ async function handleShare() {
   const _shareDateEl = document.querySelector('.share-png-date');
   if (_shareDateEl) {
     _shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' • v1.1.1'
-      : 'v1.1.1';
+      ? window.formatBannerDate(new Date()) + ' • v1.1.2'
+      : 'v1.1.2';
   }
 
   // Fit text to card — must happen before html2canvas reads the DOM
@@ -621,7 +621,7 @@ function initUsageModal() {
 /**
  * Wires the About modal open/close behavior to the nav link.
  * The modal HTML is already present in oracle.html; this just binds events.
- */
+
 function initAboutModal() {
   const modal    = document.getElementById('about-modal');
   const overlay  = document.getElementById('about-overlay');
@@ -640,6 +640,233 @@ function initAboutModal() {
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && modal.classList.contains('open')) closeInfoModal(modal);
   });
+}
+ */
+
+function initAboutModal() {
+  const modal    = document.getElementById('about-modal');
+  const overlay  = document.getElementById('about-overlay');
+  const closeBtn = document.getElementById('about-close');
+  const openBtn  = document.querySelector('a[href="#about-section"]');
+
+  if (!modal || !openBtn) return;
+
+  openBtn.addEventListener('click', e => {
+    e.preventDefault();
+    openAboutFromReadme(modal);
+  });
+
+  closeBtn.addEventListener('click', () => closeInfoModal(modal));
+  overlay.addEventListener('click', () => closeInfoModal(modal));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeInfoModal(modal);
+  });
+}
+
+/**
+ * Fetches README.md, strips HTML tags, parses markdown to HTML,
+ * and renders it into the about modal.
+ */
+async function openAboutFromReadme(modal) {
+  try {
+    const resp = await fetch('README.md');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const md = await resp.text();
+
+    const html = parseMarkdownToHtml(md);
+    renderAboutHtml(modal, html);
+
+    modal.classList.add('open');
+    document.body.classList.add('lb-active');
+    _openModalCount++;
+
+  } catch (err) {
+    console.warn('[AboutModal] Failed to load README.md:', err);
+    // Fallback to JSON if markdown fails
+    openInfoModal('about-modal', 'assets/data/about.json');
+  }
+}
+
+/**
+ * Renders parsed README HTML into the about modal's .lb-body.
+
+function renderAboutHtml(modal, html) {
+  // Header icon
+  const icon = modal.querySelector('.lb-author-icon');
+  if (icon) {
+    icon.src = 'assets/images/prabhupada.png';
+    icon.alt = '';
+  }
+
+  // Header title
+  const titleEl = modal.querySelector('.lb-author-name');
+  if (titleEl) {
+    titleEl.innerHTML = '<strong>About Wisdom Oracle</strong>';
+  }
+
+  // Body
+  const body = modal.querySelector('.lb-body');
+  if (!body) return;
+
+  body.innerHTML = html;
+}
+ */
+
+function renderAboutHtml(modal, html) {
+  // Header icon
+  const icon = modal.querySelector('.lb-author-icon');
+  if (icon) {
+    icon.src = 'assets/images/prabhupada.png';
+    icon.alt = '';
+  }
+
+  // Body
+  const body = modal.querySelector('.lb-body');
+  if (!body) return;
+
+  body.innerHTML = html;
+}
+
+/**
+ * Markdown-to-HTML parser for README.md content.
+ * Handles: headings, bold, italic, links, lists, paragraphs, code, blockquotes, horizontal rules.
+ * Strips all <img> tags, markdown images, and their parent containers.
+ */
+function parseMarkdownToHtml(md) {
+  if (!md) return '';
+
+  // Step 1: Remove images first
+  md = md.replace(/<img[^>]*>/gi, '');
+
+  // Step 2: Remove <div> wrappers that are now empty or only contained images
+  // But preserve <div align="center"> that has text content (like the title)
+  md = md.replace(/<div[^>]*>\s*(?:<br\s*\/?>\s*)*\s*<\/div>/gi, '');
+  
+  // Step 3: Unwrap remaining <div> tags but keep their inner content
+  md = md.replace(/<div[^>]*>([\s\S]*?)<\/div>/gi, '$1');
+
+  // Step 4: Clean up other tags
+  md = md.replace(/<br\s*\/?>/gi, '\n');
+  md = md.replace(/<\/?(span|p)[^>]*>/gi, '');
+
+  // Step 5: Remove markdown image syntax: ![alt](url)
+  md = md.replace(/!\[[^\]]*\]\([^)]+\)/g, '');
+
+  // Step 6: Collapse multiple blank lines to single
+  md = md.replace(/\n{3,}/g, '\n\n');
+
+  // Step 7: Parse line by line for block-level elements, then inline
+
+  const lines = md.split('\n');
+  const blocks = [];
+  let currentList = null;
+  let currentListType = null;
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i].trim();
+    if (!line) continue;
+
+    // Horizontal rule
+    if (/^---+/.test(line)) {
+      _flushList(blocks, currentList, currentListType);
+      currentList = null;
+      currentListType = null;
+      blocks.push('<div class="linebreak fade-in"></div>');
+      continue;
+    }
+
+    // Headings
+    const h6Match = line.match(/^#{6}\s+(.*)/);
+    if (h6Match) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<h6>${_parseInline(h6Match[1])}</h6>`); continue; }
+
+    const h5Match = line.match(/^#{5}\s+(.*)/);
+    if (h5Match) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<h5>${_parseInline(h5Match[1])}</h5>`); continue; }
+
+    const h4Match = line.match(/^#{4}\s+(.*)/);
+    if (h4Match) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<h4>${_parseInline(h4Match[1])}</h4>`); continue; }
+
+    const h3Match = line.match(/^#{3}\s+(.*)/);
+    if (h3Match) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<p class="section-label">${_parseInline(h3Match[1])}</p>`); continue; }
+
+    const h2Match = line.match(/^#{2}\s+(.*)/);
+    if (h2Match) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<h2 class="lb-chapter-heading">${_parseInline(h2Match[1])}</h2>`); continue; }
+
+    const h1Match = line.match(/^#{1}\s+(.*)/);
+    if (h1Match) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<h1 class="lb-chapter-heading">${_parseInline(h1Match[1])}</h1>`); continue; }
+
+    // Blockquote
+    const bqMatch = line.match(/^>\s+(.*)/);
+    if (bqMatch) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<blockquote>${_parseInline(bqMatch[1])}</blockquote>`); continue; }
+
+    // List items
+    const ulMatch = line.match(/^(\s*)[-*+]\s+(.*)/);
+    if (ulMatch) {
+      if (currentListType !== 'ul') {
+        _flushList(blocks, currentList, currentListType);
+        currentList = [];
+        currentListType = 'ul';
+      }
+      currentList.push(_parseInline(ulMatch[2]));
+      continue;
+    }
+
+    const olMatch = line.match(/^(\s*)\d+\.\s+(.*)/);
+    if (olMatch) {
+      if (currentListType !== 'ol') {
+        _flushList(blocks, currentList, currentListType);
+        currentList = [];
+        currentListType = 'ol';
+      }
+      currentList.push(_parseInline(olMatch[2]));
+      continue;
+    }
+
+    // Plain paragraph
+    _flushList(blocks, currentList, currentListType);
+    currentList = null;
+    currentListType = null;
+    blocks.push(`<p class="lb-info-text">${_parseInline(line)}</p>`);
+  }
+
+  _flushList(blocks, currentList, currentListType);
+
+  return blocks.join('\n\n');
+}
+
+/** Flush accumulated list items into a single <ul> or <ol> block */
+function _flushList(blocks, items, type) {
+  if (!items || !items.length || !type) return;
+  const tag = type === 'ol' ? 'ol' : 'ul';
+  const lis = items.map(item => `<li>${item}</li>`).join('');
+  blocks.push(`<${tag} class="lb-info-list">${lis}</${tag}>`);
+}
+
+/** Parse inline markdown: bold, italic, code, links, checkboxes */
+function _parseInline(text) {
+  if (!text) return '';
+
+  // Checkboxes (must be before bold/italic since they use brackets)
+  text = text.replace(/\[x\]\s+/gi, '<span style="color:var(--success-green);">☑</span> ');
+  text = text.replace(/\[ \]\s+/gi, '<span style="color:var(--text-muted);">☐</span> ');
+
+  // Bold + italic (***)
+  text = text.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  // Bold (**)
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Italic (*)
+  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  // Bold (__)
+  text = text.replace(/__(.*?)__/g, '<strong>$1</strong>');
+  // Italic (_)
+  text = text.replace(/_(.*?)_/g, '<em>$1</em>');
+
+  // Inline code
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Links [text](url)
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+  return text;
 }
 
 // ─── Settings modal ────────────────────────────────────────────────────────────
