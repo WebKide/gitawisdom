@@ -15,41 +15,44 @@ const CACHE_VERSION = 'wisdom-oracle-v1.1.2';
 const BASE = new URL('./', self.location.href).href.replace(/\/$/, '');
 
 const ASSETS = [
-  BASE + '/index.html',        // splash entry point
-  BASE + '/oracle.html',       // main app
+  BASE + '/index.html',        // splash screen entry point
+  BASE + '/oracle.html',       // main progressive web app
   BASE + '/site.webmanifest',
 
   // Scripts
   BASE + '/js/app.js',
+  BASE + '/js/fuse.min.js',
+  BASE + '/js/fuse-search.js',
+  BASE + '/js/gitacore.js',
+  BASE + '/js/html2canvas.min.js',
+  BASE + '/js/ichingcore.js',
   BASE + '/js/lightbox.js',
   BASE + '/js/oracle-forms.js',
-  BASE + '/js/wisdomoracle.js',
-  BASE + '/js/share-utils.js',
-  BASE + '/js/gitacore.js',
-  BASE + '/js/ichingcore.js',
-  BASE + '/js/html2canvas.min.js',
-  BASE + '/js/splash.js',
   BASE + '/js/search-ui.js',
-  BASE + '/js/fuse-search.js',
+  BASE + '/js/share-utils.js',
+  BASE + '/js/splash.js',
+  BASE + '/js/wisdomoracle.js',
 
   // Styles
   BASE + '/css/styles.css',
-  BASE + '/css/splash.css',    // splash styles
+  BASE + '/css/splash.css',
 
   // Images
-  BASE + '/assets/images/wisdomoracle.svg',
-  BASE + '/assets/images/wisdomoracle_logo.svg',
-  BASE + '/assets/images/ichingcoin.png',
   BASE + '/assets/images/card_bg.png',
-  BASE + '/assets/images/signature.svg',
+  BASE + '/assets/images/iching.png',
+  BASE + '/assets/images/ichingcoin.png',
   BASE + '/assets/images/imgfooter.png',
   BASE + '/assets/images/prabhupada.png',
-  BASE + '/assets/images/iching.png',
+  BASE + '/assets/images/signature.svg',
+  BASE + '/assets/images/wisdomoracle.svg',
+  BASE + '/assets/images/wisdomoracle_logo.svg',
 
   // Icons
+  BASE + '/assets/icons/android-chrome-192x192.png',
+  BASE + '/assets/icons/android-chrome-512x512.png',
   BASE + '/assets/icons/apple-touch-icon.png',
-  BASE + '/assets/icons/favicon-32x32.png',
   BASE + '/assets/icons/favicon-16x16.png',
+  BASE + '/assets/icons/favicon-32x32.png',
 
   // Fonts
   BASE + '/assets/fonts/kelvinch-v42-latin-regular.woff2',
@@ -64,6 +67,10 @@ const ASSETS = [
   BASE + '/assets/fonts/sansita-v12-latin_latin-ext-700italic.woff2',
   BASE + '/assets/fonts/sansita-v12-latin_latin-ext-900.woff2',
   BASE + '/assets/fonts/sansita-v12-latin_latin-ext-900italic.woff2',
+  BASE + '/assets/fonts/ubuntu-sans-v4-latin-ext-600.woff2',
+  BASE + '/assets/fonts/ubuntu-sans-v4-latin-ext-600italic.woff2',
+  BASE + '/assets/fonts/ubuntu-sans-v4-latin-ext-italic.woff2',
+  BASE + '/assets/fonts/ubuntu-sans-v4-latin-ext-regular.woff2',
 
   // Gita JSON
   BASE + '/assets/gita/bg_ch01.json',
@@ -93,9 +100,10 @@ const ASSETS = [
 
   // Info card data
   BASE + '/assets/data/about.json',
-  BASE + '/assets/data/usage.json',
-  BASE + '/assets/data/search.json',
   BASE + '/assets/data/oracle.json',
+  BASE + '/assets/data/search.json',
+  BASE + '/assets/data/usage.json',
+  BASE + '/README.md',
 ];
 
 // ─── Install: cache all assets, tolerate 404s ───────────────────────────────
