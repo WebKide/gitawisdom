@@ -4,13 +4,13 @@
  * Update CACHE_VERSION to bust the cache on new deployments.
  */
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.2';
+'use strict';
+
+const CACHE_VERSION = 'wisdom-oracle-v1.1.3';
 
 /**
- * Derive the deployment base path once at the top of the file.
- * This ensures all cached asset URLs are absolute and resolve correctly
- * regardless of whether the app is served from a sub-directory (e.g.
- * /gitawisdom/) or the domain root (e.g. localhost:8000/).
+ * Deployment base.
+ * Works correctly both from localhost and GitHub Pages subdirectories.
  */
 const BASE = new URL('./', self.location.href).href.replace(/\/$/, '');
 
@@ -18,6 +18,7 @@ const ASSETS = [
   BASE + '/index.html',        // splash screen entry point
   BASE + '/oracle.html',       // main progressive web app
   BASE + '/site.webmanifest',
+  BASE + '/favicon.ico',
 
   // Scripts
   BASE + '/js/app.js',
@@ -95,9 +96,6 @@ const ASSETS = [
   // iChing JSON
   BASE + '/assets/iching/iching.json',
 
-  // Search engine
-  BASE + '/js/fuse.min.js',
-
   // Info card data
   BASE + '/assets/data/about.json',
   BASE + '/assets/data/oracle.json',
@@ -106,80 +104,165 @@ const ASSETS = [
   BASE + '/README.md',
 ];
 
-// ─── Install: cache all assets, tolerate 404s ───────────────────────────────
-/**
- * On install, open the named cache and populate it with every asset in ASSETS.
- * Individual fetch failures are logged but do not abort the entire install.
- * After caching completes, activate the new service worker immediately.
- */
+/* ────────────────────────────────────────────────────────────────────────── */
+// ─── Install: cache all assets, tolerate 404s ─────────────────────────────
+/* ────────────────────────────────────────────────────────────────────────── */
+
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_VERSION).then(cache => {
-      return Promise.all(
-        ASSETS.map(url =>
-          fetch(url).then(response => {
-            if (response.ok) return cache.put(url, response);
-            console.warn('[SW] Skip caching (not ok):', url);
-          }).catch(err => {
-            console.warn('[SW] Skip caching (error):', url, err);
-          })
-        )
-      );
-    }).then(() => self.skipWaiting())
-  );
+  event.waitUntil((async () => {
+
+    const cache = await caches.open(CACHE_VERSION);
+
+    for (const url of ASSETS) {
+      try {
+        const response = await fetch(url, {
+            cache: 'reload'
+        });
+
+        if (response.ok) {
+          await cache.put(url, response);
+        } else {
+          console.warn('[SW] Skip caching (HTTP ' + response.status + '):', url);
+        }
+      } catch (err) {
+        console.warn('[SW] Skip caching:', url, err);
+      }
+    }
+
+    await self.skipWaiting();
+
+  })());
 });
 
-// ─── Activate: delete old caches ────────────────────────────────────────────
-/**
- * On activation, enumerate all existing cache names and delete any that do
- * not match the current CACHE_VERSION. This prevents stale assets from
- * being served after a deployment. After cleanup, claim all clients so the
- * new service worker controls existing tabs immediately.
- */
+/* ────────────────────────────────────────────────────────────────────────── */
+// ─── Activate: delete old caches ──────────────────────────────────────────
+/* ────────────────────────────────────────────────────────────────────────── */
+
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(key => key !== CACHE_VERSION)
-          .map(key => caches.delete(key))
-      )
-    ).then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+
+    if ('navigationPreload' in self.registration) {
+      try {
+        await self.registration.navigationPreload.enable();
+      } catch (_) {}
+    }
+
+    const keys = await caches.keys();
+
+    await Promise.all(
+      keys
+        .filter(key => key !== CACHE_VERSION)
+        .map(key => caches.delete(key))
+    );
+
+    await self.clients.claim();
+
+    const clients = await self.clients.matchAll();
+
+    for (const client of clients) {
+      client.postMessage({
+        type: 'SW_UPDATED',
+        version: CACHE_VERSION
+      });
+    }
+
+  })());
 });
 
-// ─── Fetch: stale-while-revalidate for navigation, cache-first for rest ─────
-/**
- * Intercepts all GET requests. Navigation requests (HTML pages) use a
- * stale-while-revalidate strategy: serve the cached response immediately
- * while refreshing from the network in the background. All other assets
- * (images, fonts, JSON, CSS, JS) use cache-first: return the cached copy
- * if present, otherwise fetch from the network and do not cache the result
- * (the install step already pre-cached everything).
- */
+/* ────────────────────────────────────────────────────────────────────────── */
+// ─── Fetch: Cache-first with background refresh for navigation ────────────
+/* ────────────────────────────────────────────────────────────────────────── */
+
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
 
-  // Navigation requests (HTML pages): serve cached fast, refresh in background
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(event.request).then(cached => {
-        const networkFetch = fetch(event.request).then(response => {
+  const request = event.request;
+
+  if (request.method !== 'GET')
+    return;
+
+  // Ignore extension requests and cross-origin resources.
+  if (!request.url.startsWith(self.location.origin))
+    return;
+
+  // ── HTML navigation ─────────────────────────────────────────────────────
+  if (request.mode === 'navigate') {
+
+    event.respondWith((async () => {
+
+      const cache = await caches.open(CACHE_VERSION);
+      const url = new URL(request.url);
+      const baseUrl = new URL(BASE);
+
+      // 1. Try exact match first
+      let cached = await cache.match(request);
+
+      // 2. If request is for the base path or root, fallback to index.html
+      if (!cached) {
+        const isBasePath = url.pathname === baseUrl.pathname ||
+                           url.pathname === baseUrl.pathname + '/';
+        const isRoot = url.pathname === '/';
+
+        if (isBasePath || isRoot) {
+          cached = await cache.match(BASE + '/index.html');
+        }
+      }
+
+      // 3. Cache hit → serve immediately, refresh in background
+      if (cached) {
+        const preload = await event.preloadResponse;
+        const response = preload || await fetch(request);
+        refresh.then(response => {
           if (response && response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_VERSION).then(cache => cache.put(event.request, clone));
+            cache.put(request, response.clone());
           }
-          return response;
-        }).catch(() => cached);
+        }).catch(() => {});
+        return cached;
+      }
 
-        return cached || networkFetch;
-      })
-    );
+      // 4. No cache → try network (or navigation preload)
+      try {
+        const response = await (event.preloadResponse || fetch(request));
+        if (response && response.ok) {
+          cache.put(request, response.clone());
+        }
+        return response;
+      } catch (err) {
+        // 5. Complete offline failure → fallback to index.html
+        const fallback = await cache.match(BASE + '/index.html');
+        if (fallback) return fallback;
+
+        return new Response(
+          'Wisdom Oracle is offline. Please check your connection.',
+          { status: 503, statusText: 'Service Unavailable', headers: { 'Content-Type': 'text/plain' } }
+        );
+      }
+
+    })());
+
     return;
   }
 
-  // Everything else (images, fonts, JSON, CSS, JS): cache-first
-  event.respondWith(
-    caches.match(event.request).then(cached => cached ?? fetch(event.request))
-  );
+  // ── Everything else (assets, fonts, images, JSON) ───────────────────────
+  event.respondWith((async () => {
+
+    const cache = await caches.open(CACHE_VERSION);
+    const cached = await cache.match(request);
+
+    if (cached)
+      return cached;
+
+    try {
+      const response = await fetch(request);
+      if (response && response.ok) {
+        cache.put(request, response.clone());
+      }
+      return response;
+    } catch (err) {
+      console.warn('[SW] Asset fetch failed (offline?):', request.url);
+      // Return a 503 so the browser gets a clean error instead of a thrown promise
+      return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+    }
+
+  })());
+
 });

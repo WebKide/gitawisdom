@@ -7,6 +7,7 @@
  *   • Cache all DOM references in a single `dom` object
  *   • Wire event listeners by importing handlers from split modules
  *   • Register the service worker
+ *   • Listen for messages from the Service Worker
  *   • Initialize the top-nav intersection observer
  *   • Load and apply the persisted font size on startup
  *
@@ -147,6 +148,7 @@ const dom = {
 
   // ── NEW: Wisdom Oracle ──
   wisdomoracleRandomBtn: document.getElementById('wisdomoracle-random-btn'),
+  updateBanner: document.getElementById('update-banner'),
 
   // ── Lightbox shell ─────────────────────────────────────────────────────────
   lightbox:        document.getElementById('lightbox'),
@@ -205,18 +207,36 @@ window._woDom   = dom;
 
 initSwipe();
 
-// ─── Service Worker Registration ─────────────────────────────────────────────
-/**
- * Register the service worker for offline capability.
- * The SW is at sw.js relative to the app root.
- */
+// ─── Listen for messages from the Service Worker ────────────────────────────
 if ('serviceWorker' in navigator) {
+
   navigator.serviceWorker.register('sw.js')
     .then(reg => console.log('SW registered:', reg.scope))
     .catch(err => console.error('SW failed:', err));
+
+  navigator.serviceWorker.addEventListener('message', event => {
+
+    if (!event.data)
+      return;
+
+    if (event.data.type === 'SW_UPDATED') {
+
+      console.log('[WO] New version available:', event.data.version);
+
+      if (dom.updateBanner) {
+        dom.updateBanner.classList.add('visible')
+      }
+
+    }
+
+  });
+
 }
 
-// —>
+window.__TEST_UPDATE = () => {
+  dom.updateBanner?.classList.add('visible');
+};
+
 
 // ─── Debug logging wrapper ────────────────────────────────────────────────────
 /**
@@ -276,6 +296,13 @@ if (ichingRandomBtn) ichingRandomBtn.addEventListener('click', () => { closeSear
 const _wrappedHandleWisdomOracle = wrapHandler('handleWisdomOracle', handleWisdomOracle);
 if (dom.wisdomoracleRandomBtn) {
   dom.wisdomoracleRandomBtn.addEventListener('click', () => { closeSearchCardUI(); _wrappedHandleWisdomOracle(); });
+}
+
+// Reload after Service Worker update
+if (dom.updateBanner) {
+  dom.updateBanner.addEventListener('click', () => {
+    window.location.reload();
+  });
 }
 
 // Lightbox controls — close, overlay click, prev/next navigation

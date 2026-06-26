@@ -509,6 +509,48 @@ body {
   background: rgba(115, 52, 211, 0.22);
 }
 
+/* --- UPDATE BANNER --- */
+.update-banner {
+  opacity:    0;
+  max-height: 0;
+  overflow:   hidden;
+
+  transition:
+    opacity    .25s ease,
+    max-height .25s ease,
+    margin     .25s ease;
+}
+
+.update-banner.visible {
+  opacity:    1;
+  max-height: 120px;
+}
+
+.module-tab--reload, .module-tab--reload:hover {
+  background:    var(--iching-green-glow) !important;
+  border:        1px solid var(--success-green) !important;
+  color:         var(--emerald) !important;
+  padding:       12px 20px;
+  margin-bottom: 15px;
+  animation:     updateGlowPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes updateGlowPulse {
+  0% {
+    filter: brightness(1);
+    box-shadow: 0 0 0 rgba(0, 255, 170, 0);
+  }
+
+  50% {
+    filter: brightness(1.25);
+    box-shadow: 0 0 6px rgba(0, 255, 170, 0.35);
+  }
+
+  100% {
+    filter: brightness(1);
+    box-shadow: 0 0 0 rgba(0, 255, 170, 0);
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    DIVIDERS & SEPARATORS
