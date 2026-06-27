@@ -70,23 +70,6 @@ async function _loadOracleJson() {
   return _oracleJson;
 }
 
-/**
- * Resolves {placeholder} tokens against a payload. Not currently used by the
- * active render path — renderWisdomOracle() in lightbox.js builds its markup
- * directly rather than consuming oracle.json's "sections" field. Kept here in
- * case a future templated-rendering pass wants it.
- *
- * @param {string} text
- * @param {object} payload
- * @returns {string}
- */
-function _resolvePlaceholders(text, payload) {
-  return text
-    .replace('{random(random-guidance)}', payload.guidance)
-    .replace('{Gītā Wisdom Translation}',  payload.gitaTranslation)
-    .replace('{iChing Oracle Translation}', payload.ichingTranslation);
-}
-
 // ─── Wisdom Oracle: async loader ─────────────────────────────────────────────
 
 /**

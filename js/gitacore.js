@@ -33,7 +33,7 @@ const BG_CHAPTER_INFO = {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const AUTHOR_NAME   = 'Bhagavad Gītā — As It Is (1972 Macmillan Unabriged Edition)';
-const AUTHOR_ICON   = 'assets/images/ACBhaktivedantaSwami.png';
+const AUTHOR_ICON   = 'assets/images/wisdomoracle_logo.svg';
 const FOOTER_ICON   = 'assets/images/imgfooter.png';
 const SIGNATURE_URL = 'assets/images/signature.svg';
 const DEDICATORY    = 'oṁ namo bhagavate vāsudevāya';
@@ -63,7 +63,7 @@ const DEDICATORY_CLOSINGS = [
 const NO_PURPORT = [
   'No Bhaktivedānta purport accompanies this śloka.',
   'No Bhaktivedānta purport provided for this verse.',
-  'No commentary was writte for this śloka.',
+  'No commentary was written for this śloka.',
   'No explanatory purport is included for this verse.',
   'No purport for this śloka.',
   'No purport is attached to this śloka.',

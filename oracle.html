@@ -1,36 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!--
-    Warm-start guard: if the user returns after more than 5 minutes of idle
-    time, force the splash screen so the boot sequence and branding are
-    shown rather than resuming mid-session.
-
-  <script>
-    (function () {
-      // Listen for messages from the Service Worker
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.addEventListener('message', event => {
-
-          if (!event.data)
-            return;
-
-          if (event.data.type === 'SW_UPDATED') {
-
-            console.log(
-              '[WO] New version available:',
-              event.data.version
-            );
-
-            // TODO: show UI
-          }
-
-        });
-      }
-    }
-  </script>
-  -->
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1e1f22" />
@@ -40,7 +10,7 @@
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
   <meta name="description"
         content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.1.3</title>
+  <title>Wisdom Oracle v1.1.42</title>
   <meta name="author" content="WebKide" />
   <link rel="stylesheet" href="css/styles.css" />
 
@@ -49,6 +19,14 @@
 
   <!-- App entry point and dependencies loaded as ES modules; fuse-search.js and search-ui.js power the Gītā search feature -->
   <script src="js/html2canvas.min.js"></script>
+
+  <!-- Register service worker (same scope as index.html) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .catch(err => console.warn('SW registration failed:', err));
+    }
+  </script>
 
   <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
@@ -130,16 +108,6 @@
       <span class="menu-line"></span>
       <span class="menu-dot"></span>
     </button>
-    <!-- Gītā icon — above Logo position:absolute
-    <img
-      src="assets/images/imgfooter.png"
-      alt=""
-      class="banner-lotus-icon"
-      draggable="false"
-      aria-hidden="true"
-      width="65"
-      height="65"
-    /> -->
 
     <!-- Logo — floats up and down -->
     <img src="assets/images/wisdomoracle.svg"
@@ -432,7 +400,7 @@
            draggable="false" />
       <p>
         To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
-        <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.3」</b>
+        <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.42」</b>
       </p>
     </div>
   </footer>

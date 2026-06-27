@@ -24,61 +24,61 @@
 'use strict';
 
 import {
-  openLightbox,           // ← called inside displayVerse/displayHexagram in lightbox.js
-  closeLightbox,          // ← used ✓ (wired to lbClose, lbOverlay)
-  renderVerse,            // ← called internally in lightbox.js only
-  displayVerse,           // ← used ✓
-  displayHexagram,        // ← used ✓
-  togglePurport,          // ← used ✓
-  applyLightboxBranding,  // ← called inside displayVerse/displayHexagram in lightbox.js
-  updateBottomButtons,    // ← called inside renderVerse in lightbox.js
   applyFontSize,          // ← used ✓
-  increaseFontSize,       // ← used ✓
+  closeLightbox,          // ← used ✓ (wired to lbClose, lbOverlay)
   decreaseFontSize,       // ← used ✓
+  displayHexagram,        // ← used ✓
+  displayVerse,           // ← used ✓
   goNext,                 // ← used ✓
   goPrev,                 // ← used ✓
-  setNavDisabled,         // ← called inside displayVerse/displayHexagram in lightbox.js
+  increaseFontSize,       // ← used ✓
   initSwipe,              // ← used ✓
+  togglePurport,          // ← used ✓
+  applyLightboxBranding,  // ← called inside displayVerse/displayHexagram in lightbox.js
+  openLightbox,           // ← called inside displayVerse/displayHexagram in lightbox.js
+  renderVerse,            // ← called internally in lightbox.js only
+  setNavDisabled,         // ← called inside displayVerse/displayHexagram in lightbox.js
+  updateBottomButtons,    // ← called inside renderVerse in lightbox.js
 } from './lightbox.js';
 
 import {
-  handleGitaSubmit,
-  handleGitaRandom,
-  handleIChingSubmit,
-  handleIChingRandom,
-  initChapterSelect,
+  clearErrors,
   getSelectedChapter,
+  handleGitaRandom,
+  handleGitaSubmit,
+  handleIChingRandom,
+  handleIChingSubmit,
+  initChapterSelect,
   setSelectedChapter,
   showError,
-  clearErrors,
 } from './oracle-forms.js';
 
 import {
+  closeOracleCard,
   handleWisdomOracle,
   openOracleCard,
-  closeOracleCard,
 } from './wisdomoracle.js';
 
 import {
   handleCopy,
   handleShare,
-  openInfoModal,
-  initUsageModal,
   initAboutModal,
   initSettingsModal,
-  escHtml,
+  initUsageModal,
+  openInfoModal,
+  escHtml,  // ← imported but not used in app.js
 } from './share-utils.js';
 
 import { GitaSearch } from './fuse-search.js';
 import {
   initSearchController,
   enableSearchButtons,
-  closeSearchCard as closeSearchCardUI,  // ← never called anywhere
+  closeSearchCard as closeSearchCardUI,
 } from './search-ui.js';
 
 // —>
 console.log('[WO-BOOT] app.js loading, window._woState=', window._woState, 'window._woDom=', window._woDom);
-//—>
+// —>
 
 // ─── Font-size limits ───────────────────────────────────────────────────────
 const FONT_MIN     = 12;
@@ -233,6 +233,7 @@ if ('serviceWorker' in navigator) {
 
 }
 
+// ——> build flag for testing the update banner
 window.__TEST_UPDATE = () => {
   dom.updateBanner?.classList.add('visible');
 };
@@ -325,13 +326,6 @@ dom.lbReturnBtn.addEventListener('click', togglePurport);
 dom.lbCopyBtn.addEventListener('click', _handleCopy);
 dom.lbShareBtn.addEventListener('click', _handleShare);
 
-/* console for production testing
-// Font-size controls — delegated so every card participates without individual wiring
-document.addEventListener('click', e => {
-  if (e.target.closest('.lb-font-increase')) increaseFontSize();
-  if (e.target.closest('.lb-font-decrease')) decreaseFontSize();
-});
-remove comment and delete next event listener click*/
 // Font-size controls — delegated so every card participates without individual wiring
 document.addEventListener('click', e => {
   const target = e.target;

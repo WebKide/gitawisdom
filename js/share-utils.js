@@ -276,16 +276,6 @@ async function handleShare() {
   }
 
   // ── Populate share card content ───────────────────────────────────────────
-  /* // Title: grey title reference, color grey and reduced font-size 32px
-  dom.sharePngTitle.innerHTML = dom.lbChapterHeading.textContent
-    .replace(
-      / (\(BG [^)]+\))/,   // ← insert line break before reference
-      '<br/><span style="font-size:32px;color:#949ba4;">$1</span>'
-    );
-
-  // Body: translation / judgment text (curly quotes already added by renderVerse)
-  dom.sharePngVerse.textContent = dom.lbTranslation.textContent; */
-  // ── Populate share card content ───────────────────────────────────────────
   if (state?.mode === 'wisdom' && state?.wisdomPayload) {
     const p = state.wisdomPayload;
 
@@ -336,8 +326,8 @@ async function handleShare() {
   const _shareDateEl = document.querySelector('.share-png-date');
   if (_shareDateEl) {
     _shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' • v1.1.3'
-      : 'v1.1.3';
+      ? window.formatBannerDate(new Date()) + ' • v1.1.42'
+      : 'v1.1.42';
   }
 
   // Fit text to card — must happen before html2canvas reads the DOM

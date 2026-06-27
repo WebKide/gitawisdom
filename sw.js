@@ -6,7 +6,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.3';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.42';
 
 /**
  * Deployment base.
@@ -209,19 +209,31 @@ self.addEventListener('fetch', event => {
 
       // 3. Cache hit → serve immediately, refresh in background
       if (cached) {
-        const preload = await event.preloadResponse;
-        const response = preload || await fetch(request);
-        refresh.then(response => {
-          if (response && response.ok) {
-            cache.put(request, response.clone());
+
+        void (async () => {
+          try {
+            const preload = await event.preloadResponse;
+            const response = preload || await fetch(request);
+
+            if (response && response.ok) {
+              const clone = response.clone();
+              const cache = await caches.open(CACHE_VERSION);
+              cache.put(request, clone);
+            }
+
+          } catch (_) {
+            // ignore offline/network errors
           }
-        }).catch(() => {});
+        })();
+
         return cached;
       }
 
       // 4. No cache → try network (or navigation preload)
       try {
-        const response = await (event.preloadResponse || fetch(request));
+        const preload = await event.preloadResponse;
+        const response = preload || await fetch(request);
+
         if (response && response.ok) {
           cache.put(request, response.clone());
         }

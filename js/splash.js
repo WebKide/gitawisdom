@@ -59,6 +59,7 @@
       }, 200);
 
       // Redirect after exit animation completes
+      // might need to wait for installation before redirection: navigator.serviceWorker.ready
       setTimeout(() => {
         clearTimeout(forceRedirect);
         window.location.replace(DEST);
