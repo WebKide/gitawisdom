@@ -42,8 +42,6 @@
 
     // Animate logo letters out
     setTimeout(() => {
-
-      // Fade out version WITH the logos (not before)
       if (version) version.classList.remove('visible');
 
       logoSpan.forEach((span, idx) => {
@@ -53,17 +51,26 @@
         }, idx * 100);
       });
 
-      // Start background color transition shortly after logos exit begins
+      // Trigger the full screen slide up
       setTimeout(() => {
-        intro.classList.add('fade-bg');
+        intro.classList.add('slide-up');
       }, 200);
 
-      // Redirect after exit animation completes
-      // might need to wait for installation before redirection: navigator.serviceWorker.ready
-      setTimeout(() => {
+      // 1. Wait for the slide-up animation to finish (matching the 0.8s CSS transition)
+      const animationDone = new Promise(resolve => setTimeout(resolve, 1000));
+
+      // 2. Wait for BOTH the Service Worker and the animation
+      Promise.all([
+        animationDone,
+        'serviceWorker' in navigator ? navigator.serviceWorker.ready : Promise.resolve()
+      ]).then(() => {
         clearTimeout(forceRedirect);
+        console.log('[splash.js] Boot sequence complete. Redirecting...');
         window.location.replace(DEST);
-      }, 1200);
+      }).catch(err => {
+        console.error('[splash.js] Error during boot sequence:', err);
+        window.location.replace(DEST); 
+      });
 
     }, 2000);
 

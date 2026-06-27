@@ -317,7 +317,7 @@ body {
   position:    absolute;
   top:         8px;
   left:        0;
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size:   0.85rem;
   color:       var(--text-secondary);
   font-weight: 400;
@@ -468,6 +468,7 @@ body {
 .tab-subtitle {
   font-weight:    400;
   font-size:      0.68rem;
+  font-family:    var(--font-sans);
   line-height:    1.2;
   margin-top:     2px;
   opacity:        0.7;  /* Dimer color text */
@@ -609,7 +610,7 @@ body {
   background:    rgba(255,255,255,0.08);
   border-radius: 3px;
   padding:       1px 5px;
-  font-family:   'Courier New', monospace;
+  font-family:   var(--font-sans);
   font-size:     0.88em;
   color:         var(--accent);
 }
@@ -833,8 +834,8 @@ body.lb-active #top-nav {
   border:        1px solid var(--border);
   border-radius: var(--radius);
   color:         var(--text-primary);
-  font-family:   var(--font-body);
-  font-size:     1rem;
+  font-family:   var(--font-sans);
+  font-size:     0.85rem;
   padding:       11px 16px;
   outline:       none;
   transition:    border-color var(--transition), box-shadow var(--transition),
@@ -1128,7 +1129,7 @@ body.lb-active { overflow: hidden; }
   letter-spacing: 0.03em;
   /* white-space:    nowrap; */
   overflow:       hidden;
-  text-overflow:  ellipsis;
+  text-overflow:  inherit;
 }
 
 .lb-header-actions {
@@ -1712,8 +1713,8 @@ body.lb-active { overflow: hidden; }
   border:          1px solid #1e3a5a;
   border-radius:   var(--radius);
   color:           var(--text-primary);
-  font-family:     var(--font-text);
-  font-size:       0.95rem;
+  font-family:     var(--font-sans);
+  font-size:       0.85rem;
   cursor:          pointer;
   text-align:      left;
   white-space:     normal;
