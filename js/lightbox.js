@@ -387,13 +387,18 @@ function renderVerse() {
     ? formatSynonyms(synRaw)
     : formatHexagramSynonyms(synRaw);
 
-  dom.lbSynonyms.innerHTML = synItems.map(({ word, meaning }) =>
-    word
+  dom.lbSynonyms.innerHTML = synItems.map(({ word, meaning }, index) => {
+      // Avoid duplicate dots in SYNONYMS
+      let cleanMeaning = escHtml(meaning);
+      if (index === synItems.length -1 && cleanMeaning.endsWith('.')) {
+        cleanMeaning = cleanMeaning.slice(0, -1);
+      }
+      return word
       ? `<span class="syn-item"><em class="syn-word">${escHtml(word)}</em>`
         + `<span class="syn-dash"> — </span>`
         + `<span class="syn-meaning">${escHtml(meaning)}</span></span>`
       : `<span class="syn-item syn-plain">${escHtml(meaning)}</span>`
-  ).join('<span class="syn-sep">; </span>') + '<span class="syn-sep">.</span>';
+  }).join('<span class="syn-sep">; </span>') + '<span class="syn-sep">.</span>';
 
   // ── Footer text ───────────────────────────────────────────────────────────
   dom.lbFooter.textContent = isGita
@@ -720,11 +725,11 @@ function renderWisdomOracle(payload) {
   // ── Header: Wisdom Oracle branding ──
   dom.lbAuthorIcon.src = 'assets/images/wisdomoracle_logo.svg';
   dom.lbAuthorIcon.alt = 'Wisdom Oracle';
-  dom.lbAuthorTitle.innerHTML = '<strong>Guidance personalised for you</strong>';
+  dom.lbAuthorTitle.innerHTML = '<strong>Guidance for you</strong>';
 
-  // ── Red border for wisdom mode ──
+  // ── Grey border for wisdom mode ──
   dom.lbCard.classList.remove('lb-card--iching');
-  dom.lbCard.style.borderTopColor = 'var(--red-btn)';
+  dom.lbCard.style.borderTopColor = 'var(--text-muted)';
 
   // ── Hide navigation buttons ──
   dom.lbPrev.style.display = 'none';
@@ -750,7 +755,18 @@ function renderWisdomOracle(payload) {
   html += `<div class="lb-wisdom-section">
     <h2 style="text-align: center;">Wisdom Oracle’s guidance</h2>
     <h3 class="section-label">✦ The Personal Meditation</h3>
-    <div class="lb-translation" style="border-left-color: var(--red-btn);">
+    <div class="lb-synonyms-wrap" style="
+      font-size: calc(var(--lb-font-size) * 1.08); 
+      font-weight: 400; 
+      color: var(--text-heading); 
+      line-height: 1.75; 
+      font-style: normal; 
+      border-left: 3px solid var(--coral); 
+      border-top-left-radius: 0; 
+      border-bottom-left-radius: 0; 
+      border-top-right-radius: var(--radius); 
+      border-bottom-right-radius: var(--radius);
+    ">
       ${escHtml(payload.guidance)}
     </div>
   </div>`;

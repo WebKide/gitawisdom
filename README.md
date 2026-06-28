@@ -7,7 +7,7 @@
 <div align="center">
    <img src="https://img.shields.io/badge/Project%20by-WebKide-black.svg?style=popout&logo=github&logoColor=white" alt="Author" />
    <img src="https://img.shields.io/github/commit-activity/t/WebKide/gitawisdom?color=%23f5a623" alt="Version" /> 
-   <img src="https://img.shields.io/badge/Version-v1.1.43-magenta.svg?style=popout" alt="Author" />
+   <img src="https://img.shields.io/badge/Version-v1.1.44-magenta.svg?style=popout" alt="Author" />
 </div>
 
 <div align="center">
@@ -43,7 +43,7 @@ Find instant wisdom, clarity, and emotional strength for everyday parenting chal
 
 ### Desktop (Windows/MacOS):
 
-1. Open [WisdomOracle](https://webkide.github.io/gitawisdom) in **Chrome Browser** or **Safari**
+1. Open [WisdomOracle](https://webkide.github.io/gitawisdom) in **Chrome Browser** or **Safari** or **Edge**
 2. Tap the three-dot menu (⋮) top right.
 3. Tap **"Add to Home screen"**.
 4. Confirm the name and tap **Add**.
@@ -122,7 +122,7 @@ For issues or feature requests, please open an issue on [GitHub](https://github.
 - [x] PWA splash screen, next loads app screen
 - [x] PWA support, app can be installed and runs totally offline on iOS/Android
 - [ ] Bookmark verse/hexagram, browse bookmarks from main screen
-- [x] Share verse, generates PNG 1080px * 1350 px (4:5 ratio) compatible with socail media
+- [x] Share verse, generates PNG 1080px * 1350 px (4:5 ratio) compatible with social media
 - [ ] Verse Search function to search keyword and get clickable link to verse
 - [x] Settings card, it controls date in PNG share, visual borders (dev)
 

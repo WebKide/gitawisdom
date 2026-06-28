@@ -326,8 +326,8 @@ async function handleShare() {
   const _shareDateEl = document.querySelector('.share-png-date');
   if (_shareDateEl) {
     _shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' • v1.1.43'
-      : 'v1.1.43';
+      ? window.formatBannerDate(new Date()) + ' • v1.1.44'
+      : 'v1.1.44';
   }
 
   // Fit text to card — must happen before html2canvas reads the DOM
@@ -767,7 +767,7 @@ function parseMarkdownToHtml(md) {
 
     // Headings
     const h6Match = line.match(/^#{6}\s+(.*)/);
-    if (h6Match) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<h6>${_parseInline(h6Match[1])}</h6>`); continue; }
+    if (h6Match) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<p class="lb-info-footer">${_parseInline(h6Match[1])}</p>`); continue; }
 
     const h5Match = line.match(/^#{5}\s+(.*)/);
     if (h5Match) { _flushList(blocks, currentList, currentListType); currentList = null; currentListType = null; blocks.push(`<h5>${_parseInline(h5Match[1])}</h5>`); continue; }

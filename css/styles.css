@@ -12,7 +12,6 @@
 
    CHANGELOG (this revision):
    • Replaced Noto Serif with Gentium Plus (full Sanskrit diacritic support)
-   • Replaced CRT pseudo-elements with gradient mesh background on body
    • Expanded all inset:0 shorthands for Android 8 WebView 66
    • Added -webkit-user-select prefixes for iOS Safari
    • Removed filter:drop-shadow() from animated SVGs (WebView 66 raster bug)
@@ -459,8 +458,9 @@ body {
 
 /* Primary text heading styling */
 .tab-title {
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size:   0.85rem;
+  font-size:   0.9rem;
   line-height: 1.2;
 }
 
@@ -512,9 +512,11 @@ body {
 
 /* --- UPDATE BANNER --- */
 .update-banner {
-  opacity:    0;
-  max-height: 0;
-  overflow:   hidden;
+  font-family: var(--font-display);
+  font-weight: 700;
+  opacity:     0;
+  max-height:  0;
+  overflow:    hidden;
 
   transition:
     opacity    .25s ease,
@@ -809,6 +811,7 @@ body.lb-active #top-nav {
   display:        flex;
   flex-direction: column;
   gap:            12px;
+  align-items:    center;
 }
 /* Override: search-panel must NOT retain a transform, because
    position:fixed children (the chapter dropdown) use it as their
@@ -821,11 +824,14 @@ body.lb-active #top-nav {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+
 .search-row {
-  display:     flex;
-  gap:         10px;
-  width:       100%;
-  align-items: stretch;
+  display:         flex;
+  gap:             10px;
+  width:           100%;
+  max-width:       600px;
+  justify-content: center;
+  align-items:     stretch;
 }
 
 .verse-input {
@@ -928,11 +934,11 @@ body.lb-active #top-nav {
 /* Gita "Look up" button — saffron */
 .btn-primary {
   background: var(--accent);
-  color:      #1a1000;
+  color:      var(--blue);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--accent-dim);
+  background: var(--amber);
   box-shadow: var(--shadow-glow);
 }
 
@@ -1054,8 +1060,12 @@ body.lb-active { overflow: hidden; }
 
 /* ── Settings card — small floating panel ────────────────────────────────── */
 .lb-card--settings {
-  max-width: 320px;
-  animation: settings-card-in 0.18s ease forwards;
+  width:         90%;
+  max-width:     320px;
+  margin-height: 80vh;
+  margin-inline: auto;
+  margin-top:    8vh;
+  animation:     settings-card-in 0.18s ease forwards;
 }
 
 @keyframes settings-card-in {
@@ -1083,6 +1093,8 @@ body.lb-active { overflow: hidden; }
 }
 
 .settings-row-tag {
+  font-family:   var(--font-sans);
+  font-weight:   400;
   font-style:    normal;
   font-size:     0.72rem;
   color:         var(--text-secondary);
@@ -1690,7 +1702,7 @@ body.lb-active { overflow: hidden; }
 .custom-select {
   position: relative;
   flex:     none;
-  width:    320px;
+  width:    280px;
   z-index:  300;
   overflow: visible !important;
 }
@@ -1835,7 +1847,7 @@ body.lb-active { overflow: hidden; }
    VERSE / HEXAGRAM INPUT FIELD
    ═══════════════════════════════════════════════════════════════════════════ */
 .verse-field {
-  width:        140px;
+  width:        200px;
   background:   var(--navy);
   border-color: #1e3a5a;
   text-align:   center;
@@ -2160,9 +2172,9 @@ img {
   .banner-date     { font-size: 0.8rem; padding-left: 6px; }
   .banner-subtitle { padding: 0 60px 10px 60px; }
   .menu-toggle     { padding-right: 5px; }
-  .search-row      { flex-wrap: wrap; }
+  .search-row      { flex-direction: column; max-width: none; gap: 12px; }
   .btn             { width: 100%; text-align: center; }
-  .verse-input     { font-size: 0.97rem; }
+  .verse-input     { flex: 1 1 auto; width: 100%; font-size: 0.97rem; }
   .custom-select,
   .custom-select-list,
   .verse-field     { width: 100%; text-align: left; }
