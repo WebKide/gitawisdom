@@ -109,7 +109,10 @@ function closeLightbox() {
   if (header) header.classList.remove('lb-header--purport');
 
   // Remove I Ching border class so next open defaults to Gita saffron
+  // Remove all mode classes on close
   dom.lbCard.classList.remove('lb-card--iching');
+  dom.lbCard.classList.remove('lb-card--gita');
+  dom.lbCard.classList.remove('lb-card--wisdom');
 
   // Reset state
   state.mode        = 'gita';
@@ -249,6 +252,8 @@ function applyLightboxBranding() {
     dom.lbShareBtn.style.display = '';
 
     // Toggle I Ching card border color via CSS class
+    dom.lbCard.classList.remove('lb-card--gita');
+    dom.lbCard.classList.remove('lb-card--wisdom');
     dom.lbCard.classList.add('lb-card--iching');
   } else {
     dom.lbAuthorIcon.src = 'assets/images/prabhupada.png';
@@ -260,8 +265,11 @@ function applyLightboxBranding() {
     dom.lbCopyBtn.style.display  = '';
     dom.lbShareBtn.style.display = '';
 
-    // Remove I Ching card border color
+    // Remove I Ching card border color: dom.lbCard.classList.remove('lb-card--iching');
+    // Set Gita card branding
     dom.lbCard.classList.remove('lb-card--iching');
+    dom.lbCard.classList.remove('lb-card--wisdom');
+    dom.lbCard.classList.add('lb-card--gita');
   }
 }
 
@@ -439,7 +447,7 @@ function renderVerse() {
 
       // Hide COPY in purport view for both modes.
       // Hide SHARE in purport view for Gita only; keep for iChing.
-      dom.lbCopyBtn.style.display  = 'none';
+      dom.lbCopyBtn.style.display  = '';       // visible in purport for both modes
       dom.lbShareBtn.style.display = isGita ? 'none' : '';
     } else {
       // Random fallback message when no purport/commentary exists
@@ -727,9 +735,12 @@ function renderWisdomOracle(payload) {
   dom.lbAuthorIcon.alt = 'Wisdom Oracle';
   dom.lbAuthorTitle.innerHTML = '<strong>Guidance for you</strong>';
 
-  // ── Grey border for wisdom mode ──
+  // ── Grey border for wisdom mode ── dom.lbCard.style.borderTopColor = 'var(--text-muted)';
+  // ── Wisdom mode card branding ──
   dom.lbCard.classList.remove('lb-card--iching');
-  dom.lbCard.style.borderTopColor = 'var(--text-muted)';
+  dom.lbCard.classList.remove('lb-card--gita');
+  dom.lbCard.classList.add('lb-card--wisdom');
+  dom.lbCard.style.borderTopColor = '';
 
   // ── Hide navigation buttons ──
   dom.lbPrev.style.display = 'none';
@@ -755,18 +766,7 @@ function renderWisdomOracle(payload) {
   html += `<div class="lb-wisdom-section">
     <h2 style="text-align: center;">Wisdom Oracle’s guidance</h2>
     <h3 class="section-label">✦ The Personal Meditation</h3>
-    <div class="lb-synonyms-wrap" style="
-      font-size: calc(var(--lb-font-size) * 1.08); 
-      font-weight: 400; 
-      color: var(--text-heading); 
-      line-height: 1.75; 
-      font-style: normal; 
-      border-left: 3px solid var(--coral); 
-      border-top-left-radius: 0; 
-      border-bottom-left-radius: 0; 
-      border-top-right-radius: var(--radius); 
-      border-bottom-right-radius: var(--radius);
-    ">
+    <div class="lb-synonyms-wrap lb-guidance-special">
       ${escHtml(payload.guidance)}
     </div>
   </div>`;
