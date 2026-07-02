@@ -6,7 +6,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.45';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.46';
 
 /**
  * Deployment base.

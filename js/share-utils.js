@@ -423,8 +423,8 @@ async function handleShare() {
   const shareDateEl = document.querySelector('.share-png-date');
   if (shareDateEl) {
     shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.45'
-      : 'v1.1.45';
+      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.46'
+      : 'v1.1.46';
   }
 
   // ── Step 4b: Fit text and position footer before capture ──────────────────
@@ -640,6 +640,13 @@ async function openInfoModal(modalId, jsonPath) {
   _openModalCount++;
 }
 
+async function openUsageModal() {
+  return openInfoModal(
+    'usage-modal',
+    'assets/data/usage.json'
+  );
+}
+
 /**
  * Closes an info modal and decrements the open modal count.
  * Only removes body.lb-active if no other modals (including the main lightbox)
@@ -669,17 +676,22 @@ function initUsageModal() {
   const closeBtn = document.getElementById('usage-close');
   const openBtn  = document.querySelector('a[href="#usage-section"]');
 
-  if (!modal || !openBtn) return;
+  if (!modal) return;
 
-  openBtn.addEventListener('click', e => {
-    e.preventDefault();
-    openInfoModal('usage-modal', 'assets/data/usage.json');
-  });
+  if (openBtn) {
+    openBtn.addEventListener('click', e => {
+      e.preventDefault();
+      openUsageModal();
+    });
+  }
 
-  closeBtn.addEventListener('click', () => closeInfoModal(modal));
-  overlay.addEventListener('click', () => closeInfoModal(modal));
+  closeBtn?.addEventListener('click', () => closeInfoModal(modal));
+  overlay?.addEventListener('click', () => closeInfoModal(modal));
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeInfoModal(modal);
+    if (e.key === 'Escape' && modal.classList.contains('open')) {
+      closeInfoModal(modal);
+    }
   });
 }
 
@@ -885,11 +897,13 @@ function _parseInline(text) {
  * Settings do not lock scroll (no lb-active) — the modal is lightweight.
  */
 function initSettingsModal() {
+  const dom = getDom();
   _loadSettings();
   _applyOutlines(_settings.showLayoutOutlines);
 
   const modal      = document.getElementById('settings-modal');
   const overlay    = document.getElementById('settings-overlay');
+  const usageBtn   = document.getElementById('setting-open-usage'); // New reference
   const closeBtn   = document.getElementById('settings-close');
   const openBtn    = document.getElementById('menu-toggle-btn');
   const cbDate     = document.getElementById('setting-show-date');
@@ -901,11 +915,19 @@ function initSettingsModal() {
   if (cbDate)     cbDate.checked     = _settings.showDateInPng;
   if (cbOutlines) cbOutlines.checked = _settings.showLayoutOutlines;
 
-  function _closeSettings() { modal.classList.remove('open'); }
+  // function _closeSettings() { modal.classList.remove('open'); }
+  function _closeSettings() {
+    modal.classList.remove('open');
+    if (window._woState) window._woState.showSettings = false;
+  }
 
-  openBtn.addEventListener('click', () => modal.classList.toggle('open'));
+  openBtn.addEventListener('click', () => {
+    // console.log('Settings icon clicked'); // Debug check
+    modal.classList.toggle('open'); 
+  });
   closeBtn.addEventListener('click', _closeSettings);
   overlay.addEventListener('click', _closeSettings);
+
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && modal.classList.contains('open')) _closeSettings();
   });
@@ -917,7 +939,17 @@ function initSettingsModal() {
   cbOutlines?.addEventListener('change', () => {
     _saveSetting('showLayoutOutlines', cbOutlines.checked);
     _applyOutlines(cbOutlines.checked);
+    _closeSettings();  // automatically close settins modal
   });
+
+  // Wire the Usage Button
+  if (usageBtn) {
+    usageBtn.addEventListener('click', async () => {
+      modal.classList.remove('open');
+      if (window._woState) window._woState.showSettings = false;
+      await openUsageModal();
+    });
+  }
 }
 
 // ─── Exports ──────────────────────────────────────────────────────────────────

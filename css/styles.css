@@ -489,9 +489,30 @@ body {
 
 /* --- THEME COLORS --- */
 .module-tab--wisdom {
+  position:   relative;
   background: rgba(248, 113, 113, 0.08);
   border:     1px solid var(--red-btn-bright);
   color:      var(--coral);
+}
+.notification-dot {
+  position:         absolute;
+  align-items:      center;
+  justify-content:  center;
+  background-color: var(--red-btn-bright);
+  color:            var(--text-heading);
+  display:          flex;
+  border-radius:    50%;
+  border:           2px solid var(--bg-card-alt);
+
+  font-family:      var(--font-sans);
+  font-size:        14px;
+  font-weight:      600;
+
+  width:            22px;
+  height:           22px;
+  pointer-events:   none;
+  right:            -10px;
+  top:              -10px;
 }
 .module-tab--wisdom:hover {
   background: rgba(248, 113, 113, 0.16);
@@ -1131,6 +1152,35 @@ body.lb-active { overflow: hidden; }
   background:    rgba(255,255,255,0.07);
   border-radius: 3px;
   padding:       1px 3px;
+}
+
+.settings-action-btn {
+  display: flex;
+  flex-direction: column; /* Stacks icon on top of text */
+  align-items: center;    /* Centers items horizontally */
+  justify-content: center;
+  gap: 8px;               /* Space between icon and text */
+  padding: 12px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: var(--font-display); /* Using Sansita for labels */
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.settings-action-btn:hover {
+  background-color: var(--bg-mid);
+  border-color: var(--accent);
+}
+
+/* Size the icon specifically */
+.settings-action-btn i, 
+.settings-action-btn svg {
+  font-size: 1.5rem;
+  color: var(--accent); /* Uses the saffron accent from your :root */
 }
 
 .lb-card.loading { opacity: 0.6; pointer-events: none; transition: opacity 0.2s; }

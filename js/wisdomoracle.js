@@ -85,6 +85,11 @@ async function handleWisdomOracle() {
   state.loading = true;
   clearErrors();
 
+  // --- Notification function that triggers when the user opens the oracle ---
+  if (dom.woNotificationDot) {
+    dom.woNotificationDot.style.display = 'none';
+  }
+
   try {
     const oracle = await _loadOracleJson();
 

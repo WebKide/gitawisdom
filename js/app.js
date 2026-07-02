@@ -148,7 +148,8 @@ const dom = {
 
   // ── NEW: Wisdom Oracle ──
   wisdomoracleRandomBtn: document.getElementById('wisdomoracle-random-btn'),
-  updateBanner: document.getElementById('update-banner'),
+  woNotificationDot:     document.getElementById('wo-notification-dot'),
+  updateBanner:          document.getElementById('update-banner'),
 
   // ── Lightbox shell ─────────────────────────────────────────────────────────
   lightbox:        document.getElementById('lightbox'),
@@ -196,6 +197,10 @@ const dom = {
   sharePngTitle:     document.querySelector('.share-png-title'),
   sharePngVerse:     document.querySelector('.share-png-verse'),
   sharePngFooter:    document.querySelector('.share-png-footer'),
+
+  settingsModal: document.getElementById('settings-modal'),
+  usageModal:    document.getElementById('usage-modal'),
+  aboutModal:    document.getElementById('about-modal'),
 };
 
 // ─── Expose state and dom to dependent modules ──────────────────────────────
@@ -238,6 +243,18 @@ window.__TEST_UPDATE = () => {
   dom.updateBanner?.classList.add('visible');
 };
 
+// ——> build flag for testing the notification dot
+window.__TEST_DOT = () => {
+  // Clear the saved date so the logic triggers on next reload
+  localStorage.removeItem('wo_last_visit');
+  // Show the dot immediately
+  if (dom.woNotificationDot) {
+    dom.woNotificationDot.style.display = 'flex';
+    console.log('[WO-TEST] Notification dot visible. LocalStorage cleared.');
+  } else {
+    console.warn('[WO-TEST] dom.woNotificationDot not found. Check your dom object.');
+  }
+};
 
 // ─── Debug logging wrapper ────────────────────────────────────────────────────
 /**
@@ -381,6 +398,20 @@ initChapterSelect();
  * to all .lb-card elements so the reader is immediately usable.
  */
 applyFontSize();
+
+// ─── Startup Notification Dot Logic ───────────────────────────────────────────
+/**
+ * On startup, show notification dot on Wisdom Oracle button of unread for today
+ */
+const today = new Date().toDateString();
+const lastVisit = localStorage.getItem('wo_last_visit');
+
+if (lastVisit !== today) {
+  dom.woNotificationDot.style.display = 'flex';
+}
+
+// Update the last visit to today immediately on load
+localStorage.setItem('wo_last_visit', today);
 
 // ─── Search Initialization ───────────────────────────────────────────────────
 /**
