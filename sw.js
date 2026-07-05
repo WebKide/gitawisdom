@@ -6,7 +6,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.46';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.47';
 
 /**
  * Deployment base.
@@ -128,12 +128,14 @@ self.addEventListener('install', event => {
         console.warn('[SW] Skip caching:', url, err);
       }
     }
-
-    await self.skipWaiting();
-
   })());
 });
 
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
 /* ────────────────────────────────────────────────────────────────────────── */
 // ─── Activate: delete old caches ──────────────────────────────────────────
 /* ────────────────────────────────────────────────────────────────────────── */

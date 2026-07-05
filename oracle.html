@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
   <meta name="description"
         content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.1.46</title>
+  <title>Wisdom Oracle v1.1.47</title>
   <meta name="author" content="WebKide" />
   <link rel="stylesheet" href="css/styles.css" />
 
@@ -128,10 +128,48 @@
         <span class="tab-title">Wisdom Oracle</span>
         <span class="tab-subtitle">personalised draw</span>
         <span id="wo-notification-dot"
-              class="notification-dot"
-              style="display: none;">1</span>
+              class="notification-dot">1</span>
       </div>
     </button>
+
+    <script>
+    // ─── Startup Notification Dot Logic ──────────────────────────────────────────
+    /**
+     * Show notification-dot on Wisdom Oracle button if unread today
+     */
+    (function () {
+      'use strict';
+
+      const STORAGE_KEY = 'wo_last_visit';
+
+      function today() {
+        return new Date().toDateString();
+      }
+
+      const button = document.getElementById('wisdomoracle-random-btn');
+      const dot = document.getElementById('wo-notification-dot');
+
+      if (!button || !dot) return;
+
+      // Show the notification if the user hasn't opened Wisdom Oracle today.
+      if (localStorage.getItem(STORAGE_KEY) !== today()) {
+        dot.classList.add('visible');
+      }
+
+      // Mark today's notification as read when the button is clicked.
+      button.addEventListener('click', function () {
+        localStorage.setItem(STORAGE_KEY, today());
+        dot.classList.remove('visible');
+      });
+
+      // Development helper
+      window.__TEST_DOT = function () {
+        localStorage.removeItem(STORAGE_KEY);
+        dot.classList.add('visible');
+        console.log('[WO-TEST] Notification reset. Reload to verify startup behaviour.');
+      };
+    })();
+    </script>
 
     <button type="button"
             id="gita-random-btn"
@@ -399,7 +437,7 @@
            draggable="false" />
       <p>
         To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
-        <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.46」</b>
+        <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.47」</b>
       </p>
     </div>
   </footer>

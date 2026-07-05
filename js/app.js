@@ -143,12 +143,10 @@ const dom = {
   // ── iChing landing controls ────────────────────────────────────────────────
   ichingForm:      document.getElementById('iching-form'),
   ichingInput:     document.getElementById('iching-input'),
-  // —  ichingBtn: document.getElementById('iching-btn'),
   ichingErrorBox:  document.getElementById('iching-error-box'),
 
   // ── NEW: Wisdom Oracle ──
   wisdomoracleRandomBtn: document.getElementById('wisdomoracle-random-btn'),
-  woNotificationDot:     document.getElementById('wo-notification-dot'),
   updateBanner:          document.getElementById('update-banner'),
 
   // ── Lightbox shell ─────────────────────────────────────────────────────────
@@ -213,25 +211,30 @@ window._woDom   = dom;
 initSwipe();
 
 // ─── Listen for messages from the Service Worker ────────────────────────────
+let swRegistration = null;
+
+// ─── Register Service Worker ────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
 
   navigator.serviceWorker.register('sw.js')
-    .then(reg => console.log('SW registered:', reg.scope))
+    .then(reg => {
+      swRegistration = reg;
+
+      console.log('SW registered:', reg.scope);
+
+      reg.update();
+    })
     .catch(err => console.error('SW failed:', err));
 
   navigator.serviceWorker.addEventListener('message', event => {
 
-    if (!event.data)
-      return;
+    if (!event.data) return;
 
     if (event.data.type === 'SW_UPDATED') {
 
       console.log('[WO] New version available:', event.data.version);
 
-      if (dom.updateBanner) {
-        dom.updateBanner.classList.add('visible')
-      }
-
+      dom.updateBanner?.classList.add('visible');
     }
 
   });
@@ -241,19 +244,6 @@ if ('serviceWorker' in navigator) {
 // ——> build flag for testing the update banner
 window.__TEST_UPDATE = () => {
   dom.updateBanner?.classList.add('visible');
-};
-
-// ——> build flag for testing the notification dot
-window.__TEST_DOT = () => {
-  // Clear the saved date so the logic triggers on next reload
-  localStorage.removeItem('wo_last_visit');
-  // Show the dot immediately
-  if (dom.woNotificationDot) {
-    dom.woNotificationDot.style.display = 'flex';
-    console.log('[WO-TEST] Notification dot visible. LocalStorage cleared.');
-  } else {
-    console.warn('[WO-TEST] dom.woNotificationDot not found. Check your dom object.');
-  }
 };
 
 // ─── Debug logging wrapper ────────────────────────────────────────────────────
@@ -316,10 +306,35 @@ if (dom.wisdomoracleRandomBtn) {
   dom.wisdomoracleRandomBtn.addEventListener('click', () => { closeSearchCardUI(); _wrappedHandleWisdomOracle(); });
 }
 
-// Reload after Service Worker update
+/* Reload after Service Worker update */
+
 if (dom.updateBanner) {
   dom.updateBanner.addEventListener('click', () => {
-    window.location.reload();
+
+    if (!('serviceWorker' in navigator)) {
+      window.location.reload();
+      return;
+    }
+
+    let refreshing = false;
+
+    navigator.serviceWorker.addEventListener(
+      'controllerchange',
+      () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      },
+      { once: true }
+    );
+
+    if (swRegistration?.waiting) {
+      swRegistration.waiting.postMessage({
+        type: 'SKIP_WAITING'
+      });
+    } else {
+      window.location.reload();
+    }
   });
 }
 
@@ -398,20 +413,6 @@ initChapterSelect();
  * to all .lb-card elements so the reader is immediately usable.
  */
 applyFontSize();
-
-// ─── Startup Notification Dot Logic ───────────────────────────────────────────
-/**
- * On startup, show notification dot on Wisdom Oracle button of unread for today
- */
-const today = new Date().toDateString();
-const lastVisit = localStorage.getItem('wo_last_visit');
-
-if (lastVisit !== today) {
-  dom.woNotificationDot.style.display = 'flex';
-}
-
-// Update the last visit to today immediately on load
-localStorage.setItem('wo_last_visit', today);
 
 // ─── Search Initialization ───────────────────────────────────────────────────
 /**

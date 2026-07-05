@@ -27,7 +27,7 @@ export async function initSearchController(engine, callbacks) {
   _cb     = callbacks;
 
   try {
-    const res = await fetch('assets/data/search.json');
+    const res = await fetch(new URL('../assets/data/search.json', import.meta.url));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     _s = await res.json();
   } catch (err) {

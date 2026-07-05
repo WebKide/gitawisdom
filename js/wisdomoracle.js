@@ -64,7 +64,7 @@ let _oracleJson = null;
  */
 async function _loadOracleJson() {
   if (_oracleJson) return _oracleJson;
-  const resp = await fetch('assets/data/oracle.json');
+  const resp = await fetch(new URL('../assets/data/oracle.json', import.meta.url));
   if (!resp.ok) throw new Error(`oracle.json HTTP ${resp.status}`);
   _oracleJson = await resp.json();
   return _oracleJson;
@@ -94,9 +94,14 @@ async function handleWisdomOracle() {
     const oracle = await _loadOracleJson();
 
     // 1. Random guidance
-    const guidance = oracle['random-guidance'][
-      Math.floor(Math.random() * oracle['random-guidance'].length)
-    ];
+    const guidancePool = oracle['random-guidance'];
+
+    if (!Array.isArray(guidancePool) || guidancePool.length === 0) {
+      throw new Error('No Wisdom Oracle guidance entries found.');
+    }
+
+    const guidance =
+      guidancePool[Math.floor(Math.random() * guidancePool.length)];
 
     // 2. Random Gita verse (reuse existing randomVerse from gitacore)
     const { chapter, ref: gitaRef } = randomVerse();
@@ -130,9 +135,12 @@ async function handleWisdomOracle() {
   } catch (err) {
     console.error('[handleWisdomOracle]', err);
     // Show error in a generic alert or dedicated wisdom error box
-    const box = dom.gitaErrorBox; // reuse for now
-    box.innerHTML = `Wisdom Oracle: ${escHtml(err.message)}`;
-    box.classList.add('visible');
+    const box = dom.gitaErrorBox;
+
+    if (box) {
+      box.innerHTML = `Wisdom Oracle: ${escHtml(err.message)}`;
+      box.classList.add('visible');
+    }
   } finally {
     state.loading = false;
   }
@@ -156,7 +164,6 @@ function closeOracleCard() {
   const state = getState();
   state.wisdomPayload = null;
   state.oracleOrigin = false;
-  // closeLightbox() handles DOM cleanup
 }
 
 // ─── Exports ──────────────────────────────────────────────────────────────────
