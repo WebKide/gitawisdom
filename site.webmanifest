@@ -3,13 +3,29 @@
   "short_name": "Wisdom Oracle",
   "description": "Find wisdom, clarity, and emotional strength for everyday challenges.",
   "start_url": "./index.html",
-  "scope": ".",
+  "scope": "./",
   "display_override": ["minimal-ui"],
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#1e1f22",
   "background_color": "#1e1f22",
   "categories": ["lifestyle", "utilities", "spirituality"],
+  "screenshots": [
+    {
+      "src": "screenshot/mobile-home.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Perfect for daily guidance and inspiration in your pocket"
+    },
+    {
+      "src": "screenshot/desktop-home.png",
+      "sizes": "1600x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Available offline for desktop and mobile"
+    }
+  ],
   "icons": [
     {
       "src": "assets/icons/apple-touch-icon.png",
