@@ -265,13 +265,9 @@ function _runSearch() {
     return;
   }
 
-  // Extract query words for highlighting
-  _lastQueryWords = term
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s]/gu, '')
-    .trim()
-    .split(/\s+/)
-    .filter(w => w.length >= 2);
+  // Extract query words for highlighting — same normalization/stopword
+  // logic the search itself used, so display highlighting matches exactly
+  _lastQueryWords = _engine.getHighlightTerms(term);
 
   _results = _engine.search(term, _mode);
   _page    = 1;
@@ -305,8 +301,9 @@ function _renderPage() {
 
       if (_cb.appState) _cb.appState.searchOrigin = true;
 
+      // (unrelated - just closeSearchCard() as before)
       closeSearchCard();
-      _cb.displayVerse?.(chapter, ref);
+      _cb.displayVerse?.(chapter, ref, false, _lastQueryWords);
     };
 
     el.addEventListener('click', activate);

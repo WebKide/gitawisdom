@@ -33,6 +33,8 @@ import {
   randomVerse,
 } from './gitacore.js';
 
+import { highlightTerms } from './fuse-search.js';
+
 import {
   HEXAGRAM_NAMES,
   ICHING_AUTHOR_ICON,
@@ -115,15 +117,16 @@ function closeLightbox() {
   dom.lbCard.classList.remove('lb-card--wisdom');
 
   // Reset state
-  state.mode        = 'gita';
-  state.chapter     = null;
-  state.verseRef    = null;
-  state.chapterData = null;
-  state.verseData   = null;
-  state.hexRef      = null;
-  state.ichingData  = null;
-  state.hexData     = null;
-  state.showPurport = false;
+  state.mode           = 'gita';
+  state.chapter        = null;
+  state.verseRef       = null;
+  state.chapterData    = null;
+  state.verseData      = null;
+  state.hexRef         = null;
+  state.ichingData     = null;
+  state.hexData        = null;
+  state.showPurport    = false;
+  state.highlightTerms = [];
 
   // ── NEW: Clean up wisdom mode ──
   const wisdomBody = document.getElementById('lb-wisdom-body');
@@ -379,9 +382,11 @@ function renderVerse() {
 
   // ── Translation / Judgment ────────────────────────────────────────────────
   const transl = (verseData['Translation-En'] ?? '').replace(/\s+/g, ' ').trim();
-  dom.lbTranslation.textContent = isGita
-    ? (transl ? `\u201C${transl}\u201D` : 'No translation found.')
-    : (transl || 'No judgement found.');
+  const terms  = state.highlightTerms || [];
+  const translMarked = terms.length ? highlightTerms(transl, terms) : escHtml(transl);
+  dom.lbTranslation.innerHTML = isGita
+    ? (transl ? `\u201C${translMarked}\u201D` : 'No translation found.')
+    : (translMarked || 'No judgement found.');
 
   // ── Sanskrit / hexagram lines ─────────────────────────────────────────────
   const lines = isGita
@@ -442,7 +447,11 @@ function renderVerse() {
     if (purportRaw) {
       const paras = purportRaw.split(/\n\n+/).filter(Boolean);
       dom.lbPurport.innerHTML = paras
-        .map(p => `<p>${escHtml(p.replace(/\n/g, ' ').trim())}</p>`)
+        .map(p => {
+          const clean = p.replace(/\n/g, ' ').trim();
+          const body  = terms.length ? highlightTerms(clean, terms) : escHtml(clean);
+          return `<p>${body}</p>`;
+        })
         .join('');
 
       // Hide COPY in purport view for both modes.
@@ -529,7 +538,7 @@ function escHtml(str) {
  * @param {string}  verseRef — canonical ref, e.g. "4" or "26-27"
  * @param {boolean} [keepPurport=false] — preserve purport view when re-rendering same verse
  */
-async function displayVerse(chapter, verseRef, keepPurport = false) {
+async function displayVerse(chapter, verseRef, keepPurport = false, terms = []) {
   const state = getState();
   const dom = getDom();
 
@@ -543,11 +552,12 @@ async function displayVerse(chapter, verseRef, keepPurport = false) {
     const chapterData = await loadChapterData(chapter);
     const verseData   = findVerseData(chapterData, verseRef);
 
-    state.chapter     = chapter;
-    state.verseRef    = verseRef;
-    state.chapterData = chapterData;
-    state.verseData   = verseData;
-    state.showPurport = keepPurport ? state.showPurport : false;
+    state.chapter       = chapter;
+    state.verseRef      = verseRef;
+    state.chapterData   = chapterData;
+    state.verseData     = verseData;
+    state.showPurport   = keepPurport ? state.showPurport : false;
+    state.highlightTerms = terms; // empty array clears highlighting on normal navigation
 
     applyLightboxBranding();
     renderVerse();

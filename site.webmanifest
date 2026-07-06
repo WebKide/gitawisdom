@@ -4,6 +4,7 @@
   "description": "Find wisdom, clarity, and emotional strength for everyday challenges.",
   "start_url": "./index.html",
   "scope": ".",
+  "display_override": ["minimal-ui"],
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#1e1f22",

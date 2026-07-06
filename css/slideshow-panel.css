@@ -1,0 +1,227 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+  slideshow-panel.css
+  Horizontal auto-scrolling slideshow used to cycle the Gītā / iChing intro
+  cards. Two transition styles are available — pick one by adding the
+  matching class to the .wo-slideshow root:
+
+   .wo-anim-slide  → filmstrip: all slides shift sideways together
+   .wo-anim-push   → incoming slide slides in and pushes the outgoing one out
+
+  Both directions (left↔right) are supported by the JS depending on which
+  dot/slide is targeted; default autoplay direction is right-to-left.
+
+
+  How to tune Ken Burns effect, per image:
+
+  --kb-duration — how long one zoom cycle takes (default 16s)
+  --kb-scale    — how far it zooms in (default 1.15 = 15%)
+  --kb-origin   — pan anchor/direction, any transform-origin value: center, top left, bottom right, 20% 80%, etc.
+  Modifier classes, add alongside ken-burns:
+
+  (none) → default: breathes in and out forever, no jump-cut
+  ken-burns-loop → continuous one-way zoom that snaps back each cycle
+  ken-burns-once → zooms in once and holds
+  ken-burns-fade → adds a soft opacity fade-in on first paint
+
+  <div class="intro-thumb ken-burns-frame">
+    <img src="assets/images/iching.png" alt=""
+         class="ken-burns"
+         style="--kb-duration:20s; --kb-scale:1.2; --kb-pan-x:-5%;">
+  </div>
+
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.wo-slideshow {
+  position: relative;
+  width:    100%;
+}
+
+.wo-slideshow-viewport {
+  position:      relative;
+  overflow:      hidden;
+  border-radius: var(--radius);
+  transition:    height .4s ease;
+}
+
+/* ── Track (shared wrapper for both modes) ── */
+.wo-slideshow-track {
+  position: relative;
+  display:  flex;
+  height:   100%;
+}
+
+/* ═══ SLIDE mode — items sit side by side, track translates ═══ */
+.wo-anim-slide .wo-slideshow-track {
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.wo-anim-slide .wo-slideshow-item {
+  flex-shrink: 0;
+  width:       100%;
+}
+
+/* ═══ PUSH mode — items stacked absolutely, track is a static frame ═══ */
+.wo-anim-push .wo-slideshow-track {
+  display: block;
+  height:  100%;
+}
+
+.wo-anim-push .wo-slideshow-item {
+  position:   absolute;
+  top:        0;
+  left:       0;
+  width:      100%;
+  visibility: hidden;
+  transform:  translateX(100%);
+  transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.wo-anim-push .wo-slideshow-item.wo-active {
+  visibility: visible;
+  transform:  translateX(0);
+  z-index:    2;
+}
+
+.wo-anim-push .wo-slideshow-item.wo-exit-left {
+  visibility: visible;
+  transform:  translateX(-100%);
+  z-index:    1;
+}
+
+.wo-anim-push .wo-slideshow-item.wo-exit-right {
+  visibility: visible;
+  transform:  translateX(100%);
+  z-index:    1;
+}
+
+.wo-anim-push .wo-slideshow-item.wo-enter-from-right {
+  visibility: visible;
+  transform:  translateX(100%);
+  transition: none;  /* placed instantly before the animated class kicks in */
+}
+
+.wo-anim-push .wo-slideshow-item.wo-enter-from-left {
+  visibility: visible;
+  transform:  translateX(-100%);
+  transition: none;
+}
+
+/* Slides keep their card’s own spacing/border intact; the slideshow just
+   frames and animates them. */
+.wo-slideshow-item .intro {
+  height: 100%;
+}
+
+/* Ensure the card has a smooth transition */
+.wo-slideshow-item {
+  transition: filter 0.3s ease, transform 0.3s ease;
+  cursor:     default;  /* Makes it clear the item is interactive */
+}
+
+/* Brighten the card on hover */
+.wo-slideshow-item:hover {
+  filter:    brightness(1.10);    /* Increases brightness by 10% */
+  transform: translateY(-1.2px);  /* Optional: slight lift effect */
+}
+
+/* ── Dot navigation ── */
+.wo-slideshow-dotnav {
+  display:         flex;
+  justify-content: center;
+  gap:             8px;
+  margin-top:      14px;
+}
+
+.wo-dot {
+  width:         8px;
+  height:        8px;
+  border-radius: 50%;
+  border:        none;
+  padding:       0;
+  background:    var(--text-secondary);
+  cursor:        pointer;
+  transition:    background var(--transition), transform var(--transition);
+}
+
+.wo-dot:hover { background: var(--text-muted); }
+
+.wo-dot-active {
+  background: var(--text-primary);
+  transform:  scale(1.25);
+}
+
+/* Respect users who’ve asked the OS to reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .wo-slideshow-track,
+  .wo-anim-push .wo-slideshow-item {
+    transition: none !important;
+  }
+}
+
+/* ═══ KEN BURNS — zoom/pan confined inside a fixed-size frame ═══
+   .intro-thumb (or any fixed-size box) becomes the frame: it keeps its own
+   width/height/border-radius and clips whatever moves inside it.
+   The .ken-burns class goes on the <img> itself, which fills the frame at
+   100% and is the element that actually scales/pans.
+*/
+.ken-burns-frame {
+  position: relative;
+  overflow: hidden; /* clips the zoom/pan so the outer box never changes size */
+}
+
+.ken-burns-frame .ken-burns {
+  position:      absolute;
+  inset:         0;
+  width:         100%;
+  height:        100%;
+  object-fit:    cover;
+
+  /* the frame’s own border-radius + overflow:hidden do the rounding */
+  border-radius: 0;
+}
+
+.ken-burns {
+  --kb-duration: 16s;
+  --kb-scale:    1.15;
+  --kb-origin:   center;
+  --kb-pan-x:    0%;
+  --kb-pan-y:    0%;
+
+  display:          block;
+  transform-origin: var(--kb-origin);
+  will-change:      transform;
+  animation:        wo-ken-burns var(--kb-duration) ease-in-out infinite alternate;
+}
+
+.ken-burns.ken-burns-loop {
+  animation-direction:       normal;
+  animation-timing-function: linear;
+}
+
+.ken-burns.ken-burns-once {
+  animation-iteration-count: 1;
+  animation-fill-mode:       forwards;
+}
+
+.ken-burns.ken-burns-fade {
+  animation-name:            wo-ken-burns, wo-ken-burns-fade-in;
+  animation-duration:        var(--kb-duration), 1.2s;
+  animation-iteration-count: infinite, 1;
+  animation-fill-mode:       none, forwards;
+}
+
+@keyframes wo-ken-burns {
+  from { transform: scale(1) translate(0, 0); }
+  to   { transform: scale(var(--kb-scale)) translate(var(--kb-pan-x), 
+                    var(--kb-pan-y));
+  }
+}
+
+@keyframes wo-ken-burns-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns { animation: none; }
+}

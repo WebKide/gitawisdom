@@ -257,6 +257,9 @@
 
   /* Share PNG footer font size */
   --share-footer-font-size: 24px;
+
+  --mark-bg: var(--accent-glow);
+  --mark-fg: var(--accent);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -277,6 +280,8 @@ body {
   position:               relative;
   width:                  100%;
   overflow-x:             hidden;
+
+  height:                 100%;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -298,6 +303,8 @@ body {
   flex-direction: column;
   align-items:    center;
   gap:            0;
+
+  min-height:     100vh;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1350,7 +1357,6 @@ body.lb-active { overflow: hidden; }
   border-left-color: var(--iching-dim);
 }
 
-
 /* ═══════════════════════════════════════════════════════════════════════════
    SECTION LABELS
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -2177,12 +2183,19 @@ img {
   margin:      0;
 }
 
-.search-result-snippet mark {
-  background:    rgba(245,166,35,0.22);
-  color:         var(--accent);
+mark {
+  background: var(--mark-bg);
+  color: var(--mark-fg);
   border-radius: 2px;
-  padding:       0 2px;
-  font-style:    normal;
+  padding: 0 2px;
+  font-style: normal;
+}
+
+highlight {
+  background: none !important;
+  border-bottom: 2px solid var(--mark-bg);
+  color: var(--mark-fg);
+  padding: 0;
 }
 
 .search-page-info {

@@ -103,6 +103,10 @@ const FONT_DEFAULT = 16;
  * @property {object|null}  ichingData  — full parsed iChing JSON (lightbox.js)
  * @property {object|null}  hexData     — the specific hexagram object (lightbox.js)
  * @property {boolean}      searchOrigin — true when lightbox opened from a search result
+ * @property {string[]}     highlightTerms — query terms to highlight in translation/purport
+ *                                            when opened from a search result (set by
+ *                                            search-ui.js via displayVerse's 4th arg,
+ *                                            cleared on closeLightbox)
  */
 const state = {
   mode:         'gita',
@@ -126,6 +130,7 @@ const state = {
 
   searchOrigin: false,
   oracleOrigin: false,
+  highlightTerms: [],
 };
 
 // ─── DOM references ───────────────────────────────────────────────────────────

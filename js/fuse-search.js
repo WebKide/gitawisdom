@@ -451,6 +451,10 @@ export class GitaSearch {
     return [...exactResults, ...fallbackResults];
   }
 
+  getHighlightTerms(term) {
+    return buildQuery(term).scoringTerms;
+  }
+
   buildSnippet(result, mode) {
     const field = mode === 'purport' ? 'purport' : 'translation';
     const text  = result.item[field] ?? '';
@@ -553,10 +557,7 @@ export class GitaSearch {
   }
 
   _escHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+    return escapeHtml(str);
   }
 }
 
@@ -620,4 +621,37 @@ function snapToWordBoundaries(text, start, end) {
   while (e < text.length - 1 && isWordChar(text[e]) && isWordChar(text[e + 1])) e++;
 
   return [s, e];
+}
+
+// ─── html escape (standalone, shared) ──────────────────────────────────────
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// ─── highlight matched terms in full text (verse/purport display) ─────────
+export function highlightTerms(text, terms) {
+  if (!text) return '';
+  if (!terms || !terms.length) return escapeHtml(text);
+
+  const termSet = new Set(terms.map(normalizeWord));
+  const spans = extractTokensWithOffsets(text)
+    .filter(tok => termSet.has(tok.norm))
+    .map(tok => [tok.start, tok.end]);
+
+  if (!spans.length) return escapeHtml(text);
+
+  const merged = bridgeStopwordGaps(mergeOverlappingIndices(spans), text);
+
+  let result = '';
+  let lastIdx = 0;
+  merged.forEach(([s, e]) => {
+    result += escapeHtml(text.slice(lastIdx, s));
+    result += '<mark>' + escapeHtml(text.slice(s, e + 1)) + '</mark>';
+    lastIdx = e + 1;
+  });
+  result += escapeHtml(text.slice(lastIdx));
+  return result;
 }
