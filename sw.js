@@ -6,7 +6,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.48';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.49';
 
 /**
  * Deployment base.
@@ -22,6 +22,7 @@ const ASSETS = [
 
   // Scripts
   BASE + '/js/app.js',
+  BASE + '/js/bookmarks.js',
   BASE + '/js/fuse.min.js',
   BASE + '/js/fuse-search.js',
   BASE + '/js/gitacore.js',
@@ -29,12 +30,15 @@ const ASSETS = [
   BASE + '/js/ichingcore.js',
   BASE + '/js/lightbox.js',
   BASE + '/js/oracle-forms.js',
+  BASE + '/js/router.js',
   BASE + '/js/search-ui.js',
   BASE + '/js/share-utils.js',
+  BASE + '/js/slideshow-panel.js',
   BASE + '/js/splash.js',
   BASE + '/js/wisdomoracle.js',
 
   // Styles
+  BASE + '/css/slideshow-panel.css',
   BASE + '/css/styles.css',
   BASE + '/css/splash.css',
 
@@ -60,14 +64,15 @@ const ASSETS = [
   BASE + '/assets/fonts/kelvinch-v42-latin-italic.woff2',
   BASE + '/assets/fonts/kelvinch-v42-latin-700.woff2',
   BASE + '/assets/fonts/kelvinch-v42-latin-700italic.woff2',
+
   BASE + '/assets/fonts/gentium-plus-v2-latin_latin-ext-regular.woff2',
   BASE + '/assets/fonts/gentium-plus-v2-latin_latin-ext-italic.woff2',
   BASE + '/assets/fonts/gentium-plus-v2-latin_latin-ext-700.woff2',
   BASE + '/assets/fonts/gentium-plus-v2-latin_latin-ext-700italic.woff2',
+
   BASE + '/assets/fonts/sansita-v12-latin_latin-ext-700.woff2',
   BASE + '/assets/fonts/sansita-v12-latin_latin-ext-700italic.woff2',
-  BASE + '/assets/fonts/sansita-v12-latin_latin-ext-900.woff2',
-  BASE + '/assets/fonts/sansita-v12-latin_latin-ext-900italic.woff2',
+
   BASE + '/assets/fonts/ubuntu-sans-v4-latin-ext-600.woff2',
   BASE + '/assets/fonts/ubuntu-sans-v4-latin-ext-600italic.woff2',
   BASE + '/assets/fonts/ubuntu-sans-v4-latin-ext-italic.woff2',

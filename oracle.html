@@ -4,33 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1e1f22" />
+  <meta name="color-scheme" content="dark" />
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
   <meta name="description"
         content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.1.48</title>
+  <title>Wisdom Oracle v1.1.49</title>
   <meta name="author" content="WebKide" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/slideshow-panel.css" />
 
   <!-- Fuse.js — must load before app.js module so Fuse is a global -->
-  <script src="js/fuse.min.js"></script>
+  <script src="js/fuse.min.js" defer></script>
 
   <!-- App entry point and dependencies loaded as ES modules; fuse-search.js and search-ui.js power the Gītā search feature -->
-  <script src="js/html2canvas.min.js"></script>
+  <script src="js/html2canvas.min.js" defer></script>
 
   <!-- Slideshow panel: cycles the Gītā / iChing intro cards -->
   <script src="js/slideshow-panel.js" defer></script>
 
-  <!-- Register service worker (same scope as index.html) -->
+  <!-- Register service worker (same scope as index.html)
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')
         .catch(err => console.warn('SW registration failed:', err));
     }
-  </script>
+  </script> -->
 
   <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
@@ -121,7 +124,8 @@
 
     <!-- Logo — floats up and down -->
     <img src="assets/images/wisdomoracle.svg"
-         alt=""class="banner-lotus"
+         alt=""
+         class="banner-lotus"
          aria-hidden="true"
          draggable="false"/>
     <p class="banner-subtitle">Find wisdom, clarity, and emotional strength for everyday challenges.</p>
@@ -498,7 +502,7 @@
            draggable="false" />
       <p>
         To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
-        <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.48」</b>
+        <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.49」</b>
       </p>
     </div>
   </footer>
@@ -566,6 +570,17 @@
                 title="Share verse"
                 aria-label="Share verse">
           SHARE
+        </button>
+
+        <!-- Bookmarks icon -->
+        <button id="lb-bookmark-btn"
+                class="lb-icon-btn"
+                title="Bookmark"
+                aria-label="Bookmark"
+                style="display:none;">
+          <svg class="tab-icon" viewBox="0 -960 960 960" width="20" height="20" aria-hidden="true">
+            <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z"/>
+          </svg>
         </button>
 
         <!-- Font-size controls -->
@@ -822,23 +837,27 @@
                 aria-label="Close settings">&times;</button>
       </div>
     </header>
-    <div class="lb-body">
-        <p style="
-          font-family: var(--font-text);
-          font-weight: 400;
-          color:       var(--text-secondary);">
-        These settings control some visual aspects</p>
-          <div class="divider"></div>
 
+    <div class="lb-body">
+      <p style="
+        font-family: var(--font-text);
+        font-weight: 400;
+        color:       var(--text-secondary);">
+        These settings control some visual aspects</p>
+      <div class="divider"></div>
+
+      <!-- Row 1: Datestamp toggle -->
       <div class="settings-row">
         <span class="settings-row-label">
-          Include <em class="settings-row-tag">datestamp</em> in PNG share</span>
+          Include <em class="settings-row-tag">datestamp</em> in PNG share
+        </span>
         <label class="toggle" aria-label="Include date in PNG share">
           <input type="checkbox" id="setting-show-date" />
           <span class="slider"></span>
         </label>
       </div>
 
+      <!-- Row 2: DevTools toggle -->
       <div class="settings-row">
         <span class="settings-row-label">
           Show layout outlines <em class="settings-row-tag">devTools</em>
@@ -849,30 +868,53 @@
         </label>
       </div>
 
-      <!-- Inside the lb-body of #settings-modal -->
+      <!-- Row 3: Usage button — now matches the row format -->
       <div class="settings-row">
+        <span class="settings-row-label">
+          What’s New <em class="settings-row-tag">Version History</em> logs
+        </span>
         <button type="button" 
                 id="setting-open-usage" 
-                class="settings-action-btn" 
-                style="display: flex;
-                  align-items: center;
-                  gap: 8px;
-                  width: 100%;
-                  justify-content: center;
-                  padding: 10px;
-                  cursor: pointer;
-                ">
+                class="settings-action-ico"
+                aria-label="Open app usage">
           <svg class="tab-icon"
                viewBox="0 0 24 24"
                aria-hidden="true"
-               width="24"
-               height="24">
+               width="20"
+               height="20">
             <path d="M13 7H11V9H13V7M13 11H11V17H13V11M17 1H7C5.9 1 5 1.9 5 3V21C5 22.1 5.9 23 7 23H17C18.1 23 19 22.1 19 21V3C19 1.9 18.1 1 17 1M17 19H7V5H17V19Z" />
           </svg>
-          <span>Show App Usage</span>
         </button>
       </div>
 
+    </div>
+  </article>
+</div>
+
+<!-- ═══════════════════════════ BOOKMARKS OVERLAY ═════════════════════════════ -->
+<div id="bookmarks-modal"
+     class="lightbox"
+     role="dialog"
+     aria-modal="true"
+     aria-label="Your Bookmarks">
+  <div class="lb-overlay" id="bookmarks-overlay"></div>
+  <article class="lb-card">
+    <header class="lb-header">
+      <div class="lb-author">
+        <svg class="lb-author-icon" viewBox="0 -960 960 960" width="28" height="28" aria-hidden="true" draggable="false">
+          <path fill="var(--accent)" d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z"/>
+        </svg>
+        <span class="lb-author-name"><strong>Your Bookmarks</strong></span>
+      </div>
+      <div class="lb-header-actions">
+        <button class="lb-close-btn"
+                id="bookmarks-close"
+                title="Close"
+                aria-label="Close bookmarks">&times;</button>
+      </div>
+    </header>
+    <div class="lb-body" id="bookmarks-body">
+      <!-- populated by bookmarks.js -->
     </div>
   </article>
 </div>

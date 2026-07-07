@@ -52,6 +52,14 @@ import {
   buildIChingFooter,
 } from './ichingcore.js';
 
+let _injectHighlight = null;
+let _updateBookmarkUI = null;
+
+export function setBookmarkCallbacks({ injectHighlight, updateBookmarkUI }) {
+  _injectHighlight = injectHighlight;
+  _updateBookmarkUI = updateBookmarkUI;
+}
+
 // ─── Access shared state and DOM from app.js ────────────────────────────────
 /** @returns {import('./app.js').AppState} */
 const getState = () => window._woState;
@@ -72,6 +80,7 @@ const FONT_DEFAULT = 16;
 function openLightbox() {
   const dom = getDom();
   const state = getState();
+  state.lastFocusEl = document.activeElement;
 
   dom.lightbox.classList.add('open');
   document.body.classList.add('lb-active');
@@ -104,6 +113,9 @@ function closeLightbox() {
   // Keeping it prevents a brief flash of the landing page during the
   // transition back to the search modal.
   if (!fromSearch && !fromOracle) document.body.classList.remove('lb-active');
+
+  // D. In closeLightbox(), add fromBookmarks alongside fromSearch/fromOracle:
+  const fromBookmarks = state.bookmarksOrigin;
 
   // Reset purport header button and mobile class
   dom.lbPurportBtn.style.display = 'none';
@@ -509,6 +521,9 @@ function renderVerse() {
   // Update bottom buttons for current mode/state
   updateBottomButtons();
 
+  if (typeof _injectHighlight === 'function') _injectHighlight();
+  if (typeof _updateBookmarkUI === 'function') _updateBookmarkUI();
+
   // Always scroll card to top after render
   dom.lbCard.scrollTop = 0;
 }
@@ -522,6 +537,8 @@ function renderVerse() {
  */
 function escHtml(str) {
   return String(str)
+    .replace(/'/g, '&#39;')
+    .replace(/`/g, '&#96;')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -628,6 +645,10 @@ async function displayHexagram(hexRef, keepPurport = false) {
     setNavDisabled(false);
     dom.lbCard.classList.remove('loading');
   }
+
+  // B. In applyLightboxBranding(), at the very end:
+  if (typeof _updateBookmarkUI === 'function') _updateBookmarkUI();
+
 }
 
 /** Disable / enable navigation buttons while a load is in progress. */
@@ -734,6 +755,7 @@ function initSwipe() {
  * @param {Object} payload — { guidance, gitaChapter, gitaRef, gitaTranslation, ichingRef, ichingTranslation }
  */
 function renderWisdomOracle(payload) {
+  const fromBookmarks = state.bookmarksOrigin;
   const dom = getDom();
   const state = getState();
 
@@ -744,6 +766,8 @@ function renderWisdomOracle(payload) {
   dom.lbAuthorIcon.src = 'assets/images/wisdomoracle_logo.svg';
   dom.lbAuthorIcon.alt = 'Wisdom Oracle';
   dom.lbAuthorTitle.innerHTML = '<strong>Guidance for you</strong>';
+
+  if (dom.lbBookmarkBtn) dom.lbBookmarkBtn.style.display = 'none';
 
   // ── Grey border for wisdom mode ── dom.lbCard.style.borderTopColor = 'var(--text-muted)';
   // ── Wisdom mode card branding ──
@@ -838,6 +862,14 @@ function renderWisdomOracle(payload) {
 
   // Scroll to top
   dom.lbCard.scrollTop = 0;
+
+  if (fromBookmarks) {
+    state.bookmarksOrigin = false;
+    import('./bookmarks.js').then(({ openBookmarksModal }) => {
+      setTimeout(() => openBookmarksModal(), 60);
+    });
+    return;
+  }
 }
 
 /**

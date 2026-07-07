@@ -39,6 +39,7 @@ import {
   renderVerse,            // ← called internally in lightbox.js only
   setNavDisabled,         // ← called inside displayVerse/displayHexagram in lightbox.js
   updateBottomButtons,    // ← called inside renderVerse in lightbox.js
+  setBookmarkCallbacks,   // ← NEW call
 } from './lightbox.js';
 
 import {
@@ -75,6 +76,15 @@ import {
   enableSearchButtons,
   closeSearchCard as closeSearchCardUI,
 } from './search-ui.js';
+
+import {
+  initBookmarks,
+  toggleBookmark,
+  updateBookmarkUI,
+  injectHighlight,
+  openBookmarksModal,
+  initFloatPanel,
+} from './bookmarks.js';
 
 // —>
 console.log('[WO-BOOT] app.js loading, window._woState=', window._woState, 'window._woDom=', window._woDom);
@@ -131,6 +141,10 @@ const state = {
   searchOrigin: false,
   oracleOrigin: false,
   highlightTerms: [],
+
+  bookmarksOrigin: false,
+  bookmarks:       [],
+  highlights:      [],
 };
 
 // ─── DOM references ───────────────────────────────────────────────────────────
@@ -140,36 +154,36 @@ const state = {
  */
 const dom = {
   // ── Gita landing controls ──────────────────────────────────────────────────
-  gitaForm:        document.getElementById('gita-form'),
-  gitaVerseInput:  document.getElementById('gita-verse-input'),
-  gitaRandomBtn:   document.getElementById('gita-random-btn'),
-  gitaErrorBox:    document.getElementById('gita-error-box'),
+  gitaForm:       document.getElementById('gita-form'),
+  gitaVerseInput: document.getElementById('gita-verse-input'),
+  gitaRandomBtn:  document.getElementById('gita-random-btn'),
+  gitaErrorBox:   document.getElementById('gita-error-box'),
 
   // ── iChing landing controls ────────────────────────────────────────────────
-  ichingForm:      document.getElementById('iching-form'),
-  ichingInput:     document.getElementById('iching-input'),
-  ichingErrorBox:  document.getElementById('iching-error-box'),
+  ichingForm:     document.getElementById('iching-form'),
+  ichingInput:    document.getElementById('iching-input'),
+  ichingErrorBox: document.getElementById('iching-error-box'),
 
   // ── NEW: Wisdom Oracle ──
   wisdomoracleRandomBtn: document.getElementById('wisdomoracle-random-btn'),
   updateBanner:          document.getElementById('update-banner'),
 
   // ── Lightbox shell ─────────────────────────────────────────────────────────
-  lightbox:        document.getElementById('lightbox'),
-  lbOverlay:       document.getElementById('lb-overlay'),
-  lbCard:          document.getElementById('lb-card'),
-  lbClose:         document.getElementById('lb-close'),
-  lbPrev:          document.getElementById('lb-prev'),
-  lbNext:          document.getElementById('lb-next'),
+  lightbox:  document.getElementById('lightbox'),
+  lbOverlay: document.getElementById('lb-overlay'),
+  lbCard:    document.getElementById('lb-card'),
+  lbClose:   document.getElementById('lb-close'),
+  lbPrev:    document.getElementById('lb-prev'),
+  lbNext:    document.getElementById('lb-next'),
 
   // Header branding (swapped between modes by lightbox.js)
-  lbAuthorIcon:    document.getElementById('lb-author-icon'),
-  lbAuthorTitle:   document.getElementById('lb-author-title'),
+  lbAuthorIcon:  document.getElementById('lb-author-icon'),
+  lbAuthorTitle: document.getElementById('lb-author-title'),
 
   // Purport/commentary toggle buttons
-  lbPurportBtn:    document.getElementById('lb-purport-btn'),
-  lbFontIncrease:  document.getElementById('lb-font-increase'),
-  lbFontDecrease:  document.getElementById('lb-font-decrease'),
+  lbPurportBtn:   document.getElementById('lb-purport-btn'),
+  lbFontIncrease: document.getElementById('lb-font-increase'),
+  lbFontDecrease: document.getElementById('lb-font-decrease'),
 
   // ── Content sections ───────────────────────────────────────────────────────
   lbVerseSection:   document.getElementById('lb-verse-section'),
@@ -184,35 +198,39 @@ const dom = {
   lbOpenPurportBtn: document.getElementById('lb-open-purport-btn'),
 
   // Purport-section nodes
-  lbPurport:        document.getElementById('lb-purport'),
-  lbReturnBtn:      document.getElementById('lb-return-btn'),
+  lbPurport:   document.getElementById('lb-purport'),
+  lbReturnBtn: document.getElementById('lb-return-btn'),
 
   // Footer / meta
-  lbFooter:         document.getElementById('lb-footer'),
-  lbChapterEnd:     document.getElementById('lb-chapter-end'),
+  lbFooter:     document.getElementById('lb-footer'),
+  lbChapterEnd: document.getElementById('lb-chapter-end'),
 
   // Share / Copy
-  lbCopyBtn:        document.getElementById('lb-copy-btn'),
-  lbShareBtn:       document.getElementById('lb-share-btn'),
+  lbCopyBtn:  document.getElementById('lb-copy-btn'),
+  lbShareBtn: document.getElementById('lb-share-btn'),
 
   // Share PNG card elements
-  sharePngCard:      document.getElementById('share-png-card'),
-  sharePngTitle:     document.querySelector('.share-png-title'),
-  sharePngVerse:     document.querySelector('.share-png-verse'),
-  sharePngFooter:    document.querySelector('.share-png-footer'),
+  sharePngCard:   document.getElementById('share-png-card'),
+  sharePngTitle:  document.querySelector('.share-png-title'),
+  sharePngVerse:  document.querySelector('.share-png-verse'),
+  sharePngFooter: document.querySelector('.share-png-footer'),
 
   settingsModal: document.getElementById('settings-modal'),
   usageModal:    document.getElementById('usage-modal'),
   aboutModal:    document.getElementById('about-modal'),
+  lbBookmarkBtn: document.getElementById('lb-bookmark-btn'),
 };
 
 // ─── Expose state and dom to dependent modules ──────────────────────────────
 // These are attached to window so that split modules can access them without
 // creating circular import chains. This is a deliberate architectural choice
 // for a small PWA where module granularity is valued over pure encapsulation.
-window._woState = state;
-window._woDom   = dom;
-
+Object.defineProperty(window, '_woState', {
+  value: state,
+  writable: false,
+  configurable: false
+});
+window._woDom = dom;
 initSwipe();
 
 // ─── Listen for messages from the Service Worker ────────────────────────────
@@ -220,30 +238,21 @@ let swRegistration = null;
 
 // ─── Register Service Worker ────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
-
   navigator.serviceWorker.register('sw.js')
     .then(reg => {
       swRegistration = reg;
-
       console.log('SW registered:', reg.scope);
-
       reg.update();
     })
     .catch(err => console.error('SW failed:', err));
 
   navigator.serviceWorker.addEventListener('message', event => {
-
     if (!event.data) return;
-
     if (event.data.type === 'SW_UPDATED') {
-
       console.log('[WO] New version available:', event.data.version);
-
       dom.updateBanner?.classList.add('visible');
     }
-
   });
-
 }
 
 // ——> build flag for testing the update banner
@@ -315,14 +324,11 @@ if (dom.wisdomoracleRandomBtn) {
 
 if (dom.updateBanner) {
   dom.updateBanner.addEventListener('click', () => {
-
     if (!('serviceWorker' in navigator)) {
       window.location.reload();
       return;
     }
-
     let refreshing = false;
-
     navigator.serviceWorker.addEventListener(
       'controllerchange',
       () => {
@@ -332,7 +338,6 @@ if (dom.updateBanner) {
       },
       { once: true }
     );
-
     if (swRegistration?.waiting) {
       swRegistration.waiting.postMessage({
         type: 'SKIP_WAITING'
@@ -362,6 +367,15 @@ dom.lbReturnBtn.addEventListener('click', togglePurport);
 // Copy and Share handlers
 dom.lbCopyBtn.addEventListener('click', _handleCopy);
 dom.lbShareBtn.addEventListener('click', _handleShare);
+
+// Bookmark header button
+const _toggleBookmark = wrapHandler('toggleBookmark', toggleBookmark);
+if (dom.lbBookmarkBtn) dom.lbBookmarkBtn.addEventListener('click', _toggleBookmark);
+
+// Top-nav bookmark button
+const _openBookmarksModal = wrapHandler('openBookmarksModal', openBookmarksModal);
+const bookmarkNavBtn = document.getElementById('bookmark-nav-btn');
+if (bookmarkNavBtn) bookmarkNavBtn.addEventListener('click', _openBookmarksModal);
 
 // Font-size controls — delegated so every card participates without individual wiring
 document.addEventListener('click', e => {
@@ -401,7 +415,6 @@ document.addEventListener('contextmenu', e => {
     },
     { threshold: 0.2 }
   );
-
   observer.observe(banner);
 })();
 
@@ -449,6 +462,9 @@ applyFontSize();
 initUsageModal();
 initAboutModal();
 initSettingsModal();
+initBookmarks();
+initFloatPanel();
+setBookmarkCallbacks({ injectHighlight, updateBookmarkUI });
 
 // ─── Keyboard Shortcuts (Global) ─────────────────────────────────────────────
 /**

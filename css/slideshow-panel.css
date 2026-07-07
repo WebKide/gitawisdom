@@ -45,9 +45,14 @@
 
 /* ── Track (shared wrapper for both modes) ── */
 .wo-slideshow-track {
-  position: relative;
-  display:  flex;
-  height:   100%;
+  touch-action: pan-y;  /* Allow vertical scrolling but take control of horizontal */
+  will-change:  transform;  /* Optimization for smoother movement */
+  position:     relative;
+  display:      flex;
+  height:       100%;
+  gap:          0;
+  user-select:         none;
+  -webkit-user-select: none;
 }
 
 /* ═══ SLIDE mode — items sit side by side, track translates ═══ */
@@ -170,11 +175,14 @@
 }
 
 .ken-burns-frame .ken-burns {
-  position:      absolute;
-  inset:         0;
-  width:         100%;
-  height:        100%;
-  object-fit:    cover;
+  position:   absolute;
+  top:        0;
+  right:      0;
+  bottom:     0;
+  left:       0;
+  width:      100%;
+  height:     100%;
+  object-fit: cover;
 
   /* the frame’s own border-radius + overflow:hidden do the rounding */
   border-radius: 0;

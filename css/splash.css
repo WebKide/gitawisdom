@@ -76,7 +76,7 @@ header {
 
 /* The trigger class */
 .intro.slide-up {
-  transform:        translateY(-100%);
+  transform: translateY(-100%);
 }
 
 .logo-header {
@@ -121,13 +121,13 @@ header {
 
 /* 1. "Wisdom" burst: up and to the left */
 .logo:first-child.fade {
-  transform:  translate(-30vw, -40vh) scale(6);
+  transform:  translate(-30vw, -40vh) scale(14);
   transition: opacity 0.5s ease-in, transform 0.8s cubic-bezier(0.55, 0, 1, 1);
 }
 
 /* 2. "Oracle" burst: up and to the right */
 .logo:last-child.fade {
-  transform:  translate(30vw, -40vh) scale(6);
+  transform:  translate(30vw, -40vh) scale(14);
   transition: opacity 0.5s ease-in, transform 0.8s cubic-bezier(0.55, 0, 1, 1);
 }
 

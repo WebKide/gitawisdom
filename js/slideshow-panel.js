@@ -58,8 +58,7 @@
 
     // ── Slide mode: move the whole track ──
     function updateTrackPosition() {
-      const pct = (100 / items.length) * index;
-      track.style.transform = `translateX(-${pct}%)`;
+      track.style.transform = `translateX(-${index * (100 / items.length)}%)`;
     }
 
     // ── Push mode: animate outgoing/incoming pair ──
@@ -97,6 +96,8 @@
       const nextIndex = ((target % items.length) + items.length) % items.length;
       if (nextIndex === prevIndex) return;
 
+      start();
+
       const forward = nextIndex > prevIndex || (prevIndex === items.length - 1 && nextIndex === 0);
       index = nextIndex;
 
@@ -118,29 +119,139 @@
     }
 
     function stop() {
-      if (timer) clearInterval(timer);
-      timer = null;
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
     }
 
-    // ── Pause on hover / touch ──
+    // ── Pause on hover ───────────────────────────────────────────────
     root.addEventListener('mouseenter', () => { paused = true; });
     root.addEventListener('mouseleave', () => { paused = false; });
-    root.addEventListener('touchstart', () => { paused = true; }, { passive: true });
-    root.addEventListener('touchend',   () => { paused = false; }, { passive: true });
+
+    // ── Swipe support (slide mode only) ──────────────────────────────
+    if (!isPush) {
+      let startX = 0;
+      let startY = 0;
+      let dragging = false;
+
+      track.addEventListener('touchstart', e => {
+        if (e.touches.length !== 1) return;
+        dragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        stop();
+        track.style.transition = 'none';
+      }, { passive: true });
+
+      track.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+
+        // If user is scrolling vertically, cancel the swipe and let the page scroll
+        if (Math.abs(dy) > Math.abs(dx)) {
+            dragging = false;
+            updateTrackPosition();
+            start();
+            return;
+        }
+
+        const width = viewport.offsetWidth;
+        // Logic: (current slide offset in pixels) + movement in pixels,
+        // converted to px for the drag preview only — snapping back to the
+        // percentage-based transform happens in updateTrackPosition() on release.
+        const currentOffsetPx = -index * width;
+
+        const minOffsetPx = -(items.length - 1) * width;
+        const maxOffsetPx = 0;
+
+        // Clamp the drag so user can't pull past the first/last card
+        const nextOffsetPx = Math.max(
+          minOffsetPx,
+          Math.min(maxOffsetPx, currentOffsetPx + dx)
+        );
+
+        track.style.transform = `translateX(${nextOffsetPx}px)`;
+      }, { passive: true });
+
+      track.addEventListener('touchend', e => {
+        if (!dragging) return;
+        dragging = false;
+        const dx = e.changedTouches[0].clientX - startX;
+
+        // Clear the inline style transition so CSS class takes over
+        requestAnimationFrame(() => {
+          track.style.removeProperty('transition');
+        });
+
+        // Threshold: 18% of width or 80px
+        const threshold = Math.min(80, viewport.offsetWidth * 0.18);
+
+        if (Math.abs(dx) > threshold) {
+          if (dx < 0) {
+            goTo(index + 1);
+          } else {
+            goTo(index - 1);
+          }
+        } else {
+          // Snap back using the original percentage-based function
+          updateTrackPosition();
+        }
+        start();
+      }, { passive: true });
+
+      // insert here?
+      track.addEventListener('touchcancel', () => {
+        dragging = false;
+
+        requestAnimationFrame(() => {
+          track.style.removeProperty('transition');
+        });
+
+        updateTrackPosition();
+        start();
+      }, { passive: true });
+
+    }
 
     // ── Dot navigation ──
+    let hoverTimeout = null; // Declare outside so it's shared by all dots
+
     dots.forEach(dot => {
+      // 1. Click behavior (Mobile/Accessibility)
       dot.addEventListener('click', () => {
         const target = parseInt(dot.dataset.index, 10);
         if (!Number.isNaN(target)) goTo(target);
       });
+
+      // 2. Hover behavior
+      dot.addEventListener('mouseenter', () => {
+        const target = parseInt(dot.dataset.index, 10);
+        if (!Number.isNaN(target)) {
+          stop(); // Stop auto-play immediately on touch/hover
+          clearTimeout(hoverTimeout);
+          hoverTimeout = setTimeout(() => {
+            goTo(target);
+          }, 150);
+        }
+      });
+
+      // 3. Clear timer if mouse leaves before 150ms
+      dot.addEventListener('mouseleave', () => {
+        clearTimeout(hoverTimeout);
+        if (!paused) {
+          start();
+        }
+      });
     });
 
-    // Recalculate height on resize (text reflows at different widths)
+    // Recalculate height on resize
     window.addEventListener('resize', syncHeight);
 
     start();
-  }
+
+    }
 
   function initAll() {
     document.querySelectorAll('.wo-slideshow').forEach(initSlideshow);
