@@ -168,6 +168,9 @@ const dom = {
   wisdomoracleRandomBtn: document.getElementById('wisdomoracle-random-btn'),
   updateBanner:          document.getElementById('update-banner'),
 
+  // ── NEW: Global Error Box ──────────────────────────────────────────────────
+  globalErrorBox: document.getElementById('global-error-box'),
+
   // ── Lightbox shell ─────────────────────────────────────────────────────────
   lightbox:  document.getElementById('lightbox'),
   lbOverlay: document.getElementById('lb-overlay'),
@@ -443,7 +446,7 @@ applyFontSize();
 
   await initSearchController(gitaSearch, {
     displayVerse,
-    appState:        state,
+    appState: state,
     increaseFontSize,
     decreaseFontSize,
   });

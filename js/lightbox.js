@@ -67,7 +67,7 @@ const getState = () => window._woState;
 const getDom   = () => window._woDom;
 
 // ─── Font-size limits ───────────────────────────────────────────────────────
-const FONT_MIN     = 12;
+const FONT_MIN     = 10;
 const FONT_MAX     = 24;
 const FONT_DEFAULT = 16;
 
@@ -168,10 +168,9 @@ function closeLightbox() {
     inp.setAttribute('inputmode', 'numeric');
   });
 
-  // Clear error messages from both oracle forms
-  [dom.gitaErrorBox, dom.ichingErrorBox].forEach(b => {
-    b.textContent = '';
-    b.classList.remove('visible');
+  // Clear error messages from all error boxes
+  [dom.gitaErrorBox, dom.ichingErrorBox, dom.globalErrorBox].forEach(b => {
+    if (b) { b.textContent = ''; b.classList.remove('visible'); }
   });
 
   // If opened from a search result, return to the search card
@@ -582,15 +581,16 @@ async function displayVerse(chapter, verseRef, keepPurport = false, terms = []) 
     if (!dom.lightbox.classList.contains('open')) openLightbox();
 
   } catch (err) {
-    if (dom.lightbox.classList.contains('open')) {
-      dom.lbFooter.textContent = '⚠ ' + err.message;
-    } else {
-      // Show error in the landing page error box
-      const box = dom.gitaErrorBox;
-      box.innerHTML = err.message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      box.classList.add('visible');
-      box.setAttribute('role', 'alert');
-    }
+      if (dom.lightbox.classList.contains('open')) {
+        dom.lbFooter.textContent = '⚠ ' + err.message;
+      } else {
+        const box = dom.globalErrorBox;
+        if (box) {
+          box.innerHTML = err.message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+          box.classList.add('visible');
+          box.setAttribute('role', 'alert');
+        }
+      }
   } finally {
     state.loading = false;
     setNavDisabled(false);
@@ -632,14 +632,16 @@ async function displayHexagram(hexRef, keepPurport = false) {
     if (!dom.lightbox.classList.contains('open')) openLightbox();
 
   } catch (err) {
-    if (dom.lightbox.classList.contains('open')) {
-      dom.lbFooter.textContent = '⚠ ' + err.message;
-    } else {
-      const box = dom.ichingErrorBox;
-      box.innerHTML = err.message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      box.classList.add('visible');
-      box.setAttribute('role', 'alert');
-    }
+      if (dom.lightbox.classList.contains('open')) {
+        dom.lbFooter.textContent = '⚠ ' + err.message;
+      } else {
+        const box = dom.globalErrorBox;
+        if (box) {
+          box.innerHTML = err.message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+          box.classList.add('visible');
+          box.setAttribute('role', 'alert');
+        }
+      }
   } finally {
     state.loading = false;
     setNavDisabled(false);
@@ -755,9 +757,9 @@ function initSwipe() {
  * @param {Object} payload — { guidance, gitaChapter, gitaRef, gitaTranslation, ichingRef, ichingTranslation }
  */
 function renderWisdomOracle(payload) {
-  const fromBookmarks = state.bookmarksOrigin;
-  const dom = getDom();
   const state = getState();
+  const dom = getDom();
+  const fromBookmarks = state.bookmarksOrigin;
 
   state.mode = 'wisdom';
   state.showPurport = false;

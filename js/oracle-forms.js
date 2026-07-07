@@ -51,8 +51,8 @@ const getDom   = () => window._woDom;
  */
 function showError(msg, target) {
   const dom = getDom();
-  const state = getState();
-  const box = (target ?? state.mode) === 'iching' ? dom.ichingErrorBox : dom.gitaErrorBox;
+  const box = dom.globalErrorBox;
+  if (!box) return;
   box.innerHTML = msg.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   box.classList.add('visible');
   box.setAttribute('role', 'alert');
@@ -63,9 +63,8 @@ function showError(msg, target) {
  */
 function clearErrors() {
   const dom = getDom();
-  [dom.gitaErrorBox, dom.ichingErrorBox].forEach(b => {
-    b.textContent = '';
-    b.classList.remove('visible');
+  [dom.globalErrorBox, dom.gitaErrorBox, dom.ichingErrorBox].forEach(b => {
+    if (b) { b.textContent = ''; b.classList.remove('visible'); }
   });
 }
 
