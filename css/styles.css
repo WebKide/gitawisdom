@@ -756,7 +756,7 @@ body {
 }
 
 .thumb-placeholder {
-  filter: blur(12px) brightness(0.9);
+  filter: blur(0.2px) brightness(0.9);
   opacity: 1;
   z-index: 1;
 }
@@ -1858,7 +1858,7 @@ body.lb-active { overflow: hidden; }
   align-items:    center;
   padding:        16px 20px 20px;
   margin-bottom:  0;
-  margin-top:     auto;
+  margin:         10px auto auto auto;  /* margin-top: auto; */
   background:     var(--black);
   border-top:     1px solid rgba(255,255,255,0.10);
   border-left:    1px solid rgba(255,255,255,0.10);
@@ -2552,7 +2552,7 @@ highlight {
 /* ─── Intro Cards ─── */
 @media (max-width: 520px) {
   .intro-header {
-    flex-direction: column-reverse;  /* image on top */
+    flex-direction: column;
     align-items:    center;
     text-align:     center;
   }

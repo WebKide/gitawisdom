@@ -423,8 +423,8 @@ async function handleShare() {
   const shareDateEl = document.querySelector('.share-png-date');
   if (shareDateEl) {
     shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.53'
-      : 'v1.1.53';
+      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.54'
+      : 'v1.1.54';
   }
 
   // ── Step 4b: Fit text and position footer before capture ──────────────────
@@ -908,12 +908,18 @@ function initSettingsModal() {
   const openBtn    = document.getElementById('menu-toggle-btn');
   const cbDate     = document.getElementById('setting-show-date');
   const cbOutlines = document.getElementById('setting-show-outlines');
+  const cbSlideshow  = document.getElementById('remove-slideshow-scrolling');
 
   if (!modal || !openBtn) return;
 
   // Reflect persisted state in checkboxes immediately
   if (cbDate)     cbDate.checked     = _settings.showDateInPng;
   if (cbOutlines) cbOutlines.checked = _settings.showLayoutOutlines;
+  if (cbSlideshow) {
+    let stacked = false;
+    try { stacked = localStorage.getItem('wo_slideshow_stacked') === '1'; } catch (_) {}
+    cbSlideshow.checked = stacked;
+  }
 
   // function _closeSettings() { modal.classList.remove('open'); }
   function _closeSettings() {
@@ -939,7 +945,12 @@ function initSettingsModal() {
   cbOutlines?.addEventListener('change', () => {
     _saveSetting('showLayoutOutlines', cbOutlines.checked);
     _applyOutlines(cbOutlines.checked);
-    _closeSettings();  // automatically close settins modal
+    _closeSettings();  // automatically close settings modal
+  });
+
+  cbSlideshow?.addEventListener('change', () => {
+    window._woSlideshowSetStacked?.(cbSlideshow.checked);
+    _closeSettings();  // automatically close settings modal
   });
 
   // Wire the Usage Button

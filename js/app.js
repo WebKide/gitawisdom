@@ -471,7 +471,7 @@ setBookmarkCallbacks({ injectHighlight, updateBookmarkUI });
 
 // ─── Slideshow stacked-mode toggle (Settings) ────────────────────────────
 (function initSlideshowStackToggle() {
-  const checkbox = document.getElementById('remove-slodeshow-scrolling');
+  const checkbox = document.getElementById('remove-slideshow-scrolling');
   if (!checkbox) return;
 
   let stacked = false;
@@ -480,6 +480,7 @@ setBookmarkCallbacks({ injectHighlight, updateBookmarkUI });
 
   checkbox.addEventListener('change', () => {
     window._woSlideshowSetStacked?.(checkbox.checked);
+    _closeSettings();  // automatically close settings modal
   });
 })();
 
