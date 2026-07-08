@@ -6,7 +6,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.51';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.53';
 
 /**
  * Deployment base.
@@ -44,9 +44,11 @@ const ASSETS = [
 
   // Images
   BASE + '/assets/images/card_bg.png',
+  BASE + '/assets/images/iching.jpg',
   BASE + '/assets/images/iching.png',
   BASE + '/assets/images/ichingcoin.png',
   BASE + '/assets/images/imgfooter.png',
+  BASE + '/assets/images/prabhupada.jpg',
   BASE + '/assets/images/prabhupada.png',
   BASE + '/assets/images/signature.svg',
   BASE + '/assets/images/wisdomoracle.svg',

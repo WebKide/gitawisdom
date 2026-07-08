@@ -423,8 +423,8 @@ async function handleShare() {
   const shareDateEl = document.querySelector('.share-png-date');
   if (shareDateEl) {
     shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.51'
-      : 'v1.1.51';
+      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.53'
+      : 'v1.1.53';
   }
 
   // ── Step 4b: Fit text and position footer before capture ──────────────────

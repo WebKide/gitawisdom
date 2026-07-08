@@ -38,21 +38,29 @@
 
 .wo-slideshow-viewport {
   position:      relative;
-  overflow:      hidden;
+  overflow:      hidden;        /* ← critical: clips the drag */
   border-radius: var(--radius);
   transition:    height .4s ease;
 }
 
 /* ── Track (shared wrapper for both modes) ── */
+/* Prevent text selection during drag */
 .wo-slideshow-track {
-  touch-action: pan-y;  /* Allow vertical scrolling but take control of horizontal */
-  will-change:  transform;  /* Optimization for smoother movement */
-  position:     relative;
-  display:      flex;
-  height:       100%;
-  gap:          0;
-  user-select:         none;
+  -webkit-touch-callout: none;
   -webkit-user-select: none;
+  display: flex;
+  gap: 0;
+  height: 100%;
+  position: relative;
+  touch-action: pan-y;  /* Allow vertical scrolling but take control of horizontal */
+  user-select: none;
+  will-change: transform;  /* Optimization for smoother movement */
+}
+
+/* Disable tap highlight on mobile */
+.wo-slideshow-item,
+.wo-dot {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ═══ SLIDE mode — items sit side by side, track translates ═══ */
@@ -68,17 +76,23 @@
 /* ═══ PUSH mode — items stacked absolutely, track is a static frame ═══ */
 .wo-anim-push .wo-slideshow-track {
   display: block;
-  height:  100%;
+  height: 100%;
+  /* Add these for consistency */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .wo-anim-push .wo-slideshow-item {
-  position:   absolute;
-  top:        0;
-  left:       0;
-  width:      100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   visibility: hidden;
-  transform:  translateX(100%);
+  transform: translateX(100%);
   transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+  /* Add this */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .wo-anim-push .wo-slideshow-item.wo-active {
@@ -161,6 +175,51 @@
   .wo-anim-push .wo-slideshow-item {
     transition: none !important;
   }
+}
+
+/* ── Stacked (vertical) mode — toggled via Settings ── */
+.wo-slideshow.wo-stacked .wo-slideshow-viewport {
+  height: auto !important;
+  overflow: visible;
+}
+
+.wo-slideshow.wo-stacked .wo-slideshow-track {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100% !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.wo-slideshow.wo-stacked .wo-slideshow-item {
+  width: 100% !important;
+  flex: none;
+}
+
+/* Push-mode transition classes must not fight the stacked layout */
+.wo-slideshow.wo-stacked .wo-slideshow-item.wo-enter-from-left,
+.wo-slideshow.wo-stacked .wo-slideshow-item.wo-enter-from-right,
+.wo-slideshow.wo-stacked .wo-slideshow-item.wo-exit-left,
+.wo-slideshow.wo-stacked .wo-slideshow-item.wo-exit-right {
+  transform: none !important;
+  position: static !important;
+}
+
+.wo-slideshow.wo-stacked .wo-slideshow-dotnav {
+  display: none;
+}
+
+/* Separator — only visible in stacked mode */
+.separator {
+  display: none;
+}
+
+.wo-slideshow.wo-stacked .separator {
+  display: block;
+  height: 1px;
+  margin: 4px 0;
+  background: var(--border-color, rgba(0, 0, 0, 0.1));
 }
 
 /* ═══ KEN BURNS — zoom/pan confined inside a fixed-size frame ═══

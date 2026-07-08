@@ -469,6 +469,20 @@ initBookmarks();
 initFloatPanel();
 setBookmarkCallbacks({ injectHighlight, updateBookmarkUI });
 
+// ─── Slideshow stacked-mode toggle (Settings) ────────────────────────────
+(function initSlideshowStackToggle() {
+  const checkbox = document.getElementById('remove-slodeshow-scrolling');
+  if (!checkbox) return;
+
+  let stacked = false;
+  try { stacked = localStorage.getItem('wo_slideshow_stacked') === '1'; } catch (_) {}
+  checkbox.checked = stacked;
+
+  checkbox.addEventListener('change', () => {
+    window._woSlideshowSetStacked?.(checkbox.checked);
+  });
+})();
+
 // ─── Keyboard Shortcuts (Global) ─────────────────────────────────────────────
 /**
  * Global keyboard shortcuts that delegate to lightbox handlers.

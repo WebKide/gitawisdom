@@ -232,15 +232,44 @@ function initChapterSelect() {
   const trigText = document.getElementById('chapter-trigger-text');
   const list     = document.getElementById('chapter-list');
   const options  = Array.from(list.querySelectorAll('.custom-select-option'));
+  const backdrop = document.getElementById('chapter-backdrop');
 
   let selectedValue = null; // integer | null
+  let listPortaled = false;  // track if we've moved the list to body
+
+  // ── Portal helpers ─────────────────────────────────────────────────────
+  function portalList() {
+    if (listPortaled) return;
+    // Save original parent for restoration
+    list._originalParent = list.parentNode;
+    list._originalNextSibling = list.nextSibling;
+    document.body.appendChild(list);
+    listPortaled = true;
+  }
+
+  function unportalList() {
+    if (!listPortaled) return;
+    if (list._originalParent) {
+      list._originalParent.insertBefore(list, list._originalNextSibling || null);
+    }
+    // Clear inline styles from positionList()
+    list.style.cssText = '';
+  }
 
   /**
    * Opens the dropdown list and sets ARIA expanded state.
    */
   function openList() {
+    window._woSlideshowPause?.(true);   // ← pause slideshow
+    portalList();  // ← move to body before showing
     wrap.classList.add('open');
     trigger.setAttribute('aria-expanded', 'true');
+
+    // Position the list relative to the trigger button
+    positionList();
+
+    // Mark as open for CSS display
+    list.classList.add('is-open');
   }
 
   /**
@@ -249,6 +278,44 @@ function initChapterSelect() {
   function closeList() {
     wrap.classList.remove('open');
     trigger.setAttribute('aria-expanded', 'false');
+
+    // Remove open state immediately so CSS hides it
+    list.classList.remove('is-open');
+    window._woSlideshowPause?.(false);  // ← resume slideshow
+
+    // Delay unportaling to allow close animation
+    setTimeout(() => {
+      if (!wrap.classList.contains('open')) unportalList();
+    }, 300);
+  }
+
+  // ── Position the portaled list below the trigger ──────────────────────
+  function positionList() {
+    const rect = trigger.getBoundingClientRect();
+    const listHeight = Math.min(list.scrollHeight || 360, window.innerHeight * 0.6);
+    const spaceBelow = window.innerHeight - rect.bottom - 16;
+    const spaceAbove = rect.top - 16;
+    
+    // Decide: open downward or upward
+    let top, maxH;
+    if (spaceBelow >= Math.min(listHeight, 240) || spaceBelow >= spaceAbove) {
+      top = rect.bottom + 6;
+      maxH = Math.min(spaceBelow, window.innerHeight * 0.6);
+    } else {
+      top = Math.max(16, rect.top - listHeight - 6);
+      maxH = Math.min(spaceAbove, window.innerHeight * 0.6);
+    }
+
+    list.style.cssText = `
+      position: fixed;
+      top: ${top}px;
+      left: ${rect.left + rect.width / 2}px;
+      transform: translateX(-50%);
+      width: ${Math.min(340, window.innerWidth - 32)}px;
+      max-height: ${maxH}px;
+      z-index: 9999;
+      display: block;
+    `;
   }
 
   /**
@@ -276,14 +343,11 @@ function initChapterSelect() {
     closeList();
   }
 
-  // Expose accessors on window for cross-module use
-  window._getSelectedChapter = () => selectedValue;
-  window._setSelectedChapter = (chapter) => {
-    if (chapter === null) { selectOption(null); return; }
-    const opt = list.querySelector(`[data-value="${chapter}"]`);
-    if (opt) selectOption(opt);
-  };
+  // Reposition on scroll/resize while open
+  window.addEventListener('scroll', () => { if (wrap.classList.contains('open')) positionList(); }, { passive: true });
+  window.addEventListener('resize', () => { if (wrap.classList.contains('open')) positionList(); });
 
+  // ── Event wiring (existing, with portal-aware close) ───────────────────
   trigger.addEventListener('click', () => {
     wrap.classList.contains('open') ? closeList() : openList();
   });
@@ -291,18 +355,20 @@ function initChapterSelect() {
   options.forEach(opt => opt.addEventListener('click', () => selectOption(opt)));
 
   document.addEventListener('click', e => {
-    if (!wrap.contains(e.target)) closeList();
+    const clickedWrap = wrap.contains(e.target);
+    const clickedList = list.contains(e.target);
+    if (!clickedWrap && !clickedList) closeList();
   });
 
-  document.getElementById('chapter-backdrop')
-      .addEventListener('click', closeList);
+  backdrop.addEventListener('click', closeList);
 
+  // Keyboard handlers remain the same
   trigger.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openList(); }
   });
 
   list.addEventListener('keydown', e => {
-    const current = list.querySelector('[aria-selected="true"]') || options[0];
+    const current = list.querySelector('[aria-selected=\"true\"]') || options[0];
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       const next = current.nextElementSibling;
@@ -316,6 +382,14 @@ function initChapterSelect() {
     if (e.key === 'Escape') closeList();
     if (e.key === 'Enter')  closeList();
   });
+
+  // Expose accessors
+  window._getSelectedChapter = () => selectedValue;
+  window._setSelectedChapter = (chapter) => {
+    if (chapter === null) { selectOption(null); return; }
+    const opt = list.querySelector(`[data-value=\"${chapter}\"]`);
+    if (opt) selectOption(opt);
+  };
 }
 
 // ─── Exports ──────────────────────────────────────────────────────────────────
