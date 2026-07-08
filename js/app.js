@@ -91,7 +91,7 @@ console.log('[WO-BOOT] app.js loading, window._woState=', window._woState, 'wind
 // —>
 
 // ─── Font-size limits ───────────────────────────────────────────────────────
-const FONT_MIN     = 12;
+const FONT_MIN     = 10;
 const FONT_MAX     = 24;
 const FONT_DEFAULT = 16;
 
@@ -140,8 +140,8 @@ const state = {
 
   searchOrigin: false,
   oracleOrigin: false,
-  highlightTerms: [],
 
+  highlightTerms:  [],
   bookmarksOrigin: false,
   bookmarks:       [],
   highlights:      [],

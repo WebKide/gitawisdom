@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
   <meta name="description"
         content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.1.49</title>
+  <title>Wisdom Oracle v1.1.51</title>
   <meta name="author" content="WebKide" />
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
@@ -485,8 +485,40 @@
 
 </div><!-- /.wo-slideshow -->
 
-<!-- Global Error Box Container -->
-<div id="global-error-box" class="error-msg" role="alert" aria-live="polite"></div>
+  <!-- Global Error Box Container -->
+  <div class="footer-error-box">
+    <div id="global-error-box" 
+         class="error-msg" 
+         role="alert" 
+         aria-live="polite">
+      
+      <!-- Warning icon — collapses with the box -->
+      <svg class="error-icon"
+           viewBox="0 -960 960 960"
+           aria-hidden="true"
+           focusable="false">
+        <path d="m40-120 440-760 440 760H40Zm138-80h604L480-720 178-200Zm330.5-51.5Q520-263 520-280t-11.5-28.5Q497-320 480-320t-28.5 11.5Q440-297 440-280t11.5 28.5Q463-240 480-240t28.5-11.5ZM440-360h80v-200h-80v200Zm40-100Z"/>
+      </svg>
+      
+      <!-- Text content injected here by JS -->
+      <span class="error-text"></span>
+      
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <!-- ── Page footer — full-width darker block with circular image ──
        imgfooter.png sits like a Discord embed footer icon (28×28, circular).
@@ -503,7 +535,7 @@
            draggable="false" />
       <p>
         To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
-        <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.49」</b>
+        <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.51」</b>
       </p>
     </div>
   </footer>
@@ -939,28 +971,78 @@
   </footer>
 </div>
 
-<!--
-  Dynamically load the application entry point. If the module graph fails
-  (network error, syntax error, etc.), a user-facing error banner is injected
-  so the page is not left blank.
--->
+<!-- Dynamically load the application entry point. -->
 <script type="module">
   /**
    * Dynamically imports the application entry point.
    * If the module graph fails to load, surfaces a user-facing error message.
+   * Tries to inject into #global-error-box first; falls back to a fixed
+   * banner above the top-nav if the DOM isn't ready yet.
    */
   (async function loadOracle() {
     try {
       await import('./js/app.js');
     } catch (err) {
       console.error('Oracle module failed to load:', err);
-      var banner = document.createElement('div');
-      banner.setAttribute('role', 'alert');
-      banner.style.cssText = 'padding:40px 20px;text-align:center;font-family:system-ui,sans-serif;color:#dbdee1;background:#1e1f22;';
-      banner.innerHTML = '<h3 style="color:#f5a623;margin-bottom:12px;">Wisdom Oracle failed to load</h3>' +
+      
+      const message = 
+        '<h3>Wisdom Oracle failed to load</h3>' +
         '<p>Please check your network connection and refresh the page.</p>' +
-        '<p style="color:#5c6068;font-size:0.85rem;margin-top:16px;">' + (err && err.message ? err.message : 'Unknown error') + '</p>';
-      document.body.insertBefore(banner, document.body.firstChild);
+        '<p style="color:#5c6068;font-size:0.85rem;margin-top:12px;">' + 
+        (err && err.message ? err.message : 'Unknown error') + 
+        '</p>';
+      
+      // ── Strategy 1: Inject into the styled error box if DOM is ready ──
+      const errorBox = document.getElementById('global-error-box');
+      const wrapper = document.querySelector('.footer-error-box');
+      
+      if (errorBox && wrapper) {
+        const textSpan = errorBox.querySelector('.error-text');
+        if (textSpan) {
+          textSpan.innerHTML = message;
+        } else {
+          // Fallback if .error-text span missing (old markup)
+          errorBox.innerHTML = message;
+        }
+        wrapper.classList.add('has-error');
+        // Scroll to make it visible
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      
+      // ── Strategy 2: Fixed fallback banner above top-nav ──
+      const banner = document.createElement('div');
+      banner.setAttribute('role', 'alert');
+      banner.style.cssText = 
+        'position:fixed;' +
+        'top:56px;' +                    /* just below the 52px nav */
+        'left:50%;' +
+        'transform:translateX(-50%);' +
+        'width:92%;' +
+        'max-width:640px;' +
+        'z-index:2000;' +                /* above #top-nav (1000) */
+        'padding:16px 20px;' +
+        'text-align:left;' +
+        'font-family:var(--font-body),system-ui,sans-serif;' +
+        'font-size:0.92rem;' +
+        'color:#dbdee1;' +
+        'background:rgba(30,32,37,0.96);' +
+        'border:3px solid rgba(200,97,95,0.35);' +
+        'border-radius:8px;' +
+        'box-shadow:0 8px 40px rgba(0,0,0,0.55);' +
+        'backdrop-filter:blur(8px);' +
+        '-webkit-backdrop-filter:blur(8px);' +
+        'animation:error-in 0.3s ease;';
+      
+      banner.innerHTML = 
+        '<div style="display:flex;align-items:flex-start;gap:12px;">' +
+          '<svg width="22" height="22" viewBox="0 -960 960 960" fill="#e57373" style="flex-shrink:0;margin-top:2px;">' +
+            '<path d="m40-120 440-760 440 760H40Zm138-80h604L480-720 178-200Zm330.5-51.5Q520-263 520-280t-11.5-28.5Q497-320 480-320t-28.5 11.5Q440-297 440-280t11.5 28.5Q463-240 480-240t28.5-11.5ZM440-360h80v-200h-80v200Zm40-100Z"/>' +
+          '</svg>' +
+          '<div>' + message + '</div>' +
+        '</div>';
+      
+      document.body.appendChild(banner);
     }
   })();
 </script>

@@ -902,25 +902,67 @@ body.lb-active #top-nav {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ERROR MESSAGE
+   ERROR MESSAGE — smooth expand/collapse with inline icon
    ═══════════════════════════════════════════════════════════════════════════ */
-.error-msg {
-  display:       none;
-  min-height:    0;
-  font-family:   var(--font-body);
-  font-style:    normal !important;
-  font-size:     0.92rem;
-  color:         var(--text-primary);
-  background:    rgba(200, 97, 95, 0.10);
-  border:        3px solid rgba(200, 97, 95, 0.28);
-  border-radius: var(--radius);
-  padding:       12px 16px;
-  text-align:    left;
+
+.footer-error-box {
+  display:            grid;
+  grid-template-rows: 0fr;
+  transition:         grid-template-rows 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                      margin 0.35s ease;
+  margin:             0;
+  width:              94%;
+  margin-inline:      auto;
 }
 
-.error-msg h1,
-.error-msg h2,
-.error-msg h3 {
+.footer-error-box.has-error {
+  grid-template-rows: 1fr;
+  margin:             16px 0;
+}
+
+/* Inner element: flex row for icon + text */
+.error-msg {
+  display:        flex;
+  align-items:    flex-start;
+  gap:            12px;
+  overflow:       hidden;
+  
+  font-family:    var(--font-body);
+  font-style:     normal !important;
+  font-size:      0.92rem;
+  color:          var(--text-primary);
+  background:     rgba(200, 97, 95, 0.10);
+  border:         3px solid rgba(200, 97, 95, 0.28);
+  border-radius:  var(--radius);
+  padding:        12px 16px;
+  
+  /* Collapsed state */
+  opacity:        0;
+  transform:      translateY(-8px) scale(0.98);
+  transition:     opacity 0.3s ease,
+                  transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background 0.22s ease;
+}
+
+/* Warning icon */
+.error-icon {
+  width:          22px;
+  height:         22px;
+  flex-shrink:    0;
+  margin-top:     2px;        /* optical alignment with text */
+  fill:           var(--flamingo);
+  opacity:        0.9;
+}
+
+/* Text container — grows to fill */
+.error-text {
+  flex:           1;
+  min-width:      0;          /* allows text to wrap */
+  line-height:    1.6;
+}
+
+/* Rich text inside error messages */
+.error-text :is(h1, h2, h3) {
   font-family:   var(--font-display);
   font-weight:   700;
   color:         var(--flamingo);
@@ -929,32 +971,30 @@ body.lb-active #top-nav {
   line-height:   1.3;
 }
 
-.error-msg p {
+.error-text p {
   color:       var(--text-primary);
   font-weight: 400;
   margin:      0;
 }
 
-.error-msg.visible {
-  display:    block;
-  min-height: 22px;
-  animation:  error-in 0.25s ease;
+/* Expanded state */
+.footer-error-box.has-error .error-msg {
+  opacity:   1;
+  transform: translateY(0) scale(1);
 }
 
-@keyframes error-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
+/* Shake animation */
 @keyframes shake {
-  0%,100% { transform: translateX(0); }
-  20%     { transform: translateX(-6px); }
-  40%     { transform: translateX(6px); }
-  60%     { transform: translateX(-4px); }
-  80%     { transform: translateX(4px); }
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px);  }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px);  }
 }
 
-.shake { animation: shake 0.42s ease; }
+.error-msg.shake {
+  animation: shake 0.42s ease;
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    BUTTONS

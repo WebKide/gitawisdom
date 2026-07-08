@@ -49,23 +49,32 @@ const getDom   = () => window._woDom;
  * @param {string} msg — the error message to display
  * @param {'gita'|'iching'} [target] — which oracle's error box to use; defaults to current state.mode
  */
-function showError(msg, target) {
-  const dom = getDom();
-  const box = dom.globalErrorBox;
-  if (!box) return;
-  box.innerHTML = msg.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  box.classList.add('visible');
-  box.setAttribute('role', 'alert');
+function showError(msg) {
+  const wrapper = document.querySelector('.footer-error-box');
+  const box = document.getElementById('global-error-box');
+  if (!box || !wrapper) return;
+
+  const textSpan = box.querySelector('.error-text');
+  if (textSpan) {
+    textSpan.innerHTML = msg.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  } else {
+    box.innerHTML = msg.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  }
+  
+  wrapper.classList.add('has-error');
+  
+  // Shake for emphasis
+  box.classList.remove('shake');
+  void box.offsetWidth;
+  box.classList.add('shake');
 }
 
 /**
  * Clear all visible error messages from both Gita and iChing forms.
  */
 function clearErrors() {
-  const dom = getDom();
-  [dom.globalErrorBox, dom.gitaErrorBox, dom.ichingErrorBox].forEach(b => {
-    if (b) { b.textContent = ''; b.classList.remove('visible'); }
-  });
+  const wrapper = document.querySelector('.footer-error-box');
+  if (wrapper) wrapper.classList.remove('has-error');
 }
 
 // ─── Gita: form submit ────────────────────────────────────────────────────────
