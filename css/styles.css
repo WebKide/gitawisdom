@@ -1,251 +1,15 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   GitaWisdom + iChing Oracle  ·  styles.css
+   Wisdom Oracle  ·  styles.css
    Author: WebKide
    Dark aesthetic — Discord-inspired.
-   Typefaces: Waldemar (display) + Kelvinch / Gentium Plus (body)
+   Typefaces: Sansita (display) + Kelvinch / Gentium Plus / Ubuntu Sans (body)
 
    Gita accent:   --accent        #F5A623 (saffron)
    iChing accent: --iching-accent #6276bb (indigo-blue)
                   --iching-dim    #5768a4
                   --iching-border #6761f6 (left border on intro sections)
    Red buttons:   --red-btn:      #c8615f
-
-   CHANGELOG (this revision):
-   • Replaced Noto Serif with Gentium Plus (full Sanskrit diacritic support)
-   • Expanded all inset:0 shorthands for Android 8 WebView 66
-   • Added -webkit-user-select prefixes for iOS Safari
-   • Removed filter:drop-shadow() from animated SVGs (WebView 66 raster bug)
-   • Removed margin-top leakage from .btn-oracle (use .u-mt-16 utility)
-   • Added landing-page components: .banner-date, .menu-toggle, .module-tabs
-   • Redesigned .intro--gita / .intro--iching cards (header + thumb + text)
-   • Softened .error-msg aesthetic (friendlier "silly user" vibe)
-   • Updated .page-footer with rounded top corners and side borders
    ═══════════════════════════════════════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   FONT-FACE DECLARATIONS
-   All .WOFF2 fonts saved locally for offline PWA use.
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* ─── Kelvinch (body text, serif) ────────────────────────────────────────── */
-@font-face {
-  font-display: swap;
-  font-family: 'Kelvinch';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../assets/fonts/kelvinch-v42-latin-regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Kelvinch';
-  font-style: italic;
-  font-weight: 400;
-  src: url('../assets/fonts/kelvinch-v42-latin-italic.woff2') format('woff2');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Kelvinch';
-  font-style: normal;
-  font-weight: 700;
-  src: url('../assets/fonts/kelvinch-v42-latin-700.woff2') format('woff2');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Kelvinch';
-  font-style: italic;
-  font-weight: 700;
-  src: url('../assets/fonts/kelvinch-v42-latin-700italic.woff2') format('woff2');
-}
-
-/* ─── Gentium Plus (replaces Noto Serif) ───────────────────────────────── */
-@font-face {
-  font-display: swap;
-  font-family: 'Gentium Plus';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../assets/fonts/gentium-plus-v2-latin_latin-ext-regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Gentium Plus';
-  font-style: italic;
-  font-weight: 400;
-  src: url('../assets/fonts/gentium-plus-v2-latin_latin-ext-italic.woff2') format('woff2');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Gentium Plus';
-  font-style: normal;
-  font-weight: 700;
-  src: url('../assets/fonts/gentium-plus-v2-latin_latin-ext-700.woff2') format('woff2');
-}
-
-@font-face {
-  font-display: swap;
-  font-family: 'Gentium Plus';
-  font-style: italic;
-  font-weight: 700;
-  src: url('../assets/fonts/gentium-plus-v2-latin_latin-ext-700italic.woff2') format('woff2');
-}
-
-/* ─── Sansita (display headings, UI labels) ────────────────────────────── */
-@font-face {
-  font-display: block; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: 'Sansita';
-  font-style: normal;
-  font-weight: 700;
-  src: url('../assets/fonts/sansita-v12-latin_latin-ext-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* sansita-700italic - latin_latin-ext */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: 'Sansita';
-  font-style: italic;
-  font-weight: 700;
-  src: url('../assets/fonts/sansita-v12-latin_latin-ext-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* ─── Ubuntu Sans (boxes and footers) ────────────────────────────── */
-
-/* ubuntu-sans-regular - latin-ext */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: 'Ubuntu Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../assets/fonts/ubuntu-sans-v4-latin-ext-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* ubuntu-sans-italic - latin-ext */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: 'Ubuntu Sans';
-  font-style: italic;
-  font-weight: 400;
-  src: url('../assets/fonts/ubuntu-sans-v4-latin-ext-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* ubuntu-sans-600 - latin-ext */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: 'Ubuntu Sans';
-  font-style: normal;
-  font-weight: 600;
-  src: url('../assets/fonts/ubuntu-sans-v4-latin-ext-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* ubuntu-sans-600italic - latin-ext */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: 'Ubuntu Sans';
-  font-style: italic;
-  font-weight: 600;
-  src: url('../assets/fonts/ubuntu-sans-v4-latin-ext-600italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   DESIGN TOKENS
-   ═══════════════════════════════════════════════════════════════════════════ */
-:root {
-  color-scheme: dark;
-
-  /* Base palette */
-  --bg-base:     #1e1f22; /* Raisin Black */
-  --bg-mid:      #2b2d31; /* Charcoal */
-  --bg-card:     #313338; /* Gunmetal */
-  --bg-card-alt: #2e3035; /* Outer Space */
-  --bg-input:    #1e1f22; /* Raisin Black ?? */
-
-  /* Main colors */
-  --black:       #18191c; /* Eerie Black */
-  --navy:        #1a1f2a; /* Dark Charcoal Navy */
-  --blue:        #1a2235; /* Deep Oxford Blue */
-  --emerald:     #2ecc71; /* Emerald Green */
-  --blueflower:  #7188d8; /* Soft Cornflower Blue */
-  --crimson:     #a94c4a; /* Crimson Jasper */
-  --flamingo:    #e57373; /* Flamingo Pink */
-  --cerulean:    #3593d2; /* Cerulean Blue */
-  --royal-blue:  #2563eb; /* Royal Blue */
-  --coral:       #f87171; /* Pastel Coral */
-  --amber:       #fbbf24; /* Amber */
-
-  /* Gita / saffron accent */
-  --accent:      #f5a623;                  /* Saffron */
-  --accent-dim:  #c07d10;                  /* Ochre */
-  --accent-glow: rgba(245, 166, 35, 0.18); /* Translucent Saffron */
-  --accent-gold-bright: #ffbf00;           /* Pure gold accent highlighting */
-
-  /* iChing / indigo-blue accent */
-  --iching-accent:     #512f86;                  /* Royal Purple */
-  --iching-purple-lg:  rgba(81, 47, 134, 0.18);  /* Royal Purple Translucent */
-  --iching-purple:     rgba(115, 52, 211, 0.22);
-  --iching-jade:       #2e7d32;                  /* Oracle jade */
-  --iching-green-glow: rgba(16, 185, 129, 0.1);  /* Emerald Green */
-  --iching-dim:        #7334d3;                  /* Vivid Violet */
-  --iching-glow:       rgba(98, 118, 187, 0.20); /* Periwinkle Mist */
-  --iching-border:     #6761f6;                  /* Neon Blue */
-  --iching-lila:       #bfa1f7;
-
-  /* Lilac/Red buttons (purport close / return) */
-  --lilac-btn:       #512f86; /* # */
-  --lilac-btn-hover: #7334d3; /* # */
-  --red-btn:         #c8615f; /* Muted Coral */
-  --red-btn-bright:  #da6e6b; /* Light Carmine */
-  --lotus-pink:      #e06c9f; /* Deep spiritual pink states */
-
-  /* Wisdom Statuses & Notifications */
-  --wisdom-red:    rgba(248, 113, 113, 0.13); /* Pink Translucent */
-  --success-green: #23a55a; /* Safe green for active meditations */
-  --active-green:  #34d399; /* Emerald Mist */
-  --warning-amber: #f0b232; /* Soft alert tone matching saffron */
-  --info-cyan:     #00b0f4; /* Calm sky tone for system tips and popups */
-
-  /* Advanced Surfaces */
-  --bg-overlay: rgba(17, 18, 20, 0.70); /* Modal backdrop shade */
-  --bg-toast:   #111214;                /* Deepest black for small popups */
-
-  /* Text */
-  --text-primary:   #dbdee1; /* Platinum */
-  --text-secondary: #949ba4; /* Cool Grey */
-  --text-muted:     #747f8d; /* Dim Grey */
-  --text-heading:   #f2f3f5; /* Crisp White */
-
-  /* Borders / shadows */
-  --border:        rgba(255,255,255,0.06);         /* White Mask */
-  --border-accent: rgba(245,166,35,0.35);          /* Muted Saffron Tint */
-  --shadow-card:   0 8px 40px rgba(0,0,0,0.55);    /* Deep Obsidian Shadow */
-  --shadow-glow:   0 0 28px rgba(245,166,35,0.14); /* Soft Saffron Aura */
-  --crt-line:      rgba(255,255,255,0.03);         /* Micro Opacity */
-
-  /* Radii */
-  --radius-md: 6px;
-  --radius:    8px;
-  --radius-lg: 12px;
-  --radius-xl: 20px;
-
-  /* Typefaces */
-  --font-display: 'Sansita', sans-serif;
-  --font-body:    'Gentium Plus', serif;
-  --font-text:    'Kelvinch', serif;
-  --font-sans:    'Ubuntu Sans', sans-serif;
-
-  --transition:   0.22s ease;
-
-  /* In-reader font size — controlled by JS font-size buttons */
-  --lb-font-size: 16px;
-
-  /* Share PNG footer font size */
-  --share-footer-font-size: 24px;
-
-  --mark-bg: var(--accent-glow);
-  --mark-fg: var(--accent);
-}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    RESET & BASE
@@ -961,43 +725,43 @@ body.lb-active #top-nav {
 
 /* Inner element: flex row for icon + text */
 .error-msg {
-  display:        flex;
-  align-items:    flex-start;
-  gap:            12px;
-  overflow:       hidden;
+  display:       flex;
+  align-items:   flex-start;
+  gap:           12px;
+  overflow:      hidden;
   
-  font-family:    var(--font-body);
-  font-style:     normal !important;
-  font-size:      0.92rem;
-  color:          var(--text-primary);
-  background:     rgba(200, 97, 95, 0.10);
-  border:         3px solid rgba(200, 97, 95, 0.28);
-  border-radius:  var(--radius);
-  padding:        12px 16px;
+  font-family:   var(--font-body);
+  font-style:    normal !important;
+  font-size:     0.92rem;
+  color:         var(--text-primary);
+  background:    rgba(200, 97, 95, 0.10);
+  border:        3px solid rgba(200, 97, 95, 0.28);
+  border-radius: var(--radius);
+  padding:       12px 16px;
   
   /* Collapsed state */
-  opacity:        0;
-  transform:      translateY(-8px) scale(0.98);
-  transition:     opacity 0.3s ease,
-                  transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  background 0.22s ease;
+  opacity:    0;
+  transform:  translateY(-8px) scale(0.98);
+  transition: opacity 0.3s ease,
+              transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.22s ease;
 }
 
 /* Warning icon */
 .error-icon {
-  width:          22px;
-  height:         22px;
-  flex-shrink:    0;
-  margin-top:     2px;        /* optical alignment with text */
-  fill:           var(--flamingo);
-  opacity:        0.9;
+  width:       24px;
+  height:      24px;
+  flex-shrink: 0;
+  margin-top:  0;          /* optical alignment with text */
+  fill:        var(--flamingo);
+  opacity:     0.9;
 }
 
 /* Text container — grows to fill */
 .error-text {
-  flex:           1;
-  min-width:      0;          /* allows text to wrap */
-  line-height:    1.6;
+  flex:        1;
+  min-width:   0;          /* allows text to wrap */
+  line-height: 1.6;
 }
 
 /* Rich text inside error messages */
@@ -1047,7 +811,9 @@ body.lb-active #top-nav {
   border:          none;
   border-radius:   var(--radius);
   cursor:          pointer;
-  transition:      background var(--transition), transform 0.12s, box-shadow var(--transition);
+  transition:      background var(--transition), 
+                   transform 0.12s, 
+                   box-shadow var(--transition);
   white-space:     nowrap;
   -webkit-user-select: none;
   user-select:     none;
@@ -2228,7 +1994,9 @@ body.lb-active { overflow: hidden; }
 }
 
 .custom-select-list::-webkit-scrollbar       { width: 4px; }
-.custom-select-list::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
+.custom-select-list::-webkit-scrollbar-thumb { 
+  background: var(--text-muted); border-radius: 2px; 
+}
 
 .custom-select-backdrop {
   display:  none;

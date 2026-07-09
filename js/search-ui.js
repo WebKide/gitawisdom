@@ -102,11 +102,11 @@ function _buildCard() {
 
     <header class="lb-header">
       <div class="lb-author">
-        <img src="${_e(_s.icon ?? 'assets/images/prabhupada.png')}"
+        <img src="${_e(_s.icon ?? 'assets/images/imgfooter.png')}"
              alt="" class="lb-author-icon"
              width="28" height="28" draggable="false" />
         <span class="lb-author-name">
-          <strong>${_e(_s['h1'] ?? 'Search the Bhagavad Gītā')}</strong>
+          <strong>${_e(_s['h1'] ?? 'Search')}</strong>
         </span>
       </div>
       <div class="lb-header-actions">
@@ -125,11 +125,21 @@ function _buildCard() {
     <div class="lb-body">
 
       <div class="search-input-row">
+        <div class="lb-wisdom-section">
+          <h3 class="section-label">✦ Search the Gītā Wisdom</h3>
+          <ul class="lb-info-list">
+            <li><strong>Verse</strong> searches the English verse translation.</li>
+            <li><strong>Purport</strong> searches the original commentaries by 
+            <br />&nbsp;&nbsp;&nbsp;<i>Śrīla A.C. Bhaktivedānta Swami Prabhupāda</i>.</li>
+            <li>Supports search for one or more words.</li>
+            <li><strong>Matching terms</strong> are <mark>highlighted</mark> in the results.</li>
+          </ul>
+        </div>
         <input id="search-input"
                class="search-field"
                type="search"
                inputmode="search"
-               placeholder="${_e(_s['input-placeholder'] ?? 'Search…')}"
+               placeholder="${_e(_s['input-placeholder'] ?? 'Search Verse or Purport…')}"
                autocomplete="off"
                autocorrect="off"
                spellcheck="false"

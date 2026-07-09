@@ -9,42 +9,53 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
-  <meta name="description"
-        content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.1.54</title>
+  <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
+  <title>Wisdom Oracle v1.1.55</title>
   <meta name="author" content="WebKide" />
+
   <meta http-equiv="Content-Security-Policy" 
         content="default-src 'self'; 
                  script-src 'self' 'unsafe-inline'; 
                  style-src 'self' 'unsafe-inline'; 
                  img-src 'self' data: blob:; 
                  connect-src 'self';">
+
+  <!-- 1. Stylesheets: Critical path for First Contentful Paint -->
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/slideshow-panel.css" />
 
-  <!-- Fuse.js — must load before app.js module so Fuse is a global -->
-  <script src="js/fuse.min.js" defer></script>
+  <!-- 2. Preloads: Prioritize critical assets while CSS parses -->
+  <link rel="preload" href="assets/images/card_bg.png" as="image" />
+  <link rel="manifest" href="site.webmanifest" />
 
-  <!-- App entry point and dependencies loaded as ES modules; fuse-search.js and search-ui.js power the Gītā search feature -->
-  <script src="js/html2canvas.min.js" defer></script>
-
-  <!-- Slideshow panel: cycles the Gītā / iChing intro cards -->
+  <!-- 3. Immediate UI Script: Slideshow panel interactive element (slideshow) -->
   <script src="js/slideshow-panel.js" defer></script>
 
-  <!-- Register service worker (same scope as index.html)
+  <!-- 4. Global Dependencies: Must be available before main app modules -->
+  <script src="js/fuse.min.js" defer></script>
+
+  <!-- 5. Main Application Logic: Deferred by default via type="module" -->
+  <script src="js/app.js" type="module"></script>
+
+  <!-- 6. Heavy Utilities: Loaded last to avoid blocking startup bandwidth -->
+  <script src="js/html2canvas.min.js" defer></script>
+
+  <!-- Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .catch(err => console.warn('SW registration failed:', err));
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .catch(err => console.warn('SW registration failed:', err));
+      });
     }
-  </script> -->
+  </script>
 
   <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
-  <link rel="manifest" href="site.webmanifest" />
-  <link rel="preload" href="assets/images/card_bg.png" as="image" />
 </head>
 
 <body>
@@ -556,7 +567,7 @@
          draggable="false" />
     <p>
       To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
-      <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.54」</b>
+      <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.55」</b>
     </p>
   </div>
 </footer>
@@ -805,7 +816,7 @@
              height="28" 
              draggable="false"
              aria-hidden="true" />
-        <span class="lb-author-name"><strong>How to use Wisdom Oracle</strong></span>
+        <span class="lb-author-name"><strong>॥ oṁ namo nārāyaṇāya ॥</strong></span>
       </div>
       <div class="lb-header-actions">
         <button class="lb-icon-btn lb-font-btn lb-font-decrease"
@@ -981,6 +992,7 @@
     <div class="lb-body" id="bookmarks-body">
       <!-- populated by bookmarks.js -->
     </div>
+
   </article>
 </div>
 

@@ -1,8 +1,9 @@
 {
   "page-name": "Wisdom Search",
   "icon": "assets/images/prabhupada.png",
-  "h1": "Search the Bhagavad Gītā As It Is",
-  "input-placeholder": "Search wisdom from the Gītā",
+  "h1": "Search",
+  "text": "Input any text you wish to learn more about, then you can choose to search the Translation or Purport",
+  "input-placeholder": "Search Gītā Wisdom for timeless guidance",
   "btn-verse": "Verse Search",
   "btn-purport": "Purport Search",
   "msg-indexing": "Indexing 700 verses and purports, please wait a few seconds…",

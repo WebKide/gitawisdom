@@ -7,7 +7,7 @@
 <div align="center">
    <img src="https://img.shields.io/badge/Project%20by-WebKide-black.svg?style=popout&logo=github&logoColor=white" alt="Author" />
    <img src="https://img.shields.io/github/commit-activity/t/WebKide/gitawisdom?color=%23f5a623" alt="Version" /> 
-   <img src="https://img.shields.io/badge/Version-v1.1.54-magenta.svg?style=popout" alt="Author" />
+   <img src="https://img.shields.io/badge/Version-v1.1.55-magenta.svg?style=popout" alt="Author" />
 </div>
 
 <div align="center">
@@ -111,7 +111,7 @@ For issues or feature requests, please open an issue on [GitHub](https://github.
 
 ### ✦ Official launch
 
-- `24.06.2026` on the celebration of the festival of Gaṅgā-daśaharā and Śrī Gaṅgā pūjā, the appearance of Śrīmatī Gaṅgāmātā Gosvāminī and the disappearance of Śrīla Baladeva Vidyābhūṣaṇa. For the benefit of all.
+- **`24.06.2026`** on the celebration of the festival of Gaṅgā-daśaharā and Śrī Gaṅgā pūjā, the appearance of Śrīmatī Gaṅgāmātā Gosvāminī and the disappearance of Śrīla Baladeva Vidyābhūṣaṇa. For the benefit of all.
 
 ### 🤔 TODOs
 
@@ -121,11 +121,13 @@ For issues or feature requests, please open an issue on [GitHub](https://github.
 - [x] Dark mode, responsive design for Web and Mobile
 - [x] PWA splash screen, next loads app screen
 - [x] PWA support, app can be installed and runs totally offline on iOS/Android
-- [ ] Bookmark verse/hexagram, browse bookmarks from main screen
+- [x] Bookmark verse/hexagram, browse bookmarks from main screen
 - [x] Share verse, generates PNG 1080px * 1350 px (4:5 ratio) compatible with social media
 - [x] Verse Search function to search keyword and get clickable link to verse
+- [x] Purport Search function to search keyword and get clickable link to purport
 - [x] Settings card, it controls date in PNG share, visual borders (dev)
 - [x] Slideshow-panel for the cards in main page to save vertical space
+- [ ] Refactor CSS files and compress images to improve loading speed
 
 
 ###### No accounts, subscriptions or personal data required. Responsive design for desktop and mobile. Runs entirely in your browser.

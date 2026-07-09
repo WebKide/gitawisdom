@@ -6,7 +6,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.54';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.55';
 
 /**
  * Deployment base.
@@ -23,8 +23,8 @@ const ASSETS = [
   // Scripts
   BASE + '/js/app.js',
   BASE + '/js/bookmarks.js',
-  BASE + '/js/fuse.min.js',
   BASE + '/js/fuse-search.js',
+  BASE + '/js/fuse.min.js',
   BASE + '/js/gitacore.js',
   BASE + '/js/html2canvas.min.js',
   BASE + '/js/ichingcore.js',
@@ -38,9 +38,11 @@ const ASSETS = [
   BASE + '/js/wisdomoracle.js',
 
   // Styles
+  BASE + '/css/fonts.css',
   BASE + '/css/slideshow-panel.css',
-  BASE + '/css/styles.css',
   BASE + '/css/splash.css',
+  BASE + '/css/styles.css',
+  BASE + '/css/variables.css',
 
   // Images
   BASE + '/assets/images/card_bg.png',

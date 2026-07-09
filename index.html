@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d0e10" />
+  <meta name="color-scheme" content="dark" />
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -12,6 +13,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <link rel="canonical" href="/gitawisdom/oracle.html" />
   <title>Wisdom Oracle</title>
+  <meta name="author" content="WebKide" />
 
   <!-- Favicons — same as oracle.html -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
@@ -19,9 +21,12 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
   <link rel="manifest" href="site.webmanifest" />
 
+  <!-- 1. Stylesheets: Critical path for First Contentful Paint -->
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/splash.css" />
 
-  <!-- Preload the app logo -->
+  <!-- 2. Preload the app logo -->
   <link rel="preload" as="image" href="assets/images/wisdomoracle.svg" />
   <link rel="preload" as="image" href="assets/images/card_bg.png" />
 </head>
@@ -55,7 +60,7 @@
       </div>
     </div>
 
-    <p class="version">Wisdom Oracle v1.1.54</p>
+    <p class="version">Wisdom Oracle v1.1.55</p>
 
   </div>
 
