@@ -6,7 +6,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.58';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.59';
 const BASE = new URL('./', self.location.href).href.replace(/\/$/, '');
 
 const ASSETS = [

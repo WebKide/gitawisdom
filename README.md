@@ -7,7 +7,7 @@
 <div align="center">
    <img src="https://img.shields.io/badge/Project%20by-WebKide-black.svg?style=popout&logo=github&logoColor=white" alt="Author" />
    <img src="https://img.shields.io/github/commit-activity/t/WebKide/gitawisdom?color=%23f5a623" alt="Version" /> 
-   <img src="https://img.shields.io/badge/Version-v1.1.58-magenta.svg?style=popout" alt="Author" />
+   <img src="https://img.shields.io/badge/Version-v1.1.59-magenta.svg?style=popout" alt="Author" />
 </div>
 
 <div align="center">
