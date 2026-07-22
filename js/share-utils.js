@@ -474,8 +474,8 @@ async function handleShare() {
   const shareDateEl = document.querySelector('.share-png-date');
   if (shareDateEl) {
     shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.61'
-      : 'v1.1.61';
+      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.62'
+      : 'v1.1.62';
   }
 
   // ── Step 4b: Fit text and position footer before capture ──────────────────
@@ -598,9 +598,30 @@ function processInfoText(value) {
  * @returns {string} — HTML fragment or empty string
  */
 function renderInfoKey(key, value) {
-  if (value === null || value === 'none' || value === '' || value === undefined) return '';
+  if (key !== 'force_update' && (value === null || value === 'none' || value === '' || value === undefined)) return '';
 
   switch (key) {
+    case 'force_update':
+      if (!value) return '';
+      return `
+        <div class="update-banner" id="usage-force-update-banner">
+          <button type="button"
+                  class="module-tab module-tab--reload"
+                  id="usage-force-update-btn"
+                  title="Check for the latest version.">
+            <svg class="tab-icon"
+                 viewBox="0 -960 960 960"
+                 aria-hidden="true"
+                 focusable="false">
+              <path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z"/>
+            </svg>
+            <div class="tab-label-group">
+              <span class="tab-title">Check for update</span>
+              <span class="tab-subtitle">press to check</span>
+            </div>
+          </button>
+        </div>`;
+
     case 'h1':
       return `<h3 class="lb-chapter-heading">${processInfoText(String(value))}</h3>`;
 
@@ -705,10 +726,85 @@ async function openInfoModal(modalId, jsonPath) {
 }
 
 async function openUsageModal() {
-  return openInfoModal(
+  await openInfoModal(
     'usage-modal',
     'assets/data/usage.json'
   );
+  _wireForceUpdateButton();
+}
+
+/**
+ * Wires the "Check for update" button inside the usage modal, if present.
+ * Re-run every time the modal is (re)opened since its content is re-rendered.
+ */
+function _wireForceUpdateButton() {
+  const btn = document.getElementById('usage-force-update-btn');
+  if (!btn) return;
+
+  const titleEl    = btn.querySelector('.tab-title');
+  const subtitleEl = btn.querySelector('.tab-subtitle');
+
+  const resetLabel = () => {
+    btn.classList.remove('is-working', 'is-success', 'is-error');
+    titleEl.textContent    = 'Check for update';
+    subtitleEl.textContent = 'press to check';
+  };
+  resetLabel();
+
+  btn.addEventListener('click', async () => {
+    const reg = window._woGetSwRegistration?.();
+    if (!reg) {
+      btn.classList.add('is-error');
+      titleEl.textContent    = 'Unavailable';
+      subtitleEl.textContent = 'no service worker';
+      setTimeout(resetLabel, 2500);
+      return;
+    }
+
+    btn.classList.add('is-working');
+    titleEl.textContent    = 'Checking…';
+    subtitleEl.textContent = 'please wait';
+
+    try {
+      await reg.update();
+
+      // Give the browser a beat to evaluate byte-diff + move to installing/waiting
+      await new Promise(r => setTimeout(r, 600));
+
+      btn.classList.remove('is-working');
+
+      if (reg.waiting) {
+        btn.classList.add('is-success');
+        titleEl.textContent    = 'Re-launch to Update';
+        subtitleEl.textContent = 'press to reload';
+
+        // Second click (once in this state) triggers the actual update
+        btn.addEventListener('click', function reloadOnce() {
+          if (!reg.waiting) return;
+          let refreshing = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (refreshing) return;
+            refreshing = true;
+            window.location.reload();
+          }, { once: true });
+          reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }, { once: true });
+
+      } else {
+        btn.classList.add('is-success');
+        titleEl.textContent    = 'No update yet';
+        subtitleEl.textContent = 'you\u2019re up to date';
+        setTimeout(resetLabel, 2500);
+      }
+    } catch (err) {
+      console.error('[ForceUpdate] reg.update() failed:', err);
+      btn.classList.remove('is-working');
+      btn.classList.add('is-error');
+      titleEl.textContent    = 'Check failed';
+      subtitleEl.textContent = 'try again later';
+      setTimeout(resetLabel, 2500);
+    }
+  });
 }
 
 /**

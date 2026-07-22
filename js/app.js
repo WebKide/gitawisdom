@@ -238,6 +238,7 @@ initSwipe();
 
 // ─── Listen for messages from the Service Worker ────────────────────────────
 let swRegistration = null;
+window._woGetSwRegistration = () => swRegistration;
 
 // ─── Register Service Worker ────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {

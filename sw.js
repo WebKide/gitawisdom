@@ -6,7 +6,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.61';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.62';
 const BASE = new URL('./', self.location.href).href.replace(/\/$/, '');
 
 const ASSETS = [
@@ -112,18 +112,22 @@ const ASSETS = [
 /* ────────────────────────────────────────────────────────────────────────── */
 
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_VERSION)
-      .then(cache => {
-        console.log('[SW] Pre-caching critical assets cleanly...');
-        return cache.addAll(ASSETS);
-      })
-      .then(() => self.skipWaiting())
-      .catch(error => {
-        console.error('[SW] Critical install failed! Service worker aborted.', error);
-        throw error; // Forces SW into the 'redundant' dead state
-      })
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_VERSION);
+    for (const url of ASSETS) {
+      try {
+        const response = await fetch(url, { cache: 'reload' });
+        if (response.ok) {
+          await cache.put(url, response);
+        } else {
+          console.warn('[SW] Skip caching (HTTP ' + response.status + '):', url);
+        }
+      } catch (err) {
+        console.warn('[SW] Skip caching:', url, err);
+      }
+    }
+    self.skipWaiting();
+  })());
 });
 
 /* ────────────────────────────────────────────────────────────────────────── */

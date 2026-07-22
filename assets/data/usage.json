@@ -4,7 +4,7 @@
   "sections": [
     {
       "h2": "✦ NERD STATS",
-
+      "force_update": true,
       "text": "This app is developed by WebKide, for suggestions and feature requests you can contact via GitHub"
     },
     {
