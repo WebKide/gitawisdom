@@ -212,16 +212,17 @@ function buildShareFilename() {
  * @param {string}            label — temporary label (e.g. "✓ COPIED")
  * @returns {Promise<void>} — resolves when the original label is restored
  */
-function flashBtn(btn, label) {
-  const original  = btn.textContent;
-  btn.textContent = label;
-  btn.disabled    = true;
+function flashBtn(btn, state, duration = 1800) {
+  const STATES = ['working', 'success', 'error'];
+  STATES.forEach(s => btn.classList.remove(`is-${s}`));
+  btn.classList.add(`is-${state}`);
+  btn.disabled = true;
   return new Promise(resolve => {
     setTimeout(() => {
-      btn.textContent = original;
-      btn.disabled    = false;
+      btn.classList.remove(`is-${state}`);
+      btn.disabled = false;
       resolve();
-    }, 1800);
+    }, duration);
   });
 }
 
@@ -234,9 +235,18 @@ function flashBtn(btn, label) {
  * @param {string} text — plain text to place on the clipboard
  * @returns {Promise<void>}
  */
-async function _copyToClipboard(text) {
+async function _copyToClipboard(text, btn = null) {
+  if (btn) {
+    btn.classList.add('is-working');
+    btn.setAttribute('aria-label', 'Copying to clipboard…');
+  }
   try {
     await navigator.clipboard.writeText(text);
+    if (btn) {
+      btn.classList.remove('is-working');
+      btn.classList.add('is-success');
+      btn.setAttribute('aria-label', 'Copied to clipboard');
+    }
   } catch {
     // Fallback for HTTP or browsers without Clipboard API
     const ta          = document.createElement('textarea');
@@ -247,6 +257,11 @@ async function _copyToClipboard(text) {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
+    if (btn) {
+      btn.classList.remove('is-working');
+      btn.classList.add('is-success');
+      btn.setAttribute('aria-label', 'Copied to clipboard');
+    }
   }
 }
 
@@ -266,13 +281,14 @@ async function _copyToClipboard(text) {
 async function handleCopy() {
   const dom   = getDom();
   const state = window._woState;
+  const btn   = dom.lbCopyBtn;
 
   const text = state?.showPurport
     ? buildPurportText()
     : buildShareText(true); // verse view: translation + URL
 
-  await _copyToClipboard(text);
-  flashBtn(dom.lbCopyBtn, '\u2713 COPIED');
+  await _copyToClipboard(text, btn);
+  await flashBtn(btn, 'success');
 }
 
 // ─── Share PNG helpers ────────────────────────────────────────────────────────
@@ -343,7 +359,8 @@ async function triggerDownload(canvas, filename) {
   link.download = filename;
   link.href     = canvas.toDataURL('image/png');
   link.click();
-  await flashBtn(getDom().lbShareBtn, '\u2713 SAVED');
+  getDom().lbShareBtn.setAttribute('aria-label', 'Image saved');
+  await flashBtn(getDom().lbShareBtn, 'success');
 }
 
 // ─── Share handler ────────────────────────────────────────────────────────────
@@ -375,7 +392,15 @@ async function handleShare() {
   const shareTarget = dom.shareCard; // for HD 2:2
 
   // ── Step 1: Clipboard copy (always runs, regardless of PNG outcome) ────────
+  dom.lbShareBtn.classList.add('is-working');
+  dom.lbShareBtn.setAttribute('aria-label', 'Copying text to clipboard…');
   await _copyToClipboard(buildShareText(true));
+  dom.lbShareBtn.classList.remove('is-working');
+  dom.lbShareBtn.classList.add('is-success');
+  dom.lbShareBtn.setAttribute('aria-label', 'Text copied, preparing image…');
+  // Brief white flash to indicate step 1 complete before capture begins
+  dom.lbShareBtn.style.color = 'var(--text-heading)';
+  setTimeout(() => { dom.lbShareBtn.style.color = ''; }, 300);
 
   // ── Step 2: Guard — html2canvas must be loaded globally ───────────────────
   if (typeof html2canvas !== 'function') {
@@ -426,8 +451,8 @@ async function handleShare() {
   const shareDateEl = document.querySelector('.share-png-date');
   if (shareDateEl) {
     shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.58'
-      : 'v1.1.58';
+      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.60'
+      : 'v1.1.60';
   }
 
   // ── Step 4b: Fit text and position footer before capture ──────────────────
@@ -438,7 +463,9 @@ async function handleShare() {
   dom.sharePngFooter.style.right      = '165px';
   dom.sharePngFooter.style.whiteSpace = 'nowrap';
 
-  flashBtn(dom.lbShareBtn, '\u23F3 ...');
+  dom.lbShareBtn.classList.remove('is-success');
+  dom.lbShareBtn.classList.add('is-working');
+  dom.lbShareBtn.setAttribute('aria-label', 'Generating share image…');
 
   // ── Step 4c: Capture ──────────────────────────────────────────────────────
   try {
@@ -467,15 +494,19 @@ async function handleShare() {
           if (navigator.canShare({ files: [file] })) {
             try {
               await navigator.share({ files: [file] });
-              await flashBtn(dom.lbShareBtn, '\u2713 SHARED');
+              dom.lbShareBtn.setAttribute('aria-label', 'Shared successfully');
+              await flashBtn(dom.lbShareBtn, 'success');
             } catch (err) {
               // AbortError = user dismissed the sheet — not a real error;
               // clipboard copy already completed in step 1, just restore label
               if (err.name !== 'AbortError') throw err;
-              await flashBtn(dom.lbShareBtn, 'SHARE');
+              dom.lbShareBtn.setAttribute('aria-label', 'Share cancelled');
+              dom.lbShareBtn.classList.remove('is-working');
+              dom.lbShareBtn.disabled = false;
             }
           } else {
             // Share API present but files not supported — fall back to download
+            dom.lbShareBtn.setAttribute('aria-label', 'Downloading image…');
             await triggerDownload(canvas, filename);
           }
         } catch {
@@ -488,6 +519,7 @@ async function handleShare() {
     } else {
       // ── Step 5b: Desktop — direct PNG download ────────────────────────
       try {
+        dom.lbShareBtn.setAttribute('aria-label', 'Downloading image…');
         await triggerDownload(canvas, filename);
       } finally {
         resetShareCard();
@@ -497,7 +529,8 @@ async function handleShare() {
   } catch (err) {
     // html2canvas threw — text is already in the clipboard from step 1
     console.error('Share PNG failed:', err);
-    await flashBtn(dom.lbShareBtn, '\u2717 ERROR');
+    dom.lbShareBtn.setAttribute('aria-label', 'Share failed: ' + (err.message || 'Image generation error'));
+    await flashBtn(dom.lbShareBtn, 'error');
     resetShareCard();
   }
 }

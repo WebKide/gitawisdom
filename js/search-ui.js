@@ -40,6 +40,7 @@ export async function initSearchController(engine, callbacks) {
 }
 
 export function enableSearchButtons() {
+  _dom.btnSloka?.classList.remove('search-mode-btn--pending');
   _dom.btnVerse?.classList.remove('search-mode-btn--pending');
   _dom.btnPurport?.classList.remove('search-mode-btn--pending');
   _hideStatus();
@@ -110,15 +111,30 @@ function _buildCard() {
         </span>
       </div>
       <div class="lb-header-actions">
+        <!-- Font-size controls -->
         <button class="lb-icon-btn lb-font-btn lb-font-decrease"
-                title="Decrease text size"
-                aria-label="Decrease text size">Aᴀ−</button>
+                title="Decrease text size Aᴀ−"
+                aria-label="Decrease text size">
+          <svg class="tab-icon" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="m40-200 210-560h100l210 560h-96l-51-143H187l-51 143H40Zm176-224h168l-82-232h-4l-82 232Zm384-16v-80h320v80H600Z"/>
+          </svg>
+        </button>
         <button class="lb-icon-btn lb-font-btn lb-font-increase"
-                title="Increase text size"
-                aria-label="Increase text size">+ᴀA</button>
-        <button id="search-close" class="lb-close-btn"
-                title="Close (Esc)"
-                aria-label="Close search">&times;</button>
+                title="Increase text size +ᴀA"
+                aria-label="Increase text size">
+          <svg class="tab-icon" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="m40-200 210-560h100l210 560h-96l-51-143H187l-51 143H40Zm176-224h168l-82-232h-4l-82 232Zm504 104v-120H600v-80h120v-120h80v120h120v80H800v120h-80Z"/>
+          </svg>
+        </button>
+        <!-- Close lightbox btn -->
+        <button id="search-close" 
+                class="lb-close-btn"
+                title="Close"
+                aria-label="Close button">
+          <svg class="tab-icon" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+          </svg>
+        </button>
       </div>
     </header>
 
@@ -128,6 +144,7 @@ function _buildCard() {
         <div class="lb-wisdom-section">
           <h3 class="section-label">✦ Search the Gītā Wisdom</h3>
           <ul class="lb-info-list">
+            <li><strong>Śloka</strong> searches the original Sanskrit/IAST verse text.</li>
             <li><strong>Verse</strong> searches the English verse translation.</li>
             <li><strong>Purport</strong> searches the original commentaries by 
             <br />&nbsp;&nbsp;&nbsp;<i>Śrīla A.C. Bhaktivedānta Swami Prabhupāda</i>.</li>
@@ -147,6 +164,11 @@ function _buildCard() {
       </div>
 
       <div class="search-mode-row" role="group" aria-label="Search mode">
+        <button id="search-btn-sloka"
+                class="btn search-mode-btn search-mode-btn--pending"
+                aria-pressed="false">
+          ${_e(_s['btn-sloka'] ?? 'Śloka Search')}
+        </button>
         <button id="search-btn-verse"
                 class="btn search-mode-btn search-mode-btn--active search-mode-btn--pending"
                 aria-pressed="true">
@@ -196,6 +218,7 @@ function _buildCard() {
     overlay:    document.getElementById('search-overlay'),
     closeBtn:   document.getElementById('search-close'),
     input:      document.getElementById('search-input'),
+    btnSloka:   document.getElementById('search-btn-sloka'),
     btnVerse:   document.getElementById('search-btn-verse'),
     btnPurport: document.getElementById('search-btn-purport'),
     status:     document.getElementById('search-status'),
@@ -220,6 +243,15 @@ function _bindEvents() {
   document.addEventListener('keydown', e => {
     if (!_dom.card?.classList.contains('open')) return;
     if (e.key === 'Escape') closeSearchCard();
+  });
+
+  _dom.btnSloka.addEventListener('click', () => {
+    if (_dom.btnSloka.classList.contains('search-mode-btn--pending')) {
+      _showStatus(_s['msg-indexing']);
+      return;
+    }
+    _setMode('sloka');
+    _runSearch();
   });
 
   _dom.btnVerse.addEventListener('click', () => {
@@ -384,9 +416,12 @@ function _setMode(mode) {
   if (mode === _mode) return;
   _mode = mode;
 
+  _dom.btnSloka.classList.toggle('search-mode-btn--active', mode === 'sloka');
   _dom.btnVerse.classList.toggle('search-mode-btn--active',  mode === 'verse');
   _dom.btnPurport.classList.toggle('search-mode-btn--active', mode === 'purport');
-  _dom.btnVerse.setAttribute('aria-pressed',  mode === 'verse'   ? 'true' : 'false');
+
+  _dom.btnSloka.setAttribute('aria-pressed', mode === 'sloka'  ? 'true' : 'false');
+  _dom.btnVerse.setAttribute('aria-pressed',  mode === 'verse'  ? 'true' : 'false');
   _dom.btnPurport.setAttribute('aria-pressed', mode === 'purport' ? 'true' : 'false');
 }
 

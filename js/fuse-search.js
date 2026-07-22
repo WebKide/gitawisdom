@@ -47,6 +47,10 @@ const BASE_OPTIONS = {
   distance:           64,
 };
 
+const FIELD_CONFIG_SLOKA = [
+  { name: 'verseText', weight: 1.0 },
+];
+
 const KEYS_VERSE = [
   { name: 'translation', weight: 0.7 },
   { name: 'verseText',   weight: 0.3 },
@@ -58,6 +62,10 @@ const KEYS_PURPORT = [
 
 // Field configs for the inverted index (distinct from Fuse's KEYS_* above —
 // these drive exact-match scoring weights, Fuse's are only used in fallback).
+const KEYS_SLOKA = [
+  { name: 'verseText', weight: 1.0 },
+];
+
 const FIELD_CONFIG_VERSE = [
   { name: 'translation', weight: 1.0 },
   { name: 'verseText',   weight: 0.4 },
@@ -415,7 +423,10 @@ export class GitaSearch {
       });
     });
 
+    this._buildIndex('sloka');
     this._buildIndex('verse');
+    this._buildIndex('purport');
+
     this.ready = true;
   }
 
@@ -538,8 +549,12 @@ export class GitaSearch {
   }
 
   _buildIndex(mode) {
-    const fieldConfigs = mode === 'purport' ? FIELD_CONFIG_PURPORT : FIELD_CONFIG_VERSE;
-    const keys   = mode === 'purport' ? KEYS_PURPORT : KEYS_VERSE;
+    const fieldConfigs = mode === 'sloka'   ? FIELD_CONFIG_SLOKA 
+                       : mode === 'purport' ? FIELD_CONFIG_PURPORT 
+                       : FIELD_CONFIG_VERSE;
+    const keys = mode === 'sloka'   ? KEYS_SLOKA 
+               : mode === 'purport' ? KEYS_PURPORT 
+               : KEYS_VERSE;
     const source = mode === 'purport'
       ? this.corpus.filter(v => v.hasPurport)
       : this.corpus;

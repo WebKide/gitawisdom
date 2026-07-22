@@ -356,11 +356,14 @@ function renderVerse() {
   // must be re-shown whenever a Gita/iChing verse renders.
   dom.lbChapterHeading.classList.remove('hidden');
 
-  // ── Reset action buttons to their default labels on every render ──────────
-  dom.lbShareBtn.textContent = 'SHARE';
-  dom.lbShareBtn.disabled    = false;
-  dom.lbCopyBtn.textContent  = 'COPY';
-  dom.lbCopyBtn.disabled     = false;
+  // ── Reset action buttons on every render ──────────
+  dom.lbShareBtn.disabled = false;
+  dom.lbCopyBtn.disabled  = false;
+  // Clear any lingering color state classes from previous operations
+  ['is-working', 'is-success', 'is-error'].forEach(cls => {
+    dom.lbShareBtn.classList.remove(cls);
+    dom.lbCopyBtn.classList.remove(cls);
+  });
 
   // Remove any leftover no-purport message from previous verse
   const oldMsg = document.getElementById('lb-no-purport-msg');

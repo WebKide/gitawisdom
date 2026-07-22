@@ -1153,7 +1153,7 @@ body.lb-active { overflow: hidden; }
   font-weight:   700;
   line-height:   1;
   cursor:        pointer;
-  padding:       2px 15px;
+  padding:       5px 8px;
   border-radius: 4px;
   flex-shrink:   0;
   transition:    color var(--transition), background var(--transition);
@@ -1164,6 +1164,10 @@ body.lb-active { overflow: hidden; }
   color:      var(--red-btn);
   border:     1px solid var(--red-btn);
 }
+
+.lb-icon-btn.is-working  { color: var(--amber); }
+.lb-icon-btn.is-success  { color: var(--emerald); }
+.lb-icon-btn.is-error    { color: var(--red-btn); }
 
 @media (max-width: 520px) {
   /* ─── Lightbox header: prevent button squish on narrow screens ─── */
