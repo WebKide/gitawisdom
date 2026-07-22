@@ -249,18 +249,29 @@ async function _copyToClipboard(text, btn = null) {
     }
   } catch {
     // Fallback for HTTP or browsers without Clipboard API
-    const ta          = document.createElement('textarea');
-    ta.value          = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity  = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    if (btn) {
-      btn.classList.remove('is-working');
-      btn.classList.add('is-success');
-      btn.setAttribute('aria-label', 'Copied to clipboard');
+    try {
+      const ta          = document.createElement('textarea');
+      ta.value          = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity  = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      if (!ok) throw new Error('execCommand copy returned false');
+
+      if (btn) {
+        btn.classList.remove('is-working');
+        btn.classList.add('is-success');
+        btn.setAttribute('aria-label', 'Copied to clipboard');
+      }
+    } catch (fallbackErr) {
+      console.error('Clipboard copy failed:', fallbackErr);
+      if (btn) {
+        btn.classList.remove('is-working');
+        btn.classList.add('is-error');
+        btn.setAttribute('aria-label', 'Copy failed — please copy manually');
+      }
     }
   }
 }
@@ -306,7 +317,7 @@ async function handleCopy() {
  */
 function fitShareText() {
   const MAX_HEIGHT = 800;
-  const MIN_SIZE   = 14;
+  const MIN_SIZE   = 8;
   const START_SIZE = 64;
   const STEP       = 2;
 
@@ -330,6 +341,15 @@ function fitShareText() {
 
   // Restore the fixed height for html2canvas capture
   textEl.style.height = '800px';
+
+  // Content still overflows even at minimum font size — surface it instead
+  // of silently clipping the share card.
+  if (textEl.scrollHeight > MAX_HEIGHT) {
+    console.warn('[ShareCard] Text overflow at minimum font size — content may be clipped.');
+    textEl.classList.add('share-text-overflow');
+  } else {
+    textEl.classList.remove('share-text-overflow');
+  }
 }
 
 /**
@@ -392,9 +412,11 @@ async function handleShare() {
   const shareTarget = dom.shareCard; // for HD 2:2
 
   // ── Step 1: Clipboard copy (always runs, regardless of PNG outcome) ────────
+  const shareText = buildShareText(true);
   dom.lbShareBtn.classList.add('is-working');
   dom.lbShareBtn.setAttribute('aria-label', 'Copying text to clipboard…');
-  await _copyToClipboard(buildShareText(true));
+  await _copyToClipboard(shareText);
+
   dom.lbShareBtn.classList.remove('is-working');
   dom.lbShareBtn.classList.add('is-success');
   dom.lbShareBtn.setAttribute('aria-label', 'Text copied, preparing image…');
@@ -404,7 +426,8 @@ async function handleShare() {
 
   // ── Step 2: Guard — html2canvas must be loaded globally ───────────────────
   if (typeof html2canvas !== 'function') {
-    flashBtn(dom.lbShareBtn, '\u2713 COPIED');
+    dom.lbShareBtn.setAttribute('aria-label', 'Copied to clipboard');
+    await flashBtn(dom.lbShareBtn, 'success');
     return;
   }
 
@@ -451,8 +474,8 @@ async function handleShare() {
   const shareDateEl = document.querySelector('.share-png-date');
   if (shareDateEl) {
     shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.60'
-      : 'v1.1.60';
+      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.61'
+      : 'v1.1.61';
   }
 
   // ── Step 4b: Fit text and position footer before capture ──────────────────
@@ -485,36 +508,39 @@ async function handleShare() {
 
     // ── Step 5a: Mobile — native share sheet ─────────────────────────────
     if (navigator.canShare && navigator.share) {
-      canvas.toBlob(async (blob) => {
-        try {
-          if (!blob) throw new Error('Canvas toBlob returned null');
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
 
-          const file = new File([blob], filename, { type: 'image/png' });
+      try {
+        if (!blob) throw new Error('Canvas toBlob returned null');
 
-          if (navigator.canShare({ files: [file] })) {
-            try {
-              await navigator.share({ files: [file] });
-              dom.lbShareBtn.setAttribute('aria-label', 'Shared successfully');
-              await flashBtn(dom.lbShareBtn, 'success');
-            } catch (err) {
-              // AbortError = user dismissed the sheet — not a real error;
-              // clipboard copy already completed in step 1, just restore label
-              if (err.name !== 'AbortError') throw err;
-              dom.lbShareBtn.setAttribute('aria-label', 'Share cancelled');
-              dom.lbShareBtn.classList.remove('is-working');
-              dom.lbShareBtn.disabled = false;
-            }
-          } else {
-            // Share API present but files not supported — fall back to download
-            dom.lbShareBtn.setAttribute('aria-label', 'Downloading image…');
-            await triggerDownload(canvas, filename);
+        const file = new File([blob], filename, { type: 'image/png' });
+
+        if (navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              text: shareText
+            });
+            dom.lbShareBtn.setAttribute('aria-label', 'Shared successfully');
+            await flashBtn(dom.lbShareBtn, 'success');
+          } catch (err) {
+            // AbortError = user dismissed the sheet — not a real error;
+            // clipboard copy already completed in step 1, just restore label
+            if (err.name !== 'AbortError') throw err;
+            dom.lbShareBtn.setAttribute('aria-label', 'Share cancelled');
+            dom.lbShareBtn.classList.remove('is-working');
+            dom.lbShareBtn.disabled = false;
           }
-        } catch {
+        } else {
+          // Share API present but files not supported — fall back to download
+          dom.lbShareBtn.setAttribute('aria-label', 'Downloading image…');
           await triggerDownload(canvas, filename);
-        } finally {
-          resetShareCard();
         }
-      }, 'image/png');
+      } catch {
+        await triggerDownload(canvas, filename);
+      } finally {
+        resetShareCard();
+      }
 
     } else {
       // ── Step 5b: Desktop — direct PNG download ────────────────────────
@@ -955,9 +981,6 @@ function initSettingsModal() {
   if (cbDate) cbDate.checked = _settings.showDateInPng;
   if (highResCheckbox) {
     highResCheckbox.checked = _settings.highResPng;
-    highResCheckbox.addEventListener('change', (e) => {
-      _saveSetting('highResPng', e.target.checked);
-    });
   }
 
   if (cbOutlines) cbOutlines.checked = _settings.showLayoutOutlines;
