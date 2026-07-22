@@ -6,17 +6,12 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.55';
-
-/**
- * Deployment base.
- * Works correctly both from localhost and GitHub Pages subdirectories.
- */
+const CACHE_VERSION = 'wisdom-oracle-v1.1.58';
 const BASE = new URL('./', self.location.href).href.replace(/\/$/, '');
 
 const ASSETS = [
-  BASE + '/index.html',        // splash screen entry point
-  BASE + '/oracle.html',       // main progressive web app
+  BASE + '/index.html', // splash screen entry point
+  BASE + '/oracle.html', // main progressive web app
   BASE + '/site.webmanifest',
   BASE + '/favicon.ico',
 
@@ -30,7 +25,6 @@ const ASSETS = [
   BASE + '/js/ichingcore.js',
   BASE + '/js/lightbox.js',
   BASE + '/js/oracle-forms.js',
-  BASE + '/js/router.js',
   BASE + '/js/search-ui.js',
   BASE + '/js/share-utils.js',
   BASE + '/js/slideshow-panel.js',
@@ -114,70 +108,41 @@ const ASSETS = [
 ];
 
 /* ────────────────────────────────────────────────────────────────────────── */
-// ─── Install: cache all assets, tolerate 404s ─────────────────────────────
+// ─── Install: cache all assets for offline use ────────────────────────────
 /* ────────────────────────────────────────────────────────────────────────── */
 
 self.addEventListener('install', event => {
-  event.waitUntil((async () => {
-
-    const cache = await caches.open(CACHE_VERSION);
-
-    for (const url of ASSETS) {
-      try {
-        const response = await fetch(url, {
-            cache: 'reload'
-        });
-
-        if (response.ok) {
-          await cache.put(url, response);
-        } else {
-          console.warn('[SW] Skip caching (HTTP ' + response.status + '):', url);
-        }
-      } catch (err) {
-        console.warn('[SW] Skip caching:', url, err);
-      }
-    }
-  })());
+  event.waitUntil(
+    caches.open(CACHE_VERSION)
+      .then(cache => {
+        console.log('[SW] Pre-caching critical assets cleanly...');
+        return cache.addAll(ASSETS);
+      })
+      .then(() => self.skipWaiting())
+      .catch(error => {
+        console.error('[SW] Critical install failed! Service worker aborted.', error);
+        throw error; // Forces SW into the 'redundant' dead state
+      })
+  );
 });
 
-self.addEventListener('message', (event) => {
-  if (event.data?.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
 /* ────────────────────────────────────────────────────────────────────────── */
 // ─── Activate: delete old caches ──────────────────────────────────────────
 /* ────────────────────────────────────────────────────────────────────────── */
 
 self.addEventListener('activate', event => {
-  event.waitUntil((async () => {
-
-    if ('navigationPreload' in self.registration) {
-      try {
-        await self.registration.navigationPreload.enable();
-      } catch (_) {}
-    }
-
-    const keys = await caches.keys();
-
-    await Promise.all(
-      keys
-        .filter(key => key !== CACHE_VERSION)
-        .map(key => caches.delete(key))
-    );
-
-    await self.clients.claim();
-
-    const clients = await self.clients.matchAll();
-
-    for (const client of clients) {
-      client.postMessage({
-        type: 'SW_UPDATED',
-        version: CACHE_VERSION
-      });
-    }
-
-  })());
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_VERSION) {
+            console.log('[SW] Purging outdated cache:', key);
+            return caches.delete(key);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -185,107 +150,46 @@ self.addEventListener('activate', event => {
 /* ────────────────────────────────────────────────────────────────────────── */
 
 self.addEventListener('fetch', event => {
-
   const request = event.request;
-
-  if (request.method !== 'GET')
-    return;
-
-  // Ignore extension requests and cross-origin resources.
-  if (!request.url.startsWith(self.location.origin))
-    return;
-
-  // ── HTML navigation ─────────────────────────────────────────────────────
-  if (request.mode === 'navigate') {
-
-    event.respondWith((async () => {
-
-      const cache = await caches.open(CACHE_VERSION);
-      const url = new URL(request.url);
-      const baseUrl = new URL(BASE);
-
-      // 1. Try exact match first
-      let cached = await cache.match(request);
-
-      // 2. If request is for the base path or root, fallback to index.html
-      if (!cached) {
-        const isBasePath = url.pathname === baseUrl.pathname ||
-                           url.pathname === baseUrl.pathname + '/';
-        const isRoot = url.pathname === '/';
-
-        if (isBasePath || isRoot) {
-          cached = await cache.match(BASE + '/index.html');
-        }
-      }
-
-      // 3. Cache hit → serve immediately, refresh in background
-      if (cached) {
-
-        void (async () => {
-          try {
-            const preload = await event.preloadResponse;
-            const response = preload || await fetch(request);
-
-            if (response && response.ok) {
-              const clone = response.clone();
-              const cache = await caches.open(CACHE_VERSION);
-              cache.put(request, clone);
-            }
-
-          } catch (_) {
-            // ignore offline/network errors
-          }
-        })();
-
-        return cached;
-      }
-
-      // 4. No cache → try network (or navigation preload)
-      try {
-        const preload = await event.preloadResponse;
-        const response = preload || await fetch(request);
-
-        if (response && response.ok) {
-          cache.put(request, response.clone());
-        }
-        return response;
-      } catch (err) {
-        // 5. Complete offline failure → fallback to index.html
-        const fallback = await cache.match(BASE + '/index.html');
-        if (fallback) return fallback;
-
-        return new Response(
-          'Wisdom Oracle is offline. Please check your connection.',
-          { status: 503, statusText: 'Service Unavailable', headers: { 'Content-Type': 'text/plain' } }
-        );
-      }
-
-    })());
-
+  
+  if (request.method !== 'GET' || !request.url.startsWith(self.location.origin)) {
     return;
   }
 
-  // ── Everything else (assets, fonts, images, JSON) ───────────────────────
-  event.respondWith((async () => {
+  event.respondWith(
+    caches.open(CACHE_VERSION).then(async cache => {
+      const url = new URL(request.url);
+      
+      // Clean query strings/hashes for reliable cache matching
+      const cleanUrl = url.origin + url.pathname; 
 
-    const cache = await caches.open(CACHE_VERSION);
-    const cached = await cache.match(request);
+      // 1. Handle Navigation Requests (HTML Pages)
+      if (request.mode === 'navigate') {
+        const isRoot = cleanUrl === self.location.origin + '/' || cleanUrl === BASE || cleanUrl === BASE + '/';
+        const targetKey = isRoot ? BASE + '/index.html' : request;
 
-    if (cached)
-      return cached;
+        const cachedResponse = await cache.match(targetKey, { ignoreSearch: true });
+        if (cachedResponse) return cachedResponse;
 
-    try {
-      const response = await fetch(request);
-      if (response && response.ok) {
-        cache.put(request, response.clone());
+        // Fallback strategy if page isn't explicitly cached
+        return cache.match(BASE + '/index.html', { ignoreSearch: true });
       }
-      return response;
-    } catch (err) {
-      console.warn('[SW] Asset fetch failed (offline?):', request.url);
-      // Return a 503 so the browser gets a clean error instead of a thrown promise
-      return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
-    }
 
-  })());
+      // 2. Asset Retrieval (Strict Cache-First)
+      // We look only in the safe, verified installation cache
+      const cachedAsset = await cache.match(request, { ignoreSearch: true });
+      if (cachedAsset) return cachedAsset;
 
+      // 3. Runtime Network Fallback (Only for files outside pre-cache list)
+      try {
+        return await fetch(request);
+      } catch (err) {
+        const acceptHeader = request.headers.get('accept') || '';
+        if (acceptHeader.includes('text/html')) {
+          return cache.match(BASE + '/index.html');
+        }
+        return new Response('[SW] Asset missing and offline.', { status: 404 });
+      }
+    })
+  );
 });

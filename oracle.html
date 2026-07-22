@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Wisdom Oracle" />
   <meta name="description" content="Find instant wisdom, clarity, and emotional strength for everyday challenges." />
-  <title>Wisdom Oracle v1.1.55</title>
+  <title>Wisdom Oracle v1.1.58</title>
   <meta name="author" content="WebKide" />
 
   <meta http-equiv="Content-Security-Policy" 
@@ -537,7 +537,7 @@
        class="error-msg" 
        role="alert" 
        aria-live="polite">
-    
+
     <!-- Warning icon — collapses with the box -->
     <svg class="error-icon"
          viewBox="0 -960 960 960"
@@ -545,7 +545,7 @@
          focusable="false">
       <path d="m40-120 440-760 440 760H40Zm138-80h604L480-720 178-200Zm330.5-51.5Q520-263 520-280t-11.5-28.5Q497-320 480-320t-28.5 11.5Q440-297 440-280t11.5 28.5Q463-240 480-240t28.5-11.5ZM440-360h80v-200h-80v200Zm40-100Z"/>
     </svg>
-    
+
     <!-- Text content injected here by JS -->
     <span class="error-text"></span>
     
@@ -567,7 +567,7 @@
          draggable="false" />
     <p>
       To <i><b>Śrīla Baladeva Vidyābhūṣaṇa</b></i><br />who presented so nicely the 
-      <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.55」</b>
+      <i>“Govinda-bhāṣya”</i> commentary on Vedānta philosophy. <b>「v1.1.58」</b>
     </p>
   </div>
 </footer>
@@ -941,7 +941,18 @@
         </label>
       </div>
 
-      <!-- Row 3: DevTools toggle -->
+      <!-- Row 3: HD PNG toggle -->
+      <div class="settings-row">
+        <span class="settings-row-label">
+          Share <em class="settings-row-tag">High Res</em> PNG share
+        </span>
+        <label class="toggle" aria-label="HD PNG share">
+          <input type="checkbox" id="setting-hd-png" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Row 4: DevTools toggle -->
       <div class="settings-row">
         <span class="settings-row-label">
           Show layout outlines <em class="settings-row-tag">devTools</em>
@@ -952,7 +963,7 @@
         </label>
       </div>
 
-      <!-- Row 4: Slideshow toggle -->
+      <!-- Row 5: Slideshow toggle -->
       <div class="settings-row">
         <span class="settings-row-label">
           Stop <em class="settings-row-tag">slideShow</em> animation

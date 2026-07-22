@@ -36,6 +36,7 @@ const _infoCardCache = {};
 const _settings = {
   showDateInPng:      true,
   showLayoutOutlines: false,
+  highResPng:         false, // Default to standard (1x) resolution
 };
 
 /**
@@ -49,6 +50,7 @@ function _loadSettings() {
     const saved = JSON.parse(raw);
     if (typeof saved.showDateInPng      === 'boolean') _settings.showDateInPng      = saved.showDateInPng;
     if (typeof saved.showLayoutOutlines === 'boolean') _settings.showLayoutOutlines = saved.showLayoutOutlines;
+    if (typeof saved.highResPng         === 'boolean') _settings.highResPng         = saved.highResPng; // HighResPng
   } catch (_) {}
 }
 
@@ -370,6 +372,7 @@ async function triggerDownload(canvas, filename) {
 async function handleShare() {
   const dom   = getDom();
   const state = window._woState;
+  const shareTarget = dom.shareCard; // for HD 2:2
 
   // ── Step 1: Clipboard copy (always runs, regardless of PNG outcome) ────────
   await _copyToClipboard(buildShareText(true));
@@ -423,8 +426,8 @@ async function handleShare() {
   const shareDateEl = document.querySelector('.share-png-date');
   if (shareDateEl) {
     shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.55'
-      : 'v1.1.55';
+      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.58'
+      : 'v1.1.58';
   }
 
   // ── Step 4b: Fit text and position footer before capture ──────────────────
@@ -440,7 +443,9 @@ async function handleShare() {
   // ── Step 4c: Capture ──────────────────────────────────────────────────────
   try {
     const canvas   = await html2canvas(dom.sharePngCard, {
-      scale:           2,       // 2× for sharp output on high-DPI screens
+      // !--> scale: 2,  // 2× for sharp output on high-DPI screens
+      // If HD is on, use device ratio (usually 2+), else force 1:1 scale
+      scale: _settings.highResPng ? window.devicePixelRatio : 1, 
       useCORS:         false,   // all assets are local — no CORS needed
       allowTaint:      false,
       backgroundColor: null,    // transparent — lets card_bg.png show through
@@ -901,19 +906,27 @@ function initSettingsModal() {
   _loadSettings();
   _applyOutlines(_settings.showLayoutOutlines);
 
-  const modal      = document.getElementById('settings-modal');
-  const overlay    = document.getElementById('settings-overlay');
-  const usageBtn   = document.getElementById('setting-open-usage'); // New reference
-  const closeBtn   = document.getElementById('settings-close');
-  const openBtn    = document.getElementById('menu-toggle-btn');
-  const cbDate     = document.getElementById('setting-show-date');
+  const modal = document.getElementById('settings-modal');
+  const overlay = document.getElementById('settings-overlay');
+  const usageBtn = document.getElementById('setting-open-usage'); // New reference
+  const closeBtn = document.getElementById('settings-close');
+  const openBtn = document.getElementById('menu-toggle-btn');
+  const cbDate = document.getElementById('setting-show-date');
   const cbOutlines = document.getElementById('setting-show-outlines');
-  const cbSlideshow  = document.getElementById('remove-slideshow-scrolling');
+  const highResCheckbox = document.getElementById('setting-hd-png');
+  const cbSlideshow = document.getElementById('remove-slideshow-scrolling');
 
   if (!modal || !openBtn) return;
 
-  // Reflect persisted state in checkboxes immediately
-  if (cbDate)     cbDate.checked     = _settings.showDateInPng;
+  // 1. Sync UI with current state (This makes them "selected by default" if true)
+  if (cbDate) cbDate.checked = _settings.showDateInPng;
+  if (highResCheckbox) {
+    highResCheckbox.checked = _settings.highResPng;
+    highResCheckbox.addEventListener('change', (e) => {
+      _saveSetting('highResPng', e.target.checked);
+    });
+  }
+
   if (cbOutlines) cbOutlines.checked = _settings.showLayoutOutlines;
   if (cbSlideshow) {
     let stacked = false;
@@ -940,6 +953,10 @@ function initSettingsModal() {
 
   cbDate?.addEventListener('change', () => {
     _saveSetting('showDateInPng', cbDate.checked);
+  });
+
+  highResCheckbox?.addEventListener('change', (e) => {
+    _saveSetting('highResPng', e.target.checked);
   });
 
   cbOutlines?.addEventListener('change', () => {
