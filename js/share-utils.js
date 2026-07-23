@@ -309,43 +309,52 @@ async function handleCopy() {
  * possible without overflowing.
  *
  * Strategy:
- *   1. Start at START_SIZE and shrink until scrollHeight ≤ MAX_HEIGHT.
- *   2. Set line-height after size is finalised — tighter for large text.
+ * Dynamically scales text font size using a binary search algorithm 
+ * to maximize text readability within a fixed bounding box (800px height).
+ * Also adjusts line-height proportionally and handles fallback overflow styling.
  *
  * NOTE: the share card sits at left:-9999px but is display:flex, so
  * scrollHeight reads are valid as long as width is fixed (1080px in CSS).
  */
 function fitShareText() {
-  const MAX_HEIGHT = 800;
-  const MIN_SIZE   = 8;
-  const START_SIZE = 64;
-  const STEP       = 2;
+  // --- Configuration Constants ---
+  const MAX_HEIGHT = 800;; // Target maximum height in pixels for the container
+  const MIN_SIZE   = 6;    // Minimum readable font size in pixels
+  const MAX_SIZE   = 96;   // Maximum allowed font size in pixels
 
+  // --- DOM Initialization ---
   const dom    = getDom();
   const textEl = dom.sharePngVerse;
 
-  // Temporarily set height to auto so scrollHeight reads true content height.
-  // With height:800px + overflow:hidden, scrollHeight is always clamped to 800
-  // and the shrink loop never fires.
-  textEl.style.height   = 'auto';
-  let size              = START_SIZE;
-  textEl.style.fontSize = `${size}px`;
+  // Reset height and set baseline spacing to accurately measure scrollHeight
+  textEl.style.height = 'auto';
   textEl.style.lineHeight = '1.4';
 
-  while (textEl.scrollHeight > MAX_HEIGHT && size > MIN_SIZE) {
-    size -= STEP;
-    textEl.style.fontSize = `${size}px`;
+  // --- Binary Search for Optimal Font Size ---
+  let lo = MIN_SIZE, hi = MAX_SIZE, best = MIN_SIZE;
+  while (lo <= hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    textEl.style.fontSize = `${mid}px`;
+    // Check if current size fits within the bounding height
+    if (textEl.scrollHeight <= MAX_HEIGHT) {
+      best = mid;     // Record valid size
+      lo = mid + 1;   // try bigger
+    } else {
+      hi = mid - 1;   // too big, go smaller
+    }
   }
 
-  textEl.style.lineHeight = size > 48 ? '1.3' : size > 32 ? '1.45' : '1.6';
-
-  // Restore the fixed height for html2canvas capture
+  // --- Apply Final Stylings ---
+  // Step 1: Commit the optimal font size found
+  textEl.style.fontSize = `${best}px`;
+  // Step 2: Tighten spacing for larger text to avoid awkward layout gaps
+  textEl.style.lineHeight = best > 48 ? '1.3' : best > 32 ? '1.45' : '1.6';
+  // Step 3: Lock container to final explicit output height
   textEl.style.height = '800px';
 
-  // Content still overflows even at minimum font size — surface it instead
-  // of silently clipping the share card.
+  // --- Overflow Fallback Protection ---
+  // Edge case: If MIN_SIZE still overflows 800px, append safety CSS class
   if (textEl.scrollHeight > MAX_HEIGHT) {
-    console.warn('[ShareCard] Text overflow at minimum font size — content may be clipped.');
     textEl.classList.add('share-text-overflow');
   } else {
     textEl.classList.remove('share-text-overflow');
@@ -436,23 +445,24 @@ async function handleShare() {
     const p = state.wisdomPayload;
 
     const SHARE_TITLES = [
-      'A meditation for reflection and inner clarity',
-      'Aligning with nature for effortless daily success with guidance',
-      'Cultivate inner truth to influence the world with wisdom',
-      'Eternal wisdom for navigating modern-day chaos',
-      'Living with intention, grace, and spiritual guidance',
-      'Navigate challenge with grace and strategic foresight',
-      'Overcoming fear through ancient spiritual wisdom',
-      'Synchronize your actions with the cosmos today',
-      'The timeless art of mindful, purposeful living in wisdom',
-      'Today’s insightful meditation and inspiring guidance',
+      'A meditation for reflection and inner, peaceful clarity',
+      'Aligning with nature for effortless daily success through guidance',
+      'Cultivate inner truth to influence your world with traditional wisdom',
+      'Eternal wisdom for navigating modern-day chaos and complexities',
+      'Living with intention, grace, hope, and spiritual guidance',
+      'Navigate challenge with grace and strategic foresight for the day',
+      'Overcoming fear and confusion with ancient spiritual wisdom',
+      'Synchronize your actions with the cosmos’ light today',
+      'The timeless art of mindful, purposeful living in wisdom and love',
+      'Today’s insightful meditation and inspiring guidance for you',
       'Understanding the hidden currents of your day with wisdom',
-      'Wisdom revealed through three perspectives',
+      'Wisdom revealed through three perspectives at a glance',
     ];
 
     dom.sharePngTitle.innerHTML =
+      // color:#949ba4
       SHARE_TITLES[Math.floor(Math.random() * SHARE_TITLES.length)] +
-      '<br/><span style="font-size:32px;color:#949ba4;">carefully personalised for you</span>';
+      '<br/><span style="font-size:26px;color:transparent;">Carefully personalised and crafted for you:</span>';
 
     dom.sharePngVerse.innerHTML = [
       `✦ ${escHtml(p.guidance)}`,
@@ -474,8 +484,8 @@ async function handleShare() {
   const shareDateEl = document.querySelector('.share-png-date');
   if (shareDateEl) {
     shareDateEl.textContent = (_settings.showDateInPng && window.formatBannerDate)
-      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.62'
-      : 'v1.1.62';
+      ? window.formatBannerDate(new Date()) + ' \u2022 v1.1.64'
+      : 'v1.1.64';
   }
 
   // ── Step 4b: Fit text and position footer before capture ──────────────────
@@ -604,7 +614,9 @@ function renderInfoKey(key, value) {
     case 'force_update':
       if (!value) return '';
       return `
-        <div class="update-banner" id="usage-force-update-banner">
+        <div class="update-banner visible" 
+             id="usage-force-update-banner"
+             style="display:flex;align-items:center;">
           <button type="button"
                   class="module-tab module-tab--reload"
                   id="usage-force-update-btn"
@@ -739,15 +751,16 @@ async function openUsageModal() {
  */
 function _wireForceUpdateButton() {
   const btn = document.getElementById('usage-force-update-btn');
-  if (!btn) return;
+  if (!btn || btn.dataset.wired === '1') return;
+  btn.dataset.wired = '1';
 
   const titleEl    = btn.querySelector('.tab-title');
   const subtitleEl = btn.querySelector('.tab-subtitle');
 
   const resetLabel = () => {
     btn.classList.remove('is-working', 'is-success', 'is-error');
-    titleEl.textContent    = 'Check for update';
-    subtitleEl.textContent = 'press to check';
+    titleEl.textContent    = 'Check for updates';
+    subtitleEl.textContent = 'manually check for new version';
   };
   resetLabel();
 
@@ -755,14 +768,14 @@ function _wireForceUpdateButton() {
     const reg = window._woGetSwRegistration?.();
     if (!reg) {
       btn.classList.add('is-error');
-      titleEl.textContent    = 'Unavailable';
+      titleEl.textContent    = 'Update Unavailable';
       subtitleEl.textContent = 'no service worker';
       setTimeout(resetLabel, 2500);
       return;
     }
 
     btn.classList.add('is-working');
-    titleEl.textContent    = 'Checking…';
+    titleEl.textContent    = 'Checking for Update';
     subtitleEl.textContent = 'please wait';
 
     try {
@@ -792,8 +805,8 @@ function _wireForceUpdateButton() {
 
       } else {
         btn.classList.add('is-success');
-        titleEl.textContent    = 'No update yet';
-        subtitleEl.textContent = 'you\u2019re up to date';
+        titleEl.textContent    = 'No New Version Found';
+        subtitleEl.textContent = 'you’re currently up to date';
         setTimeout(resetLabel, 2500);
       }
     } catch (err) {

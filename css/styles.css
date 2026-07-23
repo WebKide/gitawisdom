@@ -2049,7 +2049,7 @@ body.lb-active { overflow: hidden; }
   }
   .module-tab {
     min-width: 100px;
-    max-width: 200px;
+    max-width: 360px;
   }
 }
 
@@ -2071,11 +2071,12 @@ body.lb-active { overflow: hidden; }
   }
 
   .tab-title {
-    font-size: 0.85rem;   /* Slightly smaller to prevent text wrapping */
+    font-size: 0.95rem;   /* Slightly smaller to prevent text wrapping */
   }
   
   .tab-subtitle {
-    display: none;        /* Optional: Hide subtitle on very small screens to keep buttons compact */
+    font-size: 0.75rem;
+    /* display: none;        /* Optional: Hide subtitle on very small screens to keep buttons compact */
   }
 }
 
