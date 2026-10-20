@@ -3,198 +3,1293 @@
   "icon": "assets/images/prabhupada.png",
 
   "random-guidance": [
-    "A clear mind does not chase; it contemplates without attachment.",
-    "A season of waiting is not a season of failure; the Lord prepares the ground before the seed is placed.",
-    "A small act of clarity today can prevent great confusion tomorrow.",
-    "A thoughtful pause before speaking is a gift to both self and others.",
-    "A turning point arrives quietly; those who are still enough will recognize it before it is gone.",
-    "All change moves in cycles; the soul that clings to one season loses sight of the next.",
-    "As long as pride remains, pure devotion cannot fully manifest.",
-    "As the mind becomes quieter; understanding becomes deeper.",
-    "As the mountain does not argue with the seasons; the wise soul rests in the Lord’s divine timing.",
-    "As water does not resist the shape of its vessel, the devotee does not resist the Lord’s arrangements.",
-    "Association with devotees awakens the dormant nature of the soul.",
-    "Attention, when refined, becomes a form of insight.",
-    "Awareness of impermanence heightens the value of each moment.",
-    "Awareness transforms ordinary experiences into guidance.",
-    "Before the breakthrough comes the stillness; do not abandon your ground too soon.",
-    "Before the flower blooms there is only waiting; before understanding there is only sincere seeking.",
-    "Beneath every external change, the soul’s relationship with the Lord remains unaltered.",
-    "By surrendering to the Lord, one transcends fear and illusion.",
-    "Change is constant; embrace it and find the lesson hidden within each turn.",
-    "Clarity emerges when distractions are acknowledged but not indulged.",
-    "Clarity, like dawn, cannot be commanded but can be prepared for.",
-    "Compassion flows naturally from understanding, not from obligation.",
-    "Conflict avoided through humility is wiser than conflict won through pride.",
-    "Consistency of small good actions builds the foundation for lasting clarity.",
-    "Correct timing is not delay; it is alignment with what the Lord is already arranging.",
-    "Courage is not absence of fear, but mastery of attention in the face of it.",
-    "Detach from outcomes, but engage fully in effort; this is the way of clarity.",
-    "Detachment from the mundane arises naturally when higher taste is experienced.",
-    "Devotion is strengthened by faith, association, and sincere practice under proper guidance.",
-    "Devotion that endures pressure is the devotion that transforms the heart completely.",
-    "Devotion transforms ordinary life into spiritual practice, and boredom into discovery.",
-    "Devotional life begins with humility and honest self-reflection in everything we do.",
-    "Difficulty at the beginning does not indicate a wrong path; it often marks a sacred one.",
-    "Do not force what the Lord has placed in transition; allow His hand to complete the movement.",
-    "Do not mistake retreat for defeat; sometimes the Lord calls the soul inward to strengthen it.",
-    "Do not rush to name what is still unfolding.",
-    "Even a little sincere devotion can destroy lifetimes of bad karmas.",
-    "Even a single question asked with sincerity can illuminate many truths.",
-    "Even confusion has direction when accepted without resistance and endured with patience.",
-    "Even in the age of quarrel, spiritual realization is accessible through the holy name.",
-    "Every choice, even small, shapes the contours of your inner world and the reality of your outer world.",
-    "Every moment contains more depth and meaning than the mind perceived a first.",
-    "Every observation refines the lens through which you can observe a new reality.",
-    "Every obstacle contains a lesson if looked upon with humility.",
-    "Every reaction contains a clue about your current state of perception.",
-    "Every return to devotion, however small, carries the force of the soul’s eternal nature.",
-    "Every silence participates in the unfolding of understanding with compassion.",
-    "Every storm that passes leaves the sky more open than before it came.",
-    "Everything in motion will eventually seek its resting point; for the soul, that point is the Lord’s glance.",
-    "Faith in the holy name is the foundation of all spiritual progress.",
-    "Faith is the seed of the creeper of devotion that sprouts with care and attention.",
-    "Firm resolve alongside gentle action is more powerful than force without direction.",
-    "Grace does not always arrive as relief; sometimes it arrives as the very obstacle that tests the quality of your surrender.",
-    "Growth hidden underground is still growth; do not judge the seed before its season has arrived.",
-    "Growth often hides inside discomfort until it is acknowledged.",
-    "Harmony is found in observing both “light” and “shadow” equally.",
-    "He who knows when to yield preserves what force alone would shatter.",
-    "Hidden virtue is not wasted virtue; Kṛṣṇa sees what no material eye can perceive.",
-    "Hold on to what is true when circumstances shift; that steadfast determination will become the source of your joy.",
-    "In modesty, the soul makes room for the Lord’s mercy to enter without obstruction.",
-    "In prolongued periods of darkness, inner devotion is the lamp that needs no cheap fuel to shine.",
-    "In surrender, one often discovers strength beyond expectation.",
-    "Inner steadiness is built through countless aware corrections over time.",
-    "Insight arrives when expectation loosens its grip and acceptance enters the mind and permeates the heart with compassion.",
-    "It is not the absence of error that proves success, but the sincerity to get up after each one.",
-    "Keep still long enough and the path that was hidden will reveal itself to you.",
-    "Kindness is the echo of wisdom in everyday life.",
-    "Knowledge becomes meaningful when it leads to acts of service and devotion.",
-    "Let awareness soften your judgment before it becomes conclusive.",
-    "Let intention guide action, and action guide understanding.",
-    "Let things be seen fully from all perspectives before deciding what they are supposed to be.",
-    "Let this experience complete its cycle before drawing any premature conclusions.",
-    "Liberation without devotion is incomplete and does not satisfy the soul.",
-    "Listen deeply and attentively; answers are often whispered between the words.",
-    "Material designations of body and mind obscure the eternal nature of the soul.",
-    "Material desires bind the soul, while any small acts of devotion liberate it.",
-    "Movement at the wrong time scatters what patience at the right time would have gathered in harmony.",
-    "Not everything needs interpretation, some things need witnessing with curiosity.",
-    "Observe the patterns around you; the universe often speaks in cycles; “as above, so below”.",
-    "Observe yourself as you would observe the wind, without attachment or judgement.",
-    "One should practice devotion with sincerity, even if the real progress in the right direction appears painfully slow.",
-    "One who understands the self naturally seeks the shelter of Kṛṣṇa and the company of His devotees.",
-    "Only what is gathered inwardly can be offered outwardly with lasting effect.",
-    "Opposition does not mean obstruction; it often means the path is real enough to be worth the walk.",
-    "Patience allows without forcing.",
-    "Patience applied consistently accumulates a force no single burst of effort can match.",
-    "Patience is the vessel in which insight slowly matures.",
-    "Peace is not sold, manufactured, agreed upon, negotiated, nor imposed. It cannot be rushed.",
-    "Peace is not the absence of movement but the presence of the Lord at the center of every motion.",
-    "Praising the Lord is the direct means of attaining spiritual perfection in this age of rampant hipocrisy.",
-    "Pure devotion is free from selfish motives and material expectations.",
-    "Purification is rarely comfortable; but what remains after it is what is truly yours.",
-    "Real knowledge is that which leads the soul toward devotion to the Supreme Lord.",
-    "Reflection transforms experience into wisdom when enough time is given.",
-    "Release what cannot be held, and you’ll discover what truly matters is invisible to the eyes, but can be felt in the heart.",
-    "Rest is not departure from progress, but part of its natural rhythm.",
-    "Seek balance between desire and restraint; that is the path of a steady heart.",
-    "Seek not to control everything, but to appreciate what is within reach.",
-    "Simplicity uncovers truths, while complexity often obscures it.",
-    "Sincere chanting gradually reveals the spiritual reality within.",
-    "Spiritual advancement is measured not by external status but by humility and devotion.",
-    "Stillness is not emptiness; it is the space where clarity gathers itself.",
-    "The chanting of the Holy Names cleanses the mirror of the heart. Chant and be happy!",
-    "The current of devotion, once awakened, will find its way around every obstacle placed before it.",
-    "The essence of all scriptures is to awaken love for God and God’s creation.",
-    "The highest intelligence is knowing what the Lord wants and cooperating toward it fully.",
-    "The Holy Name descends from the spiritual world and is not a material sound vibration.",
-    "The Holy Name purifies even the most conditioned heart when taken sincerely.",
-    "The Lord is conquered only by love, never by intellectual speculation.",
-    "The Lord resides in the heart of one who chants His Names with faith.",
-    "The Lord’s mercy is causeless and available to all who sincerely call upon Him.",
-    "The Lord’s mercy is greater than one’s qualification, simply accept it when it comes.",
-    "The material world is temporary, but the soul’s relationship with Kṛṣṇa is eternal.",
-    "The mind becomes peaceful when engaged in remembrance of the Supreme.",
-    "The mind seeks certainty; understanding grows in openness and vulnerability.",
-    "The path forward is rarely loud; it unfolds in subtle recognition.",
-    "The path of devotion is natural for the soul, though forgotten in our conditioned life.",
-    "The present moment is both fleeting and eternal; honor it fully.",
-    "The purpose of human life is to awaken love for God.",
-    "The quality of your perception shapes the reality you experience.",
-    "The quieter your observation, the deeper your insight into what truly matters.",
-    "The scriptures declare that devotion alone can reveal the Supreme Truth fully.",
-    "The scriptures guide the soul from ignorance to loving service.",
-    "The smallest insight can open doors to vast understanding.",
-    "The soul is eternal, and his natural position is to serve God with love.",
-    "The soul that is too full of its own plans has no room to receive the Lord’s gifts and blessings.",
-    "The soul’s perfection lies in uninterrupted acts of devotion.",
-    "The soul’s real identity is service to the Supreme Lord.",
-    "The subtle is often more truthful than the obvious.",
-    "The ultimate truth is realized through loving service to God, not speculation.",
-    "The unfolding of clarity cannot be rushed, only welcomed when it arrives.",
-    "The value of a moment is revealed in hindsight, but shaped in the present.",
-    "The wise does not measure the greatness of the gift but the purity of the hand that offers it.",
-    "There is instruction hidden in what fails as much as whatever succeeds.",
-    "There is no wasted experience when awareness is present.",
-    "To adapt without losing your core is the “art of surrender” in service.",
-    "True renunciation is not rejection of the world, but detachment from its selfish enjoyment.",
-    "True strength is shown in calmness under pressure, not in displays of brutality.",
-    "True understanding is often quiet, without need for validation.",
-    "Understanding often arrives disguised as humility.",
-    "What is repeated in life is often a lesson waiting to be accepted and acknowledged so it can be released.",
-    "What is stable within you does not depend on external movement or popular validation.",
-    "What is unclear now may be forming clarity in motion.",
-    "What seems distant is often already taking shape within you.",
-    "What you assume limits what you can perceive. What you perceive frees your assumptions.",
-    "What you become aware of, you begin to transform; what you let go, transforms you.",
-    "What you call delay may be alignment in preparation, let go of the expectation.",
-    "What you notice repeatedly is already speaking to you, albeit quietly.",
-    "What you overlook may hold the very key you are searching for.",
-    "What you release often teaches you what you were holding onto.",
-    "What you return to over and over again is where your attention is being trained.",
-    "What you strengthen internally will reflect externally in time.",
-    "What’s needed is sometimes what’s feared, but once conquered, the opportunities become clearer.",
-    "When the heart is purified, devotion arises naturally without having to push against the current.",
-    "When the inner world is in order, the outer world arranges itself around that order in time.",
-    "When the mind is quiet, the heart’s guidance becomes audible.",
-    "Wisdom does not arrive all at once; it settles like dust after an explosion.",
-    "Wisdom grows when patience meets reflection, not in haste, but in rest.",
-    "Wisdom is less about accumulation and more about surrendering to Destiny.",
-    "Without devotion, knowledge remains incomplete and cannot bestow liberation.",
-    "You do not always need more answers, sometimes what you need are better questions."
-  ],
-
-  "share-titles": [
-    "A meditation for reflection and inner clarity",
-    "Aligning with nature for effortless daily success with guidance",
-    "Cultivate inner truth to influence the world with wisdom",
-    "Eternal wisdom for navigating modern-day chaos",
-    "Living with intention, grace, and spiritual guidance",
-    "Navigate challenge with grace and strategic foresight",
-    "Overcoming fear through ancient spiritual wisdom",
-    "Synchronize your actions with the cosmos today",
-    "The timeless art of mindful, purposeful living in wisdom",
-    "Today’s insightful meditation and inspiring guidance",
-    "Understanding the hidden currents of your day with wisdom",
-    "Wisdom revealed through three perspectives"
-  ],
-
-  "sections": [
     {
-      "h1": "Wisdom Oracle’s guidance",
-      "h2": "✦ The Personal Meditation",
-      "text": ""
+      "start": "A clear mind does not chase; ",
+      "options": [
+        "it contemplates without attachment.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
     },
     {
-      "h2": "✦ The current circumstance",
-      "text": ""
+      "start": "A season of waiting is not a season of failure; ",
+      "options": [
+        "the Lord prepares the ground before the seed is placed.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
     },
     {
-      "h2": "✦ The insightful inspiration",
-      "text": ""
+      "start": "A small act of clarity today ",
+      "options": [
+        "can prevent great confusion tomorrow.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "A thoughtful pause before speaking is ",
+      "options": [
+        "a gift to both self and others.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "A turning point arrives quietly; ",
+      "options": [
+        "those who are still enough will recognize it before it is gone.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "All change moves in cycles; the soul that clings to one season ",
+      "options": [
+        "loses sight of the next.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "As long as pride remains, ",
+      "options": [
+        "pure devotion cannot fully manifest.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "As the mind becomes quieter; ",
+      "options": [
+        "understanding becomes deeper.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "As the mountain does not argue with the seasons; ",
+      "options": [
+        "the wise soul rests in the Lord’s divine timing.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "As water does not resist the shape of its vessel, ",
+      "options": [
+        "the devotee does not resist the Lord’s arrangements.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Association with devotees awakens ",
+      "options": [
+        "the dormant nature of the soul.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Attention, when refined, ",
+      "options": [
+        "becomes a form of insight.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Awareness of impermanence .",
+      "options": [
+        "heightens the value of each moment",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Awareness transforms ordinary ",
+      "options": [
+        "experiences into guidance.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Before the breakthrough comes the stillness; ",
+      "options": [
+        "do not abandon your ground too soon.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Before the flower ",
+      "options": [
+        "blooms there is only waiting; before understanding there is only sincere seeking.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Beneath every external change, the soul’s ",
+      "options": [
+        "relationship with the Lord remains unaltered.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "By surrendering to the Lord, one transcends ",
+      "options": [
+        "fear and illusion.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Change is constant; embrace it and ",
+      "options": [
+        "find the lesson hidden within each turn.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Clarity emerges when distractions are acknowledged ",
+      "options": [
+        "but not indulged.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Clarity, like dawn, ",
+      "options": [
+        "cannot be commanded but can be prepared for.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Compassion flows naturally from ",
+      "options": [
+        "understanding, not from obligation.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Conflict avoided through humility is wiser than ",
+      "options": [
+        "conflict won through pride.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Consistency of small good actions ",
+      "options": [
+        "builds the foundation for lasting clarity.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Correct timing is not delay; it is ",
+      "options": [
+        "alignment with what the Lord is already arranging.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Courage is not absence of fear, ",
+      "options": [
+        "but mastery of attention in the face of it.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Detach from outcomes, but ",
+      "options": [
+        "engage fully in effort; this is the way of clarity.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Detachment from the mundane arises naturally when ",
+      "options": [
+        "higher taste is experienced.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Devotion is strengthened by faith, association, and ",
+      "options": [
+        "sincere practice under proper guidance.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Devotion that endures pressure is ",
+      "options": [
+        "the devotion that transforms the heart completely.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Devotion transforms ordinary life into ",
+      "options": [
+        "spiritual practice, and boredom into discovery.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Devotional life begins with humility and ",
+      "options": [
+        "honest self-reflection in everything we do.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Difficulty at the beginning does not indicate ",
+      "options": [
+        "a wrong path; it often marks a sacred one.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Do not force what the Lord has placed in transition; allow His hand to ",
+      "options": [
+        "complete the movement.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Do not mistake retreat for defeat; sometimes the Lord ",
+      "options": [
+        "calls the soul inward to strengthen it.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Do not rush to name what is still ",
+      "options": [
+        "unfolding.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Even a little sincere devotion can destroy .",
+      "options": [
+        "lifetimes of bad karmas",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Even a single question asked with sincerity ",
+      "options": [
+        "can illuminate many truths.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Even confusion has direction when accepted ",
+      "options": [
+        "without resistance and endured with patience.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Even in the age of quarrel, spiritual realization is ",
+      "options": [
+        "accessible through the holy name.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Every choice, even small, shapes the contours of ",
+      "options": [
+        "your inner world and the reality of your outer world.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Every moment contains more depth and meaning ",
+      "options": [
+        "than the mind perceived a first.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Every observation refines the lens through which you can ",
+      "options": [
+        "observe a new reality.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Every obstacle contains a lesson ",
+      "options": [
+        "if looked upon with humility.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Every reaction contains a clue about your current ",
+      "options": [
+        "state of perception.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Every return to devotion, however small, ",
+      "options": [
+        "carries the force of the soul’s eternal nature.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Every silence participates in the ",
+      "options": [
+        "unfolding of understanding with compassion.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Every storm that passes leaves the sky ",
+      "options": [
+        "more open than before it came.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Everything in motion will eventually seek its resting point; for the soul, ",
+      "options": [
+        "that point is the Lord’s glance.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Faith in the holy name is the ",
+      "options": [
+        "foundation of all spiritual progress.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Faith is the seed of the creeper of devotion ",
+      "options": [
+        "that sprouts with care and attention.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Firm resolve alongside gentle action is",
+      "options": [
+        " more powerful than force without direction.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Grace does not always arrive as relief; sometimes it arrives ",
+      "options": [
+        "as the very obstacle that tests the quality of your surrender.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Growth hidden underground is still growth; do not judge ",
+      "options": [
+        "the seed before its season has arrived.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Growth often hides inside discomfort ",
+      "options": [
+        "until it is acknowledged.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Harmony is found in observing ",
+      "options": [
+        "both “light” and “shadow” equally.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "He who knows when to yield preserves",
+      "options": [
+        " what force alone would shatter.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Hidden virtue is not wasted virtue; Kṛṣṇa sees ",
+      "options": [
+        "what no material eye can perceive.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Hold on to what is true when circumstances shift; that steadfast determination ",
+      "options": [
+        "will become the source of your joy.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "In modesty, the soul makes room for the Lord’s mercy ",
+      "options": [
+        "to enter without obstruction.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "In prolongued periods of darkness, inner devotion is the lamp that ",
+      "options": [
+        "needs no cheap fuel to shine.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "In surrender, one often discovers ",
+      "options": [
+        "strength beyond expectation.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Inner steadiness is built through ",
+      "options": [
+        "countless aware corrections over time.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Insight arrives when expectation loosens its grip and acceptance enters the mind ",
+      "options": [
+        "and permeates the heart with compassion.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "It is not the absence of error that proves success, but the ",
+      "options": [
+        "sincerity to get up after each one.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Keep still long enough and the path that was hidden ",
+      "options": [
+        "will reveal itself to you.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Kindness is the echo of wisdom ",
+      "options": [
+        "in everyday life.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Knowledge becomes meaningful when it leads to ",
+      "options": [
+        "acts of service and devotion.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Let awareness soften your judgment before ",
+      "options": [
+        "it becomes conclusive.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Let intention guide action, and action ",
+      "options": [
+        "guide understanding.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Let things be seen fully from all perspectives ",
+      "options": [
+        "before deciding what they are supposed to be.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Let this experience complete its cycle before",
+      "options": [
+        " drawing any premature conclusions.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Liberation without devotion is incomplete and ",
+      "options": [
+        "does not satisfy the soul.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Listen deeply and attentively; answers are often ",
+      "options": [
+        "whispered between the words.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Material designations of body and mind obscure the ",
+      "options": [
+        "eternal nature of the soul.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Material desires bind the soul, while ",
+      "options": [
+        "any small acts of devotion liberate it.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Movement at the wrong time scatters what patience at the right time ",
+      "options": [
+        "would have gathered in harmony.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Not everything needs interpretation, some things need ",
+      "options": [
+        "witnessing with curiosity.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Observe the patterns around you; the universe often speaks in cycles; ",
+      "options": [
+        "“as above, so below”.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Observe yourself as you would observe the wind, ",
+      "options": [
+        "without attachment or judgement.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "One should practice devotion with sincerity, ",
+      "options": [
+        "even if the real progress in the right direction appears painfully slow.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "One who understands the self naturally seeks ",
+      "options": [
+        "the shelter of Kṛṣṇa and the company of His devotees.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Only what is gathered inwardly can be offered ",
+      "options": [
+        "outwardly with lasting effect.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Opposition does not mean obstruction; it often means ",
+      "options": [
+        "the path is real enough to be worth the walk.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Patience allows without ",
+      "options": [
+        "forcing.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Patience applied consistently accumulates ",
+      "options": [
+        "a force no single burst of effort can match.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Patience is the vessel in which insight ",
+      "options": [
+        "slowly matures.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Peace is not sold, manufactured, ",
+      "options": [
+        "agreed upon, negotiated, nor imposed. It cannot be rushed.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Peace is not the absence of movement ",
+      "options": [
+        "but the presence of the Lord at the center of every motion.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Praising the Lord is the direct means of attaining ",
+      "options": [
+        "spiritual perfection in this age of rampant hipocrisy.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Pure devotion is free from ",
+      "options": [
+        "selfish motives and material expectations.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Purification is rarely comfortable; but ",
+      "options": [
+        "what remains after it is what is truly yours.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Real knowledge is that which leads the soul ",
+      "options": [
+        "toward devotion to the Supreme Lord.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Reflection transforms experience into wisdom ",
+      "options": [
+        "when enough time is given.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Release what cannot be ",
+      "options": [
+        "held, and you’ll discover what truly matters is invisible to the eyes, but can be felt in the heart.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Rest is not departure from progress, but ",
+      "options": [
+        "part of its natural rhythm.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Seek balance between desire and restraint; that is ",
+      "options": [
+        "the path of a steady heart.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Seek not to control everything, but to appreciate ",
+      "options": [
+        "what is within reach.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Simplicity uncovers truths, while complexity ",
+      "options": [
+        "often obscures them.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Sincere ",
+      "options": [
+        "chanting gradually reveals the spiritual reality within.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Spiritual advancement is measured ",
+      "options": [
+        "not by external status but by humility and devotion.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Stillness is not emptiness; it is the space where clarity ",
+      "options": [
+        "gathers itself.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The chanting of the Holy Names cleanses the mirror of the heart. ",
+      "options": [
+        "Chant and be happy!",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The current of devotion, once awakened, will find its way ",
+      "options": [
+        "around every obstacle placed before it.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The essence of all scriptures is to awaken love for God ",
+      "options": [
+        "and God’s creation.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The highest intelligence is knowing what the Lord wants and cooperating toward it fully.",
+      "options": [
+        "",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The Holy Name descends from the spiritual ",
+      "options": [
+        "world and is not a material sound vibration.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The Holy Name purifies even the most conditioned heart when ",
+      "options": [
+        "taken sincerely.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The Lord is conquered only by love, never by ",
+      "options": [
+        "intellectual speculation.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The Lord resides in the heart of one who chants His Names ",
+      "options": [
+        "with faith.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The Lord’s mercy is causeless and available to all who ",
+      "options": [
+        "sincerely call upon Him.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The Lord’s mercy is greater than one’s qualification, ",
+      "options": [
+        "simply accept it when it comes.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The material world is temporary, but the soul’s relationship ",
+      "options": [
+        "with Kṛṣṇa is eternal.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The mind becomes peaceful when engaged in remembrance ",
+      "options": [
+        "of the Supreme.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The mind seeks certainty; understanding grows ",
+      "options": [
+        "in openness and vulnerability.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The path forward is rarely loud; it unfolds ",
+      "options": [
+        "in subtle recognition.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The path of devotion is natural for the soul, though forgotten ",
+      "options": [
+        "in our conditioned life.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The present moment is both fleeting and ",
+      "options": [
+        "eternal; honor it fully.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The purpose of human life is to ",
+      "options": [
+        "awaken love for God.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The quality of your perception ",
+      "options": [
+        "shapes the reality you experience.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The quieter your observation, the deeper your insight ",
+      "options": [
+        "into what truly matters.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The scriptures declare that devotion alone can reveal ",
+      "options": [
+        "the Supreme Truth fully.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The scriptures guide the soul from ignorance ",
+      "options": [
+        "to loving service.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The smallest insight can ",
+      "options": [
+        "open doors to vast understanding.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The soul is eternal, and his natural position is ",
+      "options": [
+        "to serve God with love.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The soul that is too full of its own plans has no room to ",
+      "options": [
+        "receive the Lord’s gifts and blessings.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The soul’s perfection lies in uninterrupted ",
+      "options": [
+        "acts of devotion.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The soul’s real identity is ",
+      "options": [
+        "service to the Supreme Lord.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The subtle is often more ",
+      "options": [
+        "truthful than the obvious.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The ultimate truth is realized through loving service to ",
+      "options": [
+        "God, not speculation.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The unfolding of clarity cannot be rushed, ",
+      "options": [
+        "only welcomed when it arrives.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The value of a moment is revealed in hindsight, ",
+      "options": [
+        "but shaped in the present.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "The wise does not measure the greatness of the gift but ",
+      "options": [
+        "the purity of the hand that offers it.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "There is instruction hidden in what fails as much as ",
+      "options": [
+        "whatever succeeds.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "There is no wasted experience when ",
+      "options": [
+        "awareness is present.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "To adapt without losing your core is the “art of surrender” ",
+      "options": [
+        "in service.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "True renunciation is not rejection of the world, but detachment from ",
+      "options": [
+        "its selfish enjoyment.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "True strength is shown in calmness under pressure, ",
+      "options": [
+        "not in displays of brutality.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "True understanding is often quiet, ",
+      "options": [
+        "without need for validation.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Understanding often arrives disguised as .",
+      "options": [
+        "humility",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What is repeated in life is often a lesson waiting to be ",
+      "options": [
+        "accepted and acknowledged so it can be released.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What is stable within you does not depend on ",
+      "options": [
+        "external movement or popular validation.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What is unclear now may be ",
+      "options": [
+        "forming clarity in motion.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What seems distant is often already ",
+      "options": [
+        "taking shape within you.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What you assume limits what you can perceive. What you perceive ",
+      "options": [
+        "frees your assumptions.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What you become aware of, you begin to transform; what you ",
+      "options": [
+        "let go, transforms you.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What you call delay may be alignment in preparation, ",
+      "options": [
+        "let go of the expectation.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What you notice repeatedly is already speaking to you, ",
+      "options": [
+        "albeit quietly.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What you overlook may hold the very key ",
+      "options": [
+        "you are searching for.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What you release often teaches you what you were ",
+      "options": [
+        "holding onto.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What you return to over and over again is where your attention is ",
+      "options": [
+        "being trained.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What you strengthen internally will reflect ",
+      "options": [
+        "externally in time.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "What’s needed is sometimes what’s feared, but once conquered, ",
+      "options": [
+        "the opportunities become clearer.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "When the heart is purified, devotion arises naturally ",
+      "options": [
+        "without having to push against the current.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "When the inner world is in order, the outer world ",
+      "options": [
+        "arranges itself around that order in time.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "When the mind is quiet, the heart’s ",
+      "options": [
+        "guidance becomes audible.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Wisdom does not arrive all at once; it settles ",
+      "options": [
+        "like dust after an explosion.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Wisdom grows when patience meets reflection, ",
+      "options": [
+        "not in haste, but in rest.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Wisdom is less about accumulation and more about ",
+      "options": [
+        "surrendering to Destiny.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "Without devotion, knowledge remains incomplete ",
+      "options": [
+        "and cannot bestow liberation.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
+    },
+    {
+      "start": "You do not always need more answers, sometimes what you need ",
+      "options": [
+        "are better questions.",
+        "ALTERNATE",
+        "VARIATION"
+      ]
     }
-  ],
-  "footer": "No accounts, subscriptions or personal data required.\nResponsive design for desktop and mobile.\nRuns entirely in your browser."
+  ]
 }
