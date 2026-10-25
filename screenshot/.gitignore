@@ -1,5 +1,0 @@
-# Hosting
-*.cache
-
-# Environment files (local configs)
-/.env.*
