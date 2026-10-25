@@ -6,7 +6,7 @@
  *   • openLightbox / closeLightbox — modal lifecycle
  *   • renderVerse — paint all lightbox content from current state
  *   • displayVerse / displayHexagram — async load + display for Gita and iChing
- *   • togglePurport — switch between verse and purport/commentary views
+ *   • togglePurport — switch between verse and purport/judgement views
  *   • applyLightboxBranding — swap header icon and title for Gita vs iChing
  *   • updateBottomButtons — update bottom button labels based on mode + purport state
  *   • applyFontSize / increaseFontSize / decreaseFontSize — font size controls
@@ -291,8 +291,8 @@ function applyLightboxBranding() {
 
 /**
  * Updates bottom button labels based on current mode and purport state.
- * Verse/Hexagram view  → "📖 Read Purport" / "📖 Read Commentary"  (blue)
- * Purport/Commentary view → "↩ Return to Verse" / "↩ Return to Hexagram" (red)
+ * Verse/Hexagram view  → "📖 Read Purport" / "📖 Read Judgement"  (blue)
+ * Purport/Judgement view → "↩ Return to Verse" / "↩ Return to Hexagram" (red)
  */
 function updateBottomButtons() {
   const dom = getDom();
@@ -315,7 +315,7 @@ function updateBottomButtons() {
     dom.lbReturnBtn.classList.remove('visible');
     dom.lbOpenPurportBtn.classList.add('visible');
     dom.lbOpenPurportBtn.textContent =
-      state.mode === 'iching' ? '📖 Read Commentary' : '📖 Read Purport';
+      state.mode === 'iching' ? '📖 Read Judgement' : '📖 Read Purport';
 
     // Top header return button — hide
     dom.lbPurportBtn.style.display = 'none';
@@ -334,12 +334,12 @@ function updateBottomButtons() {
  *   TEXT label
  *   Translation  ← shown FIRST (main feature)
  *   Sanskrit / hexagram lines ← shown SECOND
- *   Synonyms / judgment lines ← shown THIRD
- *   Bottom "Read Purport/Commentary" button
+ *   Synonyms / the lines ← shown THIRD
+ *   Bottom "Read Purport/Judgement" button
  *
  * Purport view:
  *   Dedicatory greeting
- *   Purport / Commentary body
+ *   Purport / Judgement body
  *   Signature (Gita only)
  *   Bottom "Return to Verse/Hexagram" button
  */
@@ -394,13 +394,13 @@ function renderVerse() {
     ? (isGita ? `TEXTS ${ref}` : `HEXAGRAMS ${ref}`)
     : (isGita ? `TEXT ${ref}`  : `HEXAGRAM ${ref}`);
 
-  // ── Translation / Judgment ────────────────────────────────────────────────
+  // ── Translation / The Image ────────────────────────────────────────────────
   const transl = (verseData['Translation-En'] ?? '').replace(/\s+/g, ' ').trim();
   const terms  = state.highlightTerms || [];
   const translMarked = terms.length ? highlightTerms(transl, terms) : escHtml(transl);
   dom.lbTranslation.innerHTML = isGita
     ? (transl ? `\u201C${translMarked}\u201D` : 'No translation found.')
-    : (translMarked || 'No judgement found.');
+    : (translMarked || 'No image found.');
 
   // ── Sanskrit / hexagram lines ─────────────────────────────────────────────
   const lines = isGita
@@ -408,7 +408,7 @@ function renderVerse() {
     : formatHexagramText(verseData);
   dom.lbSanskrit.innerHTML = lines.map(escHtml).join('<br />');
 
-  // ── Synonyms / judgment lines ─────────────────────────────────────────────
+  // ── Synonyms / image lines ────────────────────────────────────────────────
   const synRaw   = verseData['Word-for-Word'] ?? '';
   const synItems = isGita
     ? formatSynonyms(synRaw)
@@ -447,7 +447,7 @@ function renderVerse() {
     dom.lbChapterEnd.classList.remove('visible');
   }
 
-  // ── Mode switch: verse view vs purport/commentary view ────────────────────
+  // ── Mode switch: verse view vs purport/judgement view ────────────────────
   if (state.showPurport) {
     // Hide verse section; show purport section
     dom.lbVerseSection.classList.add('hidden');
@@ -456,7 +456,7 @@ function renderVerse() {
     // Show TEXT/HEXAGRAM label in purport view
     dom.lbTextNum.style.display = '';
 
-    // Render purport / commentary body
+    // Render purport / judgement body
     const purportRaw = (verseData['Purport-En'] ?? '').trim();
     if (purportRaw) {
       const paras = purportRaw.split(/\n\n+/).filter(Boolean);
@@ -473,7 +473,7 @@ function renderVerse() {
       dom.lbCopyBtn.style.display  = '';       // visible in purport for both modes
       dom.lbShareBtn.style.display = isGita ? 'none' : '';
     } else {
-      // Random fallback message when no purport/commentary exists
+      // Random fallback message when no purport/judgement exists
       const pool     = isGita ? NO_PURPORT : NO_COMMENTARY;
       const fallback = pool[Math.floor(Math.random() * pool.length)];
       dom.lbPurport.innerHTML = '';
@@ -517,8 +517,8 @@ function renderVerse() {
   const purportLabel  = document.getElementById('lb-purport-label');
 
   if (sanskritLabel) sanskritLabel.textContent = isGita ? '📜 SANSKRIT' : '📜 HEXAGRAM LINES';
-  if (synonymsLabel) synonymsLabel.textContent = isGita ? '📖 SYNONYMS' : '📖 JUDGMENT LINES';
-  if (purportLabel)  purportLabel.textContent  = isGita ? '🖊 PURPORT'   : '🖊 COMMENTARY';
+  if (synonymsLabel) synonymsLabel.textContent = isGita ? '📖 SYNONYMS' : '📖 THE IMAGE';
+  if (purportLabel)  purportLabel.textContent  = isGita ? '🖊 PURPORT'   : '🖊 JUDGEMENT';
 
   // Update bottom buttons for current mode/state
   updateBottomButtons();
@@ -608,7 +608,7 @@ async function displayVerse(chapter, verseRef, keepPurport = false, terms = []) 
  * validates the hexagram reference, updates shared state, and renders.
  *
  * @param {string}  hexRef — hexagram number, e.g. "17"
- * @param {boolean} [keepPurport=false] — preserve commentary view when re-rendering
+ * @param {boolean} [keepPurport=false] — preserve judgement view when re-rendering
  */
 async function displayHexagram(hexRef, keepPurport = false) {
   const state = getState();
@@ -701,10 +701,10 @@ async function goPrev() {
   }
 }
 
-// ─── Purport / commentary toggle ─────────────────────────────────────────────
+// ─── Purport / judgement toggle ─────────────────────────────────────────────
 
 /**
- * Toggles between verse/hexagram view and purport/commentary view.
+ * Toggles between verse/hexagram view and purport/judgement view.
  * Scrolls the purport section into view when opening.
  */
 function togglePurport() {

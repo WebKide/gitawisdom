@@ -79,6 +79,9 @@ const NO_PURPORT = [
 
 // Chapter JSON cache — avoids re-fetching the same file
 const _chapterCache = {};
+window._woClearChapterCache = () => {
+  Object.keys(_chapterCache).forEach(k => delete _chapterCache[k]);
+};
 
 // ─── loadChapterData ──────────────────────────────────────────────────────────
 /**
@@ -89,13 +92,26 @@ const _chapterCache = {};
 async function loadChapterData(chapter) {
   if (_chapterCache[chapter]) return _chapterCache[chapter];
 
-  const pad  = String(chapter).padStart(2, '0');
-  const url  = `assets/gita/bg_ch${pad}.json`;
-  const resp = await fetch(url);
+  const pad = String(chapter).padStart(2, '0');
+  const cacheKey = `wo_gita_ch_${pad}`;
+
+  // 1. Check offline-first localStorage cache (downloaded via manual update)
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const data = JSON.parse(cached);
+      _chapterCache[chapter] = data;
+      return data;
+    }
+  } catch (_) {}
+
+  // 2. Fall back to local bundled asset
+  const localUrl = `assets/gita/bg_ch${pad}.json`;
+  const resp = await fetch(localUrl);
 
   if (!resp.ok) throw new Error(`Chapter ${chapter} data not found (HTTP ${resp.status})`);
 
-  const data             = await resp.json();
+  const data = await resp.json();
   _chapterCache[chapter] = data;
   return data;
 }

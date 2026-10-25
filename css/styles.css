@@ -338,6 +338,34 @@ body {
   }
 }
 
+
+.geek-stats .footer-author-title {
+  position: relative;
+  margin: 0;
+  padding-bottom: 8px;
+  color: var(--violet);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: capitalize;
+  letter-spacing: 0.03em;
+}
+
+.geek-stats::after .footer-author-title::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 8px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent),
+    transparent
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    DIVIDERS & SEPARATORS
    ═══════════════════════════════════════════════════════════════════════════ */

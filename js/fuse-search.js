@@ -467,7 +467,9 @@ export class GitaSearch {
   }
 
   buildSnippet(result, mode) {
-    const field = mode === 'purport' ? 'purport' : 'translation';
+    const field = mode === 'purport' ? 'purport'
+                : mode === 'sloka'   ? 'verseText'
+                : 'translation';
     const text  = result.item[field] ?? '';
 
     const allIndices = [];

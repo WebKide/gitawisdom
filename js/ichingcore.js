@@ -80,6 +80,7 @@ const NO_COMMENTARY = [
 
 // Single-file cache — iching.json is one file, not split by chapter
 let _ichingCache = null;
+window._woClearIChingCache = () => { _ichingCache = null; };
 
 // ─── loadIChingData ───────────────────────────────────────────────────────────
 /**
@@ -89,7 +90,22 @@ let _ichingCache = null;
 async function loadIChingData() {
   if (_ichingCache) return _ichingCache;
 
-  const resp = await fetch('assets/iching/iching.json');
+  const cacheKey = 'wo_iching_data';
+
+  // 1. Check offline-first localStorage cache (downloaded via manual update)
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const data = JSON.parse(cached);
+      _ichingCache = data;
+      return data;
+    }
+  } catch (_) {}
+
+  // 2. Fall back to local bundled asset
+  const localUrl = 'assets/iching/iching.json';
+  const resp = await fetch(localUrl);
+
   if (!resp.ok) throw new Error(`iChing data not found (HTTP ${resp.status})`);
 
   _ichingCache = await resp.json();
@@ -190,7 +206,7 @@ function formatHexagramText(hexData) {
  * @returns {Array<{word: string, meaning: string}>}
  */
 function formatHexagramSynonyms(raw) {
-  if (!raw || !raw.trim()) return [{ word: '', meaning: 'No judgment lines available.' }];
+  if (!raw || !raw.trim()) return [{ word: '', meaning: 'No judgement lines available.' }];
 
   const normalised = raw.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
   const items      = [];

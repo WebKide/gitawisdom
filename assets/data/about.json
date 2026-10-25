@@ -5,12 +5,12 @@
     {
       "h1": "॥ oṁ namo bhagavate vāsudevāya ॥",
       "h2": "✦ ABOUT",
-      "text": "Wisdom Oracle is a progressive web app that brings together two timeless sources of wisdom:",
+      "text": "Wisdom Oracle is a progressive web app and APK that brings together two timeless sources of wisdom:",
       "list": "<em>Bhagavad Gītā As It Is</em> — <code>1972 Unabridged Edition (Macmillan)</code>\n<em>I Ching the Book of Changes</em> — <code>Richard Wilhelm translation</code>"
     },
     {
       "h2": "✦ KEY FEATURES",
-      "list": "<strong>Fully offline</strong> — once cached, works without internet. Perfect for airplane mode.\n<strong>Auto-updates</strong> — service worker fetches improvements in the background.\n<strong>Share or Copy</strong> any verse or hexagram directly from the card view.\n<strong>Installable</strong> — add to home screen and open like a native app.\n<strong>Privacy focused</strong> — No ads, and zero distractions."
+      "list": "<strong>Fully offline PWA and APK</strong> — once cached, works without internet. Perfect for airplane mode.\n<strong>Auto-updates</strong> — service worker fetches improvements in the background.\n<strong>Share or Copy</strong> any verse or hexagram directly from the card view.\n<strong>Installable</strong> — add to home screen and open like a native app.\n<strong>Privacy focused</strong> — No ads, and zero distractions."
     },
     {
       "h2": "⚙ TECHNICAL DETAILS",

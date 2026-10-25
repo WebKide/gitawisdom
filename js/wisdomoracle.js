@@ -100,8 +100,29 @@ async function handleWisdomOracle() {
       throw new Error('No Wisdom Oracle guidance entries found.');
     }
 
-    const guidance =
+    const guidanceEntry =
       guidancePool[Math.floor(Math.random() * guidancePool.length)];
+
+    if (
+      typeof guidanceEntry?.start !== 'string' ||
+      !Array.isArray(guidanceEntry.options)
+    ) {
+      throw new Error('Invalid Wisdom Oracle guidance structure.');
+    }
+
+    const guidanceOptions = guidanceEntry.options.filter(
+      (option) => typeof option === 'string' && option.trim() !== ''
+    );
+
+    if (guidanceOptions.length === 0) {
+      throw new Error('No valid guidance options found.');
+    }
+
+    const randomOption =
+      guidanceOptions[Math.floor(Math.random() * guidanceOptions.length)];
+
+    // Combine start + chosen option into the final string
+    const guidance = guidanceEntry.start + randomOption;
 
     // 2. Random Gita verse (reuse existing randomVerse from gitacore)
     const { chapter, ref: gitaRef } = randomVerse();

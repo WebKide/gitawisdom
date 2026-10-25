@@ -39,6 +39,15 @@ const _settings = {
   highResPng:         false, // Default to standard (1x) resolution
 };
 
+/** Returns the correct share URL (production PWA URL for Android APK, window.location.href for web). */
+function _getShareUrl() {
+  const isNative = window.Capacitor?.isNativePlatform?.() || /capacitor/i.test(navigator.userAgent);
+  const host    = window.location.hostname;
+  const isLocal = host === 'localhost' || host === '127.0.0.1' || host === '';
+  // return (isNative || isLocal) ? 'https://webkide.github.io/gitawisdom/' : window.location.href;
+  return 'https://webkide.github.io/gitawisdom/';
+}
+
 /**
  * Reads saved settings from localStorage and merges them into _settings.
  * Unknown or malformed keys are silently ignored; missing keys keep defaults.
@@ -129,7 +138,7 @@ function buildShareText(includeUrl = false) {
       p.ichingTranslation,
       `Read full hexagram ${p.ichingRef}`
     ].join('\n');
-    return includeUrl ? `${text}\n\n${window.location.href}` : text;
+    return includeUrl ? `${text}\n\n${_getShareUrl()}` : text;
   }
 
   // ── Gītā / I Ching verse view ─────────────────────────────────────────────
@@ -137,7 +146,7 @@ function buildShareText(includeUrl = false) {
   const translation = dom.lbTranslation?.textContent?.trim()    ?? '';
   const label       = state?.mode === 'iching' ? 'I Ching Oracle' : 'Gītā Wisdom';
   const text        = `${label} \u2014 ${heading}:\n\n${translation}`;
-  return includeUrl ? `${text}\n\n${window.location.href}` : text;
+  return includeUrl ? `${text}\n\n${_getShareUrl()}` : text;
 }
 
 /**
@@ -172,7 +181,7 @@ function buildPurportText() {
 
   const section = state?.mode === 'iching' ? 'COMMENTARY' : 'PURPORT';
 
-  return `${label} \u2014 ${heading}:\n\n${section}\n\n${purportBody}${colophon}\n\n${window.location.href}`;
+  return `${label} \u2014 ${heading}:\n\n${section}\n\n${purportBody}${colophon}\n\n${_getShareUrl()}`;
 }
 
 /**
@@ -392,6 +401,42 @@ async function triggerDownload(canvas, filename) {
   await flashBtn(getDom().lbShareBtn, 'success');
 }
 
+// ─── Native (Capacitor) share ─────────────────────────────────────────────────
+
+/** Returns native plugins when running inside the Capacitor app, else null. */
+function _getNativePlugins() {
+  const cap = window.Capacitor;
+  if (!cap?.isNativePlatform?.()) return null;
+  const { Share, Filesystem, MessagingShare } = cap.Plugins || {};
+  return (Share && Filesystem) ? { Share, Filesystem, MessagingShare } : null;
+}
+
+/** Writes the canvas PNG to the app cache and opens the native share sheet with it. */
+async function shareViaNative(canvas, filename, text) {
+  const { Share, Filesystem, MessagingShare } = _getNativePlugins();
+  const base64 = canvas.toDataURL('image/png').split(',')[1];
+  const saved  = await Filesystem.writeFile({
+    path:      filename,
+    data:      base64,
+    directory: 'CACHE',
+  });
+
+  if (MessagingShare) {
+    await MessagingShare.share({
+      text:        text,
+      fileUri:     saved.uri,
+      dialogTitle: 'Share to',
+    });
+  } else {
+    await Share.share({
+      title:       'Wisdom Oracle',
+      text:        text,
+      files:       [saved.uri],
+      dialogTitle: 'Share',
+    });
+  }
+}
+
 // ─── Share handler ────────────────────────────────────────────────────────────
 
 /**
@@ -505,7 +550,7 @@ async function handleShare() {
     const canvas   = await html2canvas(dom.sharePngCard, {
       // !--> scale: 2,  // 2× for sharp output on high-DPI screens
       // If HD is on, use device ratio (usually 2+), else force 1:1 scale
-      scale: _settings.highResPng ? window.devicePixelRatio : 1, 
+      scale: _settings.highResPng ? window.devicePixelRatio : 1,
       useCORS:         false,   // all assets are local — no CORS needed
       allowTaint:      false,
       backgroundColor: null,    // transparent — lets card_bg.png show through
@@ -515,6 +560,25 @@ async function handleShare() {
     });
 
     const filename = buildShareFilename();
+
+    // ── Step 5-native: Capacitor Android/iOS app ─────────────────────────
+    if (_getNativePlugins()) {
+      try {
+        dom.lbShareBtn.setAttribute('aria-label', 'Opening share sheet…');
+        await shareViaNative(canvas, filename, shareText);
+        dom.lbShareBtn.setAttribute('aria-label', 'Shared successfully');
+        await flashBtn(dom.lbShareBtn, 'success');
+      } catch (err) {
+        // User dismissed the sheet — not a real error
+        if (!/cancel/i.test(err?.message || '')) throw err;
+        dom.lbShareBtn.setAttribute('aria-label', 'Share cancelled');
+        dom.lbShareBtn.classList.remove('is-working');
+        dom.lbShareBtn.disabled = false;
+      } finally {
+        resetShareCard();
+      }
+      return;
+    }
 
     // ── Step 5a: Mobile — native share sheet ─────────────────────────────
     if (navigator.canShare && navigator.share) {
@@ -765,6 +829,113 @@ function _wireForceUpdateButton() {
   resetLabel();
 
   btn.addEventListener('click', async () => {
+    const isNative = window.Capacitor?.isNativePlatform?.() || /capacitor/i.test(navigator.userAgent);
+
+    // ── Native APK: GitHub Data Sync ──────────────────────────────────────────
+    if (isNative) {
+      btn.classList.remove('is-error', 'is-success');
+      btn.classList.add('is-working');
+      titleEl.textContent    = 'Checking for updates';
+      subtitleEl.textContent = 'comparing with GitHub…';
+
+      try {
+        // Check GitHub latest commit date/SHA for data folder to avoid redundant downloads
+        const commitApiUrl = 'https://api.github.com/repos/WebKide/gitawisdom/commits?path=assets&per_page=1';
+        let latestSha = null;
+        try {
+          const commitResp = await fetch(commitApiUrl, { signal: AbortSignal.timeout(8000) });
+          if (commitResp.ok) {
+            const commitData = await commitResp.json();
+            latestSha = commitData?.[0]?.sha;
+          }
+        } catch (e) {
+          console.warn('[DataUpdate] Commit check failed, proceeding to check files:', e);
+        }
+
+        const storedSha = localStorage.getItem('wo_data_last_sha');
+        if (latestSha && storedSha === latestSha) {
+          btn.classList.remove('is-working');
+          btn.classList.add('is-success');
+          titleEl.textContent    = 'Data Up to Date';
+          subtitleEl.textContent = 'you have the latest version';
+          setTimeout(resetLabel, 3000);
+          return;
+        }
+
+        // Fetch files from GitHub
+        titleEl.textContent    = 'Downloading Data';
+        subtitleEl.textContent = 'fetching from GitHub (0/19)';
+
+        let downloaded = 0;
+        const total = 19;
+        const staged = []; // [key, jsonText] pairs, committed only after every download succeeds
+
+        // Fetch Gita chapters 1-18
+        for (let i = 1; i <= 18; i++) {
+          const pad = String(i).padStart(2, '0');
+          const remoteUrl = `https://raw.githubusercontent.com/WebKide/gitawisdom/main/assets/gita/bg_ch${pad}.json?_t=${Date.now()}`;
+          const resp = await fetch(remoteUrl, { signal: AbortSignal.timeout(20000) });
+          if (!resp.ok) throw new Error(`Chapter ${i} HTTP ${resp.status}`);
+          const jsonText = await resp.text();
+          JSON.parse(jsonText); // reject corrupt/partial downloads before storing
+          staged.push([`wo_gita_ch_${pad}`, jsonText]);
+          downloaded++;
+          subtitleEl.textContent = `fetching from GitHub (${downloaded}/${total})`;
+        }
+
+        // Fetch iChing json
+        const ichingRemoteUrl = `https://raw.githubusercontent.com/WebKide/gitawisdom/main/assets/iching/iching.json?_t=${Date.now()}`;
+        const ichingResp = await fetch(ichingRemoteUrl, { signal: AbortSignal.timeout(20000) });
+        if (!ichingResp.ok) throw new Error(`iChing HTTP ${ichingResp.status}`);
+        const ichingText = await ichingResp.text();
+        JSON.parse(ichingText);
+        staged.push(['wo_iching_data', ichingText]);
+        downloaded++;
+
+        // Commit all-or-nothing: snapshot old values, roll back if storage is full
+        const backup = staged.map(([k]) => [k, localStorage.getItem(k)]);
+        try {
+          staged.forEach(([k, v]) => localStorage.setItem(k, v));
+        } catch (storageErr) {
+          backup.forEach(([k, old]) => {
+            try {
+              if (old === null) localStorage.removeItem(k);
+              else localStorage.setItem(k, old);
+            } catch (_) {}
+          });
+          throw storageErr;
+        }
+
+        if (latestSha) {
+          localStorage.setItem('wo_data_last_sha', latestSha);
+        }
+        localStorage.setItem('wo_data_last_update', new Date().toISOString());
+
+        // Clear in-memory caches
+        window._woClearChapterCache?.();
+        window._woClearIChingCache?.();
+        // Rebuild the search index from the freshly stored data (must run after the cache clears)
+        window._woSearchEngine?.init().catch(e => console.error('[GitaSearch] Re-index failed:', e));
+
+        btn.classList.remove('is-working');
+        btn.classList.add('is-success');
+        titleEl.textContent    = 'Data Updated Successfully!';
+        subtitleEl.textContent = 'latest chapters downloaded';
+        setTimeout(resetLabel, 3500);
+      } catch (err) {
+        console.error('[DataUpdate] Failed to download data:', err);
+        btn.classList.remove('is-working');
+        btn.classList.add('is-error');
+        titleEl.textContent    = 'Update Failed';
+        subtitleEl.textContent = (err && err.name === 'QuotaExceededError')
+          ? 'device storage is full'
+          : 'check internet connection';
+        setTimeout(resetLabel, 3500);
+      }
+      return;
+    }
+
+    // ── Web PWA: Service Worker Flow ──────────────────────────────────────────
     const reg = window._woGetSwRegistration?.();
     if (!reg) {
       btn.classList.add('is-error');
@@ -780,8 +951,6 @@ function _wireForceUpdateButton() {
 
     try {
       await reg.update();
-
-      // Give the browser a beat to evaluate byte-diff + move to installing/waiting
       await new Promise(r => setTimeout(r, 600));
 
       btn.classList.remove('is-working');
@@ -791,7 +960,6 @@ function _wireForceUpdateButton() {
         titleEl.textContent    = 'Re-launch to Update';
         subtitleEl.textContent = 'press to reload';
 
-        // Second click (once in this state) triggers the actual update
         btn.addEventListener('click', function reloadOnce() {
           if (!reg.waiting) return;
           let refreshing = false;

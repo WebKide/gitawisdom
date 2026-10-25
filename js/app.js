@@ -444,6 +444,7 @@ applyFontSize();
  */
 (async function initSearch() {
   const gitaSearch = new GitaSearch();
+  window._woSearchEngine = gitaSearch;
 
   await initSearchController(gitaSearch, {
     displayVerse,

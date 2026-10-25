@@ -6,7 +6,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'wisdom-oracle-v1.1.64';
+const CACHE_VERSION = 'wisdom-oracle-v1.1.66';
 const BASE = new URL('./', self.location.href).href.replace(/\/$/, '');
 
 const ASSETS = [
@@ -108,92 +108,210 @@ const ASSETS = [
 ];
 
 /* ────────────────────────────────────────────────────────────────────────── */
-// ─── Install: cache all assets for offline use ────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────
+/* ────────────────────────────────────────────────────────────────────────── */
+
+function offlineResponse(message) {
+  return new Response(message || '[SW] Offline — resource not cached.', {
+    status: 503,
+    statusText: 'Service Unavailable',
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  });
+}
+
+/** Only http(s) same-origin URLs are ever handled (skips capacitor://, file://…). */
+function isCacheableRequest(request) {
+  if (request.method !== 'GET') return false;
+  let url;
+  try {
+    url = new URL(request.url);
+  } catch (_) {
+    return false;
+  }
+  if (url.origin !== ORIGIN) return false;
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') return false;
+  if (!url.href.startsWith(SCOPE)) return false; // outside our scope
+  return true;
+}
+
+/** Normalised cache key: origin + pathname only (drops ?query and #hash). */
+function cacheKeyFor(url) {
+  return url.origin + url.pathname;
+}
+
+/** Resolve the HTML document a navigation should be served from. */
+function navigationKeyFor(url) {
+  const clean = cacheKeyFor(url);
+  const isRoot =
+    clean === ORIGIN + '/' ||
+    clean === BASE ||
+    clean === BASE + '/';
+
+  if (isRoot) return INDEX_URL;
+  if (clean === BASE + '/index.html' || clean === BASE + '/oracle.html') return clean;
+
+  // Unknown route (e.g. SPA deep link): serve the splash entry point.
+  return INDEX_URL;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+// ─── Install: pre-cache every asset for offline use ───────────────────────
 /* ────────────────────────────────────────────────────────────────────────── */
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_VERSION);
-    for (const url of ASSETS) {
+    const cache = await caches.open(CACHE_NAME);
+
+    // Cache sequentially-ish but tolerating individual failures so one 404
+    // never blocks the whole install.
+    const results = await Promise.all(ASSETS.map(async (url) => {
       try {
-        const response = await fetch(url, { cache: 'reload' });
-        if (response.ok) {
-          await cache.put(url, response);
-        } else {
+        const response = await fetch(new Request(url, { cache: 'reload' }));
+        if (!response.ok) {
           console.warn('[SW] Skip caching (HTTP ' + response.status + '):', url);
+          return false;
         }
+        await cache.put(url, response);
+        return true;
       } catch (err) {
         console.warn('[SW] Skip caching:', url, err);
+        return false;
       }
-    }
-    self.skipWaiting();
+    }));
+
+    const cached = results.filter(Boolean).length;
+    console.log('[SW] Pre-cache complete: ' + cached + '/' + ASSETS.length + ' assets.');
+
+    // Do not take over instantly on first install; let the page finish loading.
+    // (A new version activates on the next visit, or immediately on SKIP_WAITING.)
   })());
 });
 
 /* ────────────────────────────────────────────────────────────────────────── */
-// ─── Activate: delete old caches ──────────────────────────────────────────
+// ─── Activate: purge outdated caches ──────────────────────────────────────
 /* ────────────────────────────────────────────────────────────────────────── */
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_VERSION) {
-            console.log('[SW] Purging outdated cache:', key);
-            return caches.delete(key);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+
+    await Promise.all(keys.map(key => {
+      if (key !== CACHE_NAME && key.startsWith(CACHE_PREFIX)) {
+        console.log('[SW] Purging outdated cache:', key);
+        return caches.delete(key);
+      }
+      return Promise.resolve(false);
+    }));
+
+    if (self.registration.navigationPreload) {
+      // Optional: keep navigation preload consistent across browsers.
+      try { await self.registration.navigationPreload.disable(); } catch (_) {}
+    }
+
+    await self.clients.claim();
+    console.log('[SW] Active:', CACHE_NAME);
+  })());
 });
 
 /* ────────────────────────────────────────────────────────────────────────── */
-// ─── Fetch: Cache-first with background refresh for navigation ────────────
+// ─── Messages (update flow) ───────────────────────────────────────────────
+/* ────────────────────────────────────────────────────────────────────────── */
+
+self.addEventListener('message', event => {
+  const data = event.data;
+  if (data === 'SKIP_WAITING' || (data && data.type === 'SKIP_WAITING')) {
+    self.skipWaiting();
+  }
+  if (data === 'CLEAR_CACHES' || (data && data.type === 'CLEAR_CACHES')) {
+    event.waitUntil(
+      caches.keys()
+        .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+        .then(() => self.registration.unregister())
+    );
+  }
+});
+
+/* ────────────────────────────────────────────────────────────────────────── */
+// ─── Fetch ────────────────────────────────────────────────────────────────
 /* ────────────────────────────────────────────────────────────────────────── */
 
 self.addEventListener('fetch', event => {
   const request = event.request;
-  
-  if (request.method !== 'GET' || !request.url.startsWith(self.location.origin)) {
-    return;
+
+  // Ignore cross-origin, non-GET, and non-http(s) schemes (capacitor://, file://…).
+  if (!isCacheableRequest(request)) return;
+
+  // Never let a Range request corrupt a cached full response.
+  if (request.headers.has('range')) return;
+
+  event.respondWith(handleRequest(event));
+});
+
+async function handleRequest(event) {
+  const request = event.request;
+  const url = new URL(request.url);
+  const cache = await caches.open(CACHE_NAME);
+
+  const isNavigation =
+    request.mode === 'navigate' ||
+    request.destination === 'document' ||
+    (request.headers.get('accept') || '').includes('text/html');
+
+  /* ── 1. Navigations: stale-while-revalidate ───────────────────────────── */
+  if (isNavigation) {
+    const key = navigationKeyFor(url);
+
+    // Kick off the network refresh in the background, regardless of cache hit.
+    const networkUpdate = fetch(new Request(request, { cache: 'no-cache' }))
+      .then(async response => {
+        if (response && response.ok && response.type === 'basic') {
+          try { await cache.put(key, response.clone()); } catch (_) {}
+        }
+        return response;
+      })
+      .catch(() => null);
+
+    // Keep the worker alive until the refresh settles.
+    event.waitUntil(networkUpdate.catch(() => {}));
+
+    const cached = await cache.match(key, { ignoreSearch: true });
+    if (cached) return cached;
+
+    const fresh = await networkUpdate;
+    if (fresh && fresh.ok) return fresh;
+
+    // Last resort: cached splash, otherwise a real 503 response (never undefined).
+    const splash = await cache.match(INDEX_URL, { ignoreSearch: true });
+    return splash || offlineResponse('[SW] Offline — page not available.');
   }
 
-  event.respondWith(
-    caches.open(CACHE_VERSION).then(async cache => {
-      const url = new URL(request.url);
-      
-      // Clean query strings/hashes for reliable cache matching
-      const cleanUrl = url.origin + url.pathname; 
+  /* ── 2. Static assets: strict cache-first ─────────────────────────────── */
+  const cachedAsset = await cache.match(request, { ignoreSearch: true });
+  if (cachedAsset) return cachedAsset;
 
-      // 1. Handle Navigation Requests (HTML Pages)
-      if (request.mode === 'navigate') {
-        const isRoot = cleanUrl === self.location.origin + '/' || cleanUrl === BASE || cleanUrl === BASE + '/';
-        const targetKey = isRoot ? BASE + '/index.html' : request;
+  /* ── 3. Runtime network, with graceful offline handling ───────────────── */
+  try {
+    const response = await fetch(request);
 
-        const cachedResponse = await cache.match(targetKey, { ignoreSearch: true });
-        if (cachedResponse) return cachedResponse;
-
-        // Fallback strategy if page isn't explicitly cached
-        return cache.match(BASE + '/index.html', { ignoreSearch: true });
+    // Opportunistically cache successful same-origin basic responses that were
+    // not part of the pre-cache list (e.g. lazily loaded JSON).
+    if (response && response.ok && response.type === 'basic' &&
+        response.status === 200 && !response.redirected) {
+      const type = response.headers.get('content-type') || '';
+      if (!type.startsWith('text/event-stream')) {
+        const copy = response.clone();
+        const key = cacheKeyFor(url);
+        cache.put(key, copy).catch(() => {});
       }
+    }
 
-      // 2. Asset Retrieval (Strict Cache-First)
-      // We look only in the safe, verified installation cache
-      const cachedAsset = await cache.match(request, { ignoreSearch: true });
-      if (cachedAsset) return cachedAsset;
-
-      // 3. Runtime Network Fallback (Only for files outside pre-cache list)
-      try {
-        return await fetch(request);
-      } catch (err) {
-        const acceptHeader = request.headers.get('accept') || '';
-        if (acceptHeader.includes('text/html')) {
-          return cache.match(BASE + '/index.html');
-        }
-        return new Response('[SW] Asset missing and offline.', { status: 404 });
-      }
-    })
-  );
-});
+    return response;
+  } catch (_) {
+    const accept = request.headers.get('accept') || '';
+    if (accept.includes('text/html')) {
+      const splash = await cache.match(INDEX_URL, { ignoreSearch: true });
+      if (splash) return splash;
+    }
+    return offlineResponse('[SW] Asset missing and offline.');
+  }
+}
